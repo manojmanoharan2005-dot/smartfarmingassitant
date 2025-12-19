@@ -16,6 +16,9 @@ API_BASE_URL = "https://api.data.gov.in/resource/35985678-0d79-46b4-9ed6-6f13308
 # Market data file path
 MARKET_DATA_FILE = 'data/market_prices.json'
 
+# District coordinates file path
+DISTRICT_COORDS_FILE = 'data/district_coordinates.json'
+
 # Indian states list
 INDIAN_STATES = [
     "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
@@ -26,6 +29,17 @@ INDIAN_STATES = [
     "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli",
     "Daman and Diu", "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
 ]
+
+def load_district_coordinates():
+    """Load district coordinates mapping"""
+    try:
+        if os.path.exists(DISTRICT_COORDS_FILE):
+            with open(DISTRICT_COORDS_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        return {}
+    except Exception as e:
+        print(f"Error loading district coordinates: {str(e)}")
+        return {}
 
 def calculate_distance(lat1, lon1, lat2, lon2):
     """Calculate distance between two coordinates in km using Haversine formula"""
@@ -63,19 +77,29 @@ def format_scheduled_data_for_display(scheduled_data):
             prediction_7d = current_price * (1 + random.uniform(0.05, 0.15))
             trend = 'Bullish' if change_percent > 0 else 'Bearish'
             
+            # Calculate kg prices (1 quintal = 100 kg)
+            current_price_kg = current_price / 100
+            min_price_kg = min_price / 100
+            max_price_kg = max_price / 100
+            prediction_7d_kg = prediction_7d / 100
+            
             market_data.append({
                 'commodity': record.get('commodity', 'Unknown'),
                 'mandi': record.get('market', 'Unknown Market'),
                 'state': record.get('state', 'Tamil Nadu'),
                 'district': record.get('district', ''),
                 'current_price': int(current_price),
+                'current_price_kg': round(current_price_kg, 2),
                 'unit': record.get('unit', 'Quintal'),
                 'change': f"{'+' if change_percent > 0 else ''}{change_percent:.1f}%",
                 'trend': trend,
                 'prediction_7d': int(prediction_7d),
+                'prediction_7d_kg': round(prediction_7d_kg, 2),
                 'confidence': random.randint(80, 95),
                 'min_price': int(min_price),
                 'max_price': int(max_price),
+                'min_price_kg': round(min_price_kg, 2),
+                'max_price_kg': round(max_price_kg, 2),
                 'arrival': record.get('arrival', 'N/A'),
                 'arrival_date': record.get('price_date', datetime.now().strftime('%Y-%m-%d'))
             })
@@ -158,19 +182,29 @@ def fetch_mandi_prices_from_api(state=None, limit=20):
                     min_price_val = record.get('Min_Price') or record.get('min_price') or modal_price
                     max_price_val = record.get('Max_Price') or record.get('max_price') or modal_price
                     
+                    # Calculate kg prices (1 quintal = 100 kg)
+                    current_price_kg = current_price / 100
+                    prediction_7d_kg = prediction_7d / 100
+                    min_price_kg = float(min_price_val) / 100 if min_price_val else current_price_kg
+                    max_price_kg = float(max_price_val) / 100 if max_price_val else current_price_kg
+                    
                     market_data.append({
                         'commodity': record.get('Commodity') or record.get('commodity', 'Unknown'),
                         'mandi': record.get('Market_Name') or record.get('market', 'Unknown Mandi'),
                         'state': record.get('State') or record.get('state', ''),
                         'district': record.get('District') or record.get('district', ''),
                         'current_price': int(current_price),
+                        'current_price_kg': round(current_price_kg, 2),
                         'unit': 'per quintal',
                         'change': f"{'+' if change_percent > 0 else ''}{change_percent:.1f}%",
                         'trend': trend,
                         'prediction_7d': int(prediction_7d),
+                        'prediction_7d_kg': round(prediction_7d_kg, 2),
                         'confidence': random.randint(75, 95),
                         'min_price': int(float(min_price_val)) if min_price_val else int(current_price),
                         'max_price': int(float(max_price_val)) if max_price_val else int(current_price),
+                        'min_price_kg': round(min_price_kg, 2),
+                        'max_price_kg': round(max_price_kg, 2),
                         'arrival_date': record.get('Arrival_Date') or record.get('arrival_date', 'N/A')
                     })
                 except (ValueError, TypeError) as e:
@@ -261,60 +295,96 @@ def nearby_mandis():
         user_lon = float(request.args.get('lon'))
         radius = float(request.args.get('radius', 50))  # Default 50km radius
         
-        # Fetch all available mandis
-        params = {
-            'api-key': API_KEY,
-            'format': 'json',
-            'limit': 100,
-            'offset': 0
-        }
+        # Use scheduled data instead of making API call to avoid rate limiting
+        scheduled_data, last_updated = load_daily_market_data()
         
-        response = requests.get(API_BASE_URL, params=params, timeout=10)
-        
-        if response.status_code == 200:
-            data = response.json()
-            records = data.get('records', [])
-            
-            nearby_markets = []
-            
-            # Note: Data.gov.in API doesn't provide lat/lon directly
-            # We'll need to use approximate locations or geocoding service
-            # For now, we'll filter by district name matching
-            
-            for record in records:
-                try:
-                    current_price = float(record.get('modal_price', 0))
-                    
-                    # Simulate distance calculation (in real app, use geocoding)
-                    distance = random.uniform(5, radius)
-                    
-                    nearby_markets.append({
-                        'commodity': record.get('commodity', 'Unknown'),
-                        'mandi': record.get('market', 'Unknown Mandi'),
-                        'state': record.get('state', ''),
-                        'district': record.get('district', ''),
-                        'current_price': int(current_price),
-                        'distance': round(distance, 1),
-                        'arrival_date': record.get('arrival_date', 'N/A')
-                    })
-                except (ValueError, TypeError):
-                    continue
-            
-            # Sort by distance
-            nearby_markets.sort(key=lambda x: x['distance'])
-            
-            return jsonify({
-                'success': True,
-                'data': nearby_markets[:10],  # Return top 10 nearest
-                'count': len(nearby_markets)
-            })
-        else:
+        if not scheduled_data:
             return jsonify({
                 'success': False,
-                'error': f'API returned status {response.status_code}'
+                'error': 'No market data available'
             }), 400
+        
+        # Load district coordinates
+        district_coords = load_district_coordinates()
+        
+        nearby_markets = []
+        
+        # Calculate actual distances based on district/city locations
+        for record in scheduled_data:
+            try:
+                current_price = record.get('modal_price', 0)
+                
+                if current_price == 0:
+                    continue
+                
+                # Get district and state
+                district = record.get('district', '')
+                state = record.get('state', '')
+                market = record.get('market', '')
+                
+                # Try to find coordinates for the district or extract city from market name
+                coords = None
+                
+                # First try: match district in coordinates
+                if state in district_coords and district in district_coords[state]:
+                    coords = district_coords[state][district]
+                # Second try: check if market name contains a known city
+                elif state in district_coords:
+                    for city_name in district_coords[state].keys():
+                        if city_name.lower() in market.lower():
+                            coords = district_coords[state][city_name]
+                            break
+                
+                # If no coordinates found, skip this market
+                if not coords:
+                    continue
+                
+                # Calculate actual distance
+                distance = calculate_distance(user_lat, user_lon, coords['lat'], coords['lon'])
+                
+                # Only include markets within the radius
+                if distance > radius:
+                    continue
+                
+                # Calculate kg price
+                current_price_kg = current_price / 100
+                
+                nearby_markets.append({
+                    'commodity': record.get('commodity', 'Unknown'),
+                    'mandi': record.get('market', 'Unknown Mandi'),
+                    'state': state,
+                    'district': district,
+                    'current_price': int(current_price),
+                    'current_price_kg': round(current_price_kg, 2),
+                    'distance': round(distance, 1),
+                    'arrival_date': record.get('price_date', 'N/A')
+                })
+            except (ValueError, TypeError) as e:
+                print(f"Error processing record: {e}")
+                continue
+        
+        # Sort by distance
+        nearby_markets.sort(key=lambda x: x['distance'])
+        
+        # If no nearby markets found within radius, show a helpful message
+        if len(nearby_markets) == 0:
+            return jsonify({
+                'success': True,
+                'data': [],
+                'count': 0,
+                'message': f'No mandis found within {radius}km. Try increasing the search radius.'
+            })
+        
+        return jsonify({
+            'success': True,
+            'data': nearby_markets[:15],  # Return top 15 nearest
+            'count': len(nearby_markets)
+        })
     
     except Exception as e:
+        print(f"Error in nearby_mandis: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return jsonify({
             'success': False,
             'error': str(e)

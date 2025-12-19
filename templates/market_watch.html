@@ -198,10 +198,6 @@
                 <span class="nav-icon">📈</span>
                 <span class="nav-text">Market Watch</span>
             </a>
-            <a href="{{ url_for('irrigation.smart_irrigation') }}" class="nav-item">
-                <span class="nav-icon">💧</span>
-                <span class="nav-text">Smart Irrigation</span>
-            </a>
         </nav>
     </div>
 
@@ -297,7 +293,7 @@
 
                 <div class="price-section">
                     <h2 class="current-price">₹{{ item.current_price }}</h2>
-                    <p class="price-unit">{{ item.unit }}</p>
+                    <p class="price-unit">per {{ item.unit }} • ₹{{ item.current_price_kg }}/kg</p>
                     <span class="price-change {{ 'positive' if '+' in item.change else 'negative' }}">
                         {{ item.change }}
                     </span>
@@ -308,6 +304,7 @@
                         🤖 7-Day Price Prediction (LSTM)
                     </div>
                     <div class="prediction-value">₹{{ item.prediction_7d }}</div>
+                    <div style="font-size: 14px; opacity: 0.9; margin-top: 5px;">₹{{ item.prediction_7d_kg }}/kg</div>
                     <div class="confidence-bar">
                         <div class="confidence-fill" style="width: {{ item.confidence }}%"></div>
                     </div>
@@ -372,7 +369,11 @@ function getNearbyMandis() {
                     .then(data => {
                         document.body.style.cursor = 'default';
                         if (data.success) {
-                            displayNearbyMandis(data.data);
+                            if (data.data.length === 0) {
+                                alert('No mandis found within 50km of your location. The system uses major district/city locations to calculate distances.');
+                            } else {
+                                displayNearbyMandis(data.data);
+                            }
                         } else {
                             alert('Error fetching nearby mandis: ' + data.error);
                         }
@@ -422,7 +423,7 @@ function displayNearbyMandis(mandis) {
                             ${mandi.distance} km away
                         </div>
                         <div style="font-size: 20px; font-weight: bold; color: #52b788;">₹${mandi.current_price}</div>
-                        <div style="font-size: 12px; color: #6b7280;">per quintal</div>
+                        <div style="font-size: 12px; color: #6b7280;">per quintal \u2022 \u20b9${mandi.current_price_kg}/kg</div>
                     </div>
                 </div>
             </div>

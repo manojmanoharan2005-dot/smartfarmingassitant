@@ -12,7 +12,6 @@ from controllers.crop_routes import crop_bp
 from controllers.fertilizer_routes import fertilizer_bp
 from controllers.growing_routes import growing_bp
 from controllers.market_routes import market_bp
-from controllers.irrigation_routes import irrigation_bp
 from controllers.chat_routes import chat_bp
 from controllers.market_scheduler import init_scheduler
 # from controllers.community_routes import community_bp
@@ -44,7 +43,6 @@ app.register_blueprint(crop_bp)
 app.register_blueprint(fertilizer_bp)
 app.register_blueprint(growing_bp)
 app.register_blueprint(market_bp)
-app.register_blueprint(irrigation_bp)
 app.register_blueprint(chat_bp)
 # app.register_blueprint(community_bp)
 
