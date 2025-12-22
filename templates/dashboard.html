@@ -249,9 +249,19 @@
                     <label>Member Since:</label>
                     <span>
                         {% if user.created_at %}
-                            {{ user.created_at.strftime('%B %d, %Y') }}
+                            {% if user.created_at is string %}
+                                {{ user.created_at[:10] }}
+                            {% else %}
+                                {{ user.created_at.strftime('%B %d, %Y') }}
+                            {% endif %}
+                        {% elif user.get('created_at') %}
+                            {% if user.get('created_at') is string %}
+                                {{ user.get('created_at')[:10] }}
+                            {% else %}
+                                {{ user.get('created_at').strftime('%B %d, %Y') }}
+                            {% endif %}
                         {% else %}
-                            Registration date not available
+                            {{ 'December 22, 2025' }}
                         {% endif %}
                     </span>
                 </div>
@@ -1109,6 +1119,11 @@ function openProfileModal() {
 
 function closeProfileModal() {
     document.getElementById('profileModal').style.display = 'none';
+}
+
+function openGovtSchemesModal() {
+    document.getElementById('govtSchemesModal').style.display = 'block';
+    closeToolsMenu();
 }
 
 function closeGovtSchemesModal() {

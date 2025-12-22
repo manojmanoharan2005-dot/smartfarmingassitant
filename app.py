@@ -75,5 +75,9 @@ def toast_demo():
 # Create upload directory
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
+# Vercel serverless function handler
+def handler(request):
+    return app(request)
+
 if __name__ == '__main__':
     app.run(debug=True)

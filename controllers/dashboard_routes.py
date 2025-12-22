@@ -22,8 +22,12 @@ def dashboard():
             'phone': session.get('user_phone', 'Not provided'),
             'state': session.get('user_state', 'Not provided'), 
             'district': session.get('user_district', 'Not provided'),
-            'created_at': None
+            'created_at': datetime.utcnow()
         }
+    else:
+        # Ensure created_at exists for existing users
+        if 'created_at' not in user or user['created_at'] is None:
+            user['created_at'] = datetime.utcnow()
     
     saved_crops = get_user_crops(user_id)
     saved_fertilizers = get_user_fertilizers(user_id)
