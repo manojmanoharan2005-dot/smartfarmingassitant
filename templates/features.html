@@ -5,60 +5,101 @@
 {% block content %}
 <!-- Hero Section -->
 <section class="page-hero">
-    <div class="container">
-        <h1>Platform Features</h1>
-        <p>Comprehensive tools and insights for modern farming success</p>
+    <div class="page-hero-content">
+        <span class="section-badge">
+            <i class="fas fa-star"></i> Our Features
+        </span>
+        <h1 class="page-title">Platform Features</h1>
+        <p class="page-subtitle">Comprehensive AI-powered tools and insights for modern farming success</p>
     </div>
 </section>
 
 <!-- Features Content -->
 <section class="features-detailed">
-    <div class="container">
-        <div class="feature-showcase">
-            <div class="feature-content">
-                <h2>🌾 Smart Crop Recommendations</h2>
-                <p>Our AI-powered system analyzes your soil composition, local weather patterns, and historical data to recommend the most suitable crops for your land. Get personalized suggestions that maximize yield potential.</p>
-                <ul class="feature-list">
-                    <li>✅ Soil analysis integration</li>
-                    <li>✅ Weather pattern consideration</li>
-                    <li>✅ Market demand insights</li>
-                    <li>✅ Success probability scoring</li>
-                </ul>
+    <!-- Crop Recommendations -->
+    <div class="feature-detailed-card">
+        <div class="feature-detailed-content">
+            <div class="feature-detailed-icon">
+                <i class="fas fa-seedling"></i>
             </div>
-            <div class="feature-image">
-                <img src="{{ url_for('static', filename='images/farm-field.jpg') }}" alt="Crop recommendation">
+            <h3>AI Crop Recommendations</h3>
+            <p>Our AI-powered system analyzes your soil composition, local weather patterns, and historical data to recommend the most suitable crops for your land. Get personalized suggestions that maximize yield potential.</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-check"></i> Soil analysis integration</li>
+                <li><i class="fas fa-check"></i> Weather pattern consideration</li>
+                <li><i class="fas fa-check"></i> Market demand insights</li>
+                <li><i class="fas fa-check"></i> Success probability scoring</li>
+            </ul>
+        </div>
+        <div class="feature-detailed-visual">
+            <div class="feature-image-placeholder">
+                <i class="fas fa-wheat-awn"></i>
             </div>
         </div>
-        
-        <div class="feature-showcase reverse">
-            <div class="feature-image">
-                <img src="{{ url_for('static', filename='images/farm-rows.jpg') }}" alt="Fertilizer recommendation">
+    </div>
+    
+    <!-- Fertilizer Optimization -->
+    <div class="feature-detailed-card">
+        <div class="feature-detailed-content">
+            <div class="feature-detailed-icon">
+                <i class="fas fa-flask"></i>
             </div>
-            <div class="feature-content">
-                <h2>🧪 Fertilizer Optimization</h2>
-                <p>Get precise fertilizer recommendations based on your crop type, soil conditions, and growth stage. Optimize nutrient application while reducing costs and environmental impact.</p>
-                <ul class="feature-list">
-                    <li>✅ Crop-specific recommendations</li>
-                    <li>✅ Timing optimization</li>
-                    <li>✅ Cost-effective solutions</li>
-                    <li>✅ Environmental safety</li>
-                </ul>
+            <h3>Fertilizer Optimization</h3>
+            <p>Get precise fertilizer recommendations based on your crop type, soil conditions, and growth stage. Optimize nutrient application while reducing costs and environmental impact.</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-check"></i> Crop-specific recommendations</li>
+                <li><i class="fas fa-check"></i> Timing optimization</li>
+                <li><i class="fas fa-check"></i> Cost-effective solutions</li>
+                <li><i class="fas fa-check"></i> Environmental safety</li>
+            </ul>
+        </div>
+        <div class="feature-detailed-visual">
+            <div class="feature-image-placeholder">
+                <i class="fas fa-vial"></i>
             </div>
         </div>
-        
-        <div class="feature-showcase">
-            <div class="feature-content">
-                <h2>🦠 Disease Detection</h2>
-                <p>Upload plant images for instant disease identification using advanced computer vision. Get early detection warnings and treatment recommendations to protect your crops.</p>
-                <ul class="feature-list">
-                    <li>✅ AI-powered image analysis</li>
-                    <li>✅ Early detection capabilities</li>
-                    <li>✅ Treatment recommendations</li>
-                    <li>✅ Prevention strategies</li>
-                </ul>
+    </div>
+    
+    <!-- Market Prices -->
+    <div class="feature-detailed-card">
+        <div class="feature-detailed-content">
+            <div class="feature-detailed-icon">
+                <i class="fas fa-chart-line"></i>
             </div>
-            <div class="feature-image">
-                <img src="{{ url_for('static', filename='images/farm-field.jpg') }}" alt="Disease detection">
+            <h3>Market Price Tracking</h3>
+            <p>Access real-time market prices from mandis across India. Compare prices, track trends, and make informed decisions about when and where to sell your produce for maximum profit.</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-check"></i> Live commodity prices</li>
+                <li><i class="fas fa-check"></i> Multi-state coverage</li>
+                <li><i class="fas fa-check"></i> Historical price trends</li>
+                <li><i class="fas fa-check"></i> Best market recommendations</li>
+            </ul>
+        </div>
+        <div class="feature-detailed-visual">
+            <div class="feature-image-placeholder">
+                <i class="fas fa-rupee-sign"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Weather Forecasts -->
+    <div class="feature-detailed-card">
+        <div class="feature-detailed-content">
+            <div class="feature-detailed-icon">
+                <i class="fas fa-cloud-sun"></i>
+            </div>
+            <h3>Weather Forecasts</h3>
+            <p>Get accurate 7-day weather forecasts for your exact location. Plan irrigation, harvesting, and other activities with confidence using reliable meteorological data.</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-check"></i> Location-based forecasts</li>
+                <li><i class="fas fa-check"></i> Rainfall predictions</li>
+                <li><i class="fas fa-check"></i> Temperature trends</li>
+                <li><i class="fas fa-check"></i> Activity planning suggestions</li>
+            </ul>
+        </div>
+        <div class="feature-detailed-visual">
+            <div class="feature-image-placeholder">
+                <i class="fas fa-sun"></i>
             </div>
         </div>
     </div>
@@ -66,12 +107,70 @@
 
 <!-- CTA Section -->
 <section class="cta-section">
-    <div class="container">
-        <div class="cta-content">
-            <h2>Ready to Transform Your Farming?</h2>
-            <p>Join thousands of farmers who are already using our platform to increase their productivity and profits.</p>
-            <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Get Started Today</a>
+    <div class="cta-container">
+        <h2 class="cta-title">Ready to Transform Your Farming?</h2>
+        <p class="cta-subtitle">Join thousands of farmers who are already using our platform to increase their productivity and profits.</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-rocket"></i> Get Started Today
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline btn-lg">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </a>
         </div>
     </div>
 </section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-grid">
+            <div class="footer-about">
+                <div class="footer-brand">
+                    <i class="fas fa-seedling"></i> Smart Farming
+                </div>
+                <p class="footer-description">Empowering farmers with world-class AI technology solutions for smarter, more productive agriculture.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About Us</a></li>
+                    <li><a href="{{ url_for('features') }}">Features</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Features</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Crop Suggestion</a></li>
+                    <li><a href="#">Weather Forecast</a></li>
+                    <li><a href="#">Market Prices</a></li>
+                    <li><a href="#">Fertilizer Guide</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contact</h4>
+                <ul class="footer-links">
+                    <li><i class="fas fa-phone"></i> +91 (0000) 42100</li>
+                    <li><i class="fas fa-envelope"></i> support@smartfarming.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Agricultural Innovation Center</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2024 Smart Farming Assistant. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
 {% endblock %}

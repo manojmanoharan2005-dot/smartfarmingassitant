@@ -14,5 +14,35 @@
       "user_id": "694b95f7275de1ad00752be3",
       "saved_at": "2025-12-24T09:09:48.708100"
     }
+  ],
+  "3f192cf1-0629-48f2-89ff-06c32781fe28": [
+    {
+      "name": "DAP (18-46-0)",
+      "crop_type": "pigeon_peas",
+      "priority": "Low",
+      "dosage": "75-125 kg/acre",
+      "usage": "Apply at time of sowing or transplanting for root development",
+      "note": "Excellent phosphorus source, also provides nitrogen",
+      "confidence": "5.0",
+      "_id": "66ebfb81-735c-488f-91a7-67f08e77bfcf",
+      "user_id": "3f192cf1-0629-48f2-89ff-06c32781fe28",
+      "saved_at": "2025-12-27T05:59:18.366665"
+    }
+  ],
+  "87c1adf7-ba07-4f41-ae89-537bb6efc9f2": [],
+  "9d171757-5e0d-4091-bea2-441301c40127": [],
+  "0eb31d4f-4a01-4629-a85e-02f3a1fb975e": [
+    {
+      "name": "Urea (46-0-0)",
+      "crop_type": "rice",
+      "priority": null,
+      "dosage": "50-100 kg/acre",
+      "usage": "Apply in split doses: 50% at sowing, 25% at tillering, 25% at flowering",
+      "note": "",
+      "confidence": "0",
+      "_id": "412c0628-a888-4c4c-abcb-095bae9f3553",
+      "user_id": "0eb31d4f-4a01-4629-a85e-02f3a1fb975e",
+      "saved_at": "2025-12-27T08:52:54.632608"
+    }
   ]
 }

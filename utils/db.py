@@ -187,6 +187,29 @@ def find_user_by_phone(phone):
                 return user
     return None
 
+def update_user_password(email, new_password):
+    """Update user password by email"""
+    try:
+        # Load users from file
+        with open(USERS_FILE, 'r') as f:
+            users_db = json.load(f)
+        
+        # Find and update user
+        for user_id, user in users_db.items():
+            if user.get('email') == email:
+                user['password'] = new_password
+                # Save back to file
+                with open(USERS_FILE, 'w') as f:
+                    json.dump(users_db, f, indent=2, default=str)
+                print(f"🔐 Password updated for user: {email}")
+                return True
+        
+        print(f"⚠️ User not found: {email}")
+        return False
+    except Exception as e:
+        print(f"❌ Error updating password: {e}")
+        return False
+
 def find_user_by_id(user_id):
     try:
         if hasattr(db, 'users') and db:
@@ -271,12 +294,27 @@ def save_fertilizer_recommendation(user_id, fertilizer_data):
 
 def get_user_fertilizers(user_id):
     """Get user's saved fertilizers from file"""
+    import uuid
     try:
         with open(FERTILIZERS_FILE, 'r') as f:
             fertilizer_db = json.load(f)
         
         # Get user's fertilizers
         user_fertilizers = fertilizer_db.get(user_id, [])
+        
+        # Add _id to fertilizers that don't have one
+        needs_save = False
+        for fert in user_fertilizers:
+            if '_id' not in fert:
+                fert['_id'] = str(uuid.uuid4())
+                needs_save = True
+        
+        # Save back if we added any IDs
+        if needs_save:
+            fertilizer_db[user_id] = user_fertilizers
+            with open(FERTILIZERS_FILE, 'w') as f:
+                json.dump(fertilizer_db, f, indent=2)
+        
         return user_fertilizers
     except Exception as e:
         print(f"Error loading fertilizers: {e}")
@@ -361,12 +399,26 @@ def save_growing_activity(activity_data):
 
 def get_user_growing_activities(user_id, status='active'):
     """Get user's growing activities"""
+    import uuid
     try:
         with open(GROWING_FILE, 'r') as f:
             growing_data = json.load(f)
         
         # Get user's activities
         user_activities = growing_data.get(user_id, [])
+        
+        # Add _id to activities that don't have one
+        needs_save = False
+        for activity in user_activities:
+            if '_id' not in activity:
+                activity['_id'] = str(uuid.uuid4())
+                needs_save = True
+        
+        # Save back if we added any IDs
+        if needs_save:
+            growing_data[user_id] = user_activities
+            with open(GROWING_FILE, 'w') as f:
+                json.dump(growing_data, f, indent=2)
         
         # Filter by status if specified
         if status:
@@ -377,10 +429,65 @@ def get_user_growing_activities(user_id, status='active'):
         print(f"Error loading growing activities: {e}")
         return []
 
-def update_growing_activity(activity_id, task_index):
-    """Update growing activity task completion"""
-    print(f"✅ Task {task_index} completed for activity {activity_id}")
-    return True
+def update_growing_activity(activity_id, user_id, update_data):
+    """Update growing activity with new data (stage, notes, tasks)"""
+    try:
+        print(f"💾 DB: Updating activity {activity_id} for user {user_id}")
+        print(f"💾 DB: Update data: {update_data}")
+        
+        # Load existing activities
+        with open(GROWING_FILE, 'r') as f:
+            growing_data = json.load(f)
+        
+        print(f"💾 DB: Loaded data for {len(growing_data)} users")
+        
+        # Get user's activities
+        user_activities = growing_data.get(user_id, [])
+        print(f"💾 DB: User has {len(user_activities)} activities")
+        
+        # Find and update the activity
+        activity_found = False
+        for i, activity in enumerate(user_activities):
+            print(f"💾 DB: Checking activity {i}: {activity.get('_id')} == {activity_id}?")
+            if activity.get('_id') == activity_id or activity.get('id') == activity_id:
+                print(f"💾 DB: Match found! Updating...")
+                # Update the activity fields
+                if 'current_stage' in update_data:
+                    print(f"💾 DB: Updating stage: {activity.get('current_stage')} -> {update_data['current_stage']}")
+                    user_activities[i]['current_stage'] = update_data['current_stage']
+                if 'progress' in update_data:
+                    print(f"💾 DB: Updating progress: {activity.get('progress')} -> {update_data['progress']}")
+                    user_activities[i]['progress'] = update_data['progress']
+                if 'notes' in update_data:
+                    print(f"💾 DB: Updating notes")
+                    user_activities[i]['notes'] = update_data['notes']
+                if 'completed_tasks' in update_data:
+                    print(f"💾 DB: Updating tasks")
+                    user_activities[i]['completed_tasks'] = update_data['completed_tasks']
+                
+                user_activities[i]['updated_at'] = datetime.now().isoformat()
+                activity_found = True
+                break
+        
+        if activity_found:
+            growing_data[user_id] = user_activities
+            
+            # Write back to file
+            with open(GROWING_FILE, 'w') as f:
+                json.dump(growing_data, f, indent=2)
+            
+            print(f"✅ Successfully updated activity {activity_id} for user {user_id}")
+            print(f"💾 DB: File saved to {GROWING_FILE}")
+            return True
+        else:
+            print(f"⚠️ Activity {activity_id} not found for user {user_id}")
+            return False
+            
+    except Exception as e:
+        print(f"Error updating activity: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
 
 def delete_growing_activity(activity_id, user_id):
     """Delete a growing activity"""

@@ -892,3 +892,104 @@ def delete_activity(activity_id):
         print(f"Error deleting activity: {e}")
         return jsonify({'success': False, 'message': str(e)})
 
+
+@growing_bp.route('/growing/update/<activity_id>', methods=['POST'])
+@login_required
+def update_activity(activity_id):
+    """Update a growing activity (stage, notes, tasks)"""
+    try:
+        data = request.get_json()
+        print(f"📝 Update request for activity {activity_id}")
+        print(f"📝 Received data: {data}")
+        
+        if not data:
+            return jsonify({'success': False, 'message': 'No data provided'})
+        
+        # Get current activity to update
+        user_id = session.get('user_id')
+        print(f"📝 User ID: {user_id}")
+        activities = get_user_growing_activities(user_id)
+        print(f"📝 Total activities: {len(activities)}")
+        
+        activity = None
+        for act in activities:
+            print(f"📝 Checking activity: {act.get('_id')} vs {activity_id}")
+            if act.get('_id') == activity_id:
+                activity = act
+                break
+        
+        if not activity:
+            print(f"❌ Activity {activity_id} not found!")
+            return jsonify({'success': False, 'message': 'Activity not found'})
+        
+        print(f"✅ Found activity: {activity.get('crop_display_name')}")
+        
+        # Update fields
+        update_data = {}
+        
+        if 'stage' in data:
+            update_data['current_stage'] = data['stage']
+            # Update progress based on stage
+            stages = ['Seed Sowing', 'Germination', 'Seedling', 'Vegetative Growth', 
+                      'Flowering', 'Fruit Development', 'Maturity', 'Harvest Ready']
+            if data['stage'] in stages:
+                stage_index = stages.index(data['stage'])
+                update_data['progress'] = int((stage_index + 1) / len(stages) * 100)
+        
+        if 'notes' in data:
+            update_data['notes'] = data['notes']
+        
+        if 'tasks' in data:
+            update_data['completed_tasks'] = data['tasks']
+        
+        print(f"📝 Update data: {update_data}")
+        
+        # Save updates
+        result = update_growing_activity(activity_id, user_id, update_data)
+        
+        print(f"📝 Update result: {result}")
+        
+        if result:
+            return jsonify({'success': True, 'message': 'Activity updated successfully!'})
+        else:
+            return jsonify({'success': False, 'message': 'Failed to update activity'})
+            
+    except Exception as e:
+        print(f"Error updating activity: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'success': False, 'message': str(e)})
+
+
+@growing_bp.route('/growing/view/<activity_id>')
+@login_required
+def view_activity(activity_id):
+    """View full growing activity details"""
+    try:
+        user_name = session.get('user_name', 'Guest')
+        activities = get_user_growing_activities(session.get('user_id'))
+        
+        activity = None
+        for act in activities:
+            if act.get('_id') == activity_id:
+                activity = act
+                break
+        
+        if not activity:
+            flash('Activity not found', 'error')
+            return redirect(url_for('dashboard.dashboard'))
+        
+        # Get crop manual if available
+        crop_key = activity.get('crop', '').lower().replace(' ', '')
+        manual = CROP_MANUALS.get(crop_key, {})
+        
+        return render_template('growing_view.html',
+                             user_name=user_name,
+                             activity=activity,
+                             manual=manual)
+    
+    except Exception as e:
+        print(f"Error viewing activity: {e}")
+        flash('Error loading activity details', 'error')
+        return redirect(url_for('dashboard.dashboard'))
+

@@ -5,41 +5,46 @@
 {% block content %}
 <!-- Hero Section -->
 <section class="page-hero">
-    <div class="container">
-        <h1>About Smart Farming Assistant</h1>
-        <p>Empowering farmers with cutting-edge technology for sustainable agriculture</p>
+    <div class="page-hero-content">
+        <span class="section-badge">
+            <i class="fas fa-info-circle"></i> About Us
+        </span>
+        <h1 class="page-title">About Smart Farming Assistant</h1>
+        <p class="page-subtitle">Empowering farmers with cutting-edge AI technology for sustainable and profitable agriculture</p>
     </div>
 </section>
 
 <!-- About Content -->
 <section class="about-content">
-    <div class="container">
-        <div class="about-grid">
-            <div class="about-text">
-                <h2>Our Mission</h2>
-                <p>We are dedicated to revolutionizing agriculture through innovative technology solutions. Our platform combines artificial intelligence, machine learning, and agricultural expertise to provide farmers with the tools they need to maximize productivity while maintaining sustainable practices.</p>
-                
-                <h2>What We Do</h2>
-                <p>Our comprehensive platform offers intelligent crop recommendations, fertilizer guidance, and disease detection services. We analyze soil conditions, weather patterns, and market trends to provide personalized insights that help farmers make informed decisions.</p>
-                
-                <div class="stats-showcase">
-                    <div class="stat-item">
-                        <h3>10,000+</h3>
-                        <p>Farmers Helped</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>95%</h3>
-                        <p>Success Rate</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>50+</h3>
-                        <p>Crop Types</p>
-                    </div>
-                </div>
-            </div>
+    <div class="about-container">
+        <div class="about-text">
+            <h2><i class="fas fa-bullseye" style="color: var(--primary); margin-right: 10px;"></i>Our Mission</h2>
+            <p>We are dedicated to revolutionizing agriculture through innovative technology solutions. Our platform combines artificial intelligence, machine learning, and agricultural expertise to provide farmers with the tools they need to maximize productivity while maintaining sustainable practices.</p>
             
-            <div class="about-image">
-                <img src="{{ url_for('static', filename='images/farm-field.jpg') }}" alt="Modern farming technology">
+            <h2 style="margin-top: 30px;"><i class="fas fa-cogs" style="color: var(--primary); margin-right: 10px;"></i>What We Do</h2>
+            <p>Our comprehensive platform offers intelligent crop recommendations, fertilizer guidance, and market price tracking services. We analyze soil conditions, weather patterns, and market trends to provide personalized insights that help farmers make informed decisions and increase their profits.</p>
+        </div>
+        
+        <div class="stats-showcase">
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <span class="stat-value">10,000+</span>
+                <span class="stat-label">Farmers Helped</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-check-circle"></i>
+                <span class="stat-value">95%</span>
+                <span class="stat-label">Prediction Accuracy</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-seedling"></i>
+                <span class="stat-value">50+</span>
+                <span class="stat-label">Crop Types</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-map-marked-alt"></i>
+                <span class="stat-value">28</span>
+                <span class="stat-label">States Covered</span>
             </div>
         </div>
     </div>
@@ -47,25 +52,112 @@
 
 <!-- Values Section -->
 <section class="values-section">
-    <div class="container">
-        <h2>Our Values</h2>
-        <div class="values-grid">
-            <div class="value-item">
-                <div class="value-icon">🌱</div>
-                <h3>Sustainability</h3>
-                <p>Promoting eco-friendly farming practices that protect our environment for future generations.</p>
+    <div class="section-header">
+        <span class="section-badge">
+            <i class="fas fa-heart"></i> Our Values
+        </span>
+        <h2 class="section-title">What Drives Us</h2>
+        <p class="section-subtitle">Core values that guide our mission to transform agriculture</p>
+    </div>
+    
+    <div class="values-grid">
+        <div class="value-card">
+            <div class="value-icon">
+                <i class="fas fa-leaf"></i>
             </div>
-            <div class="value-item">
-                <div class="value-icon">🤝</div>
-                <h3>Innovation</h3>
-                <p>Leveraging cutting-edge technology to solve traditional agricultural challenges.</p>
+            <h3>Sustainability</h3>
+            <p>Promoting eco-friendly farming practices that protect our environment for future generations while maximizing crop yield.</p>
+        </div>
+        <div class="value-card">
+            <div class="value-icon">
+                <i class="fas fa-lightbulb"></i>
             </div>
-            <div class="value-item">
-                <div class="value-icon">💪</div>
-                <h3>Empowerment</h3>
-                <p>Providing farmers with the knowledge and tools to make better decisions.</p>
+            <h3>Innovation</h3>
+            <p>Leveraging cutting-edge AI and machine learning technology to solve traditional agricultural challenges effectively.</p>
+        </div>
+        <div class="value-card">
+            <div class="value-icon">
+                <i class="fas fa-hands-helping"></i>
             </div>
+            <h3>Empowerment</h3>
+            <p>Providing farmers with the knowledge, tools, and data-driven insights to make better decisions confidently.</p>
+        </div>
+        <div class="value-card">
+            <div class="value-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Reliability</h3>
+            <p>Delivering accurate, trustworthy recommendations backed by scientific research and real-world validation.</p>
         </div>
     </div>
 </section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-container">
+        <h2 class="cta-title">Ready to Get Started?</h2>
+        <p class="cta-subtitle">Join our growing community of smart farmers and transform your agricultural practices today.</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-user-plus"></i> Create Free Account
+            </a>
+            <a href="{{ url_for('features') }}" class="btn btn-outline btn-lg">
+                <i class="fas fa-list"></i> View Features
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-grid">
+            <div class="footer-about">
+                <div class="footer-brand">
+                    <i class="fas fa-seedling"></i> Smart Farming
+                </div>
+                <p class="footer-description">Empowering farmers with world-class AI technology solutions for smarter, more productive agriculture.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About Us</a></li>
+                    <li><a href="{{ url_for('features') }}">Features</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Features</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Crop Suggestion</a></li>
+                    <li><a href="#">Weather Forecast</a></li>
+                    <li><a href="#">Market Prices</a></li>
+                    <li><a href="#">Fertilizer Guide</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contact</h4>
+                <ul class="footer-links">
+                    <li><i class="fas fa-phone"></i> +91 (0000) 42100</li>
+                    <li><i class="fas fa-envelope"></i> support@smartfarming.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Agricultural Innovation Center</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2024 Smart Farming Assistant. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
 {% endblock %}

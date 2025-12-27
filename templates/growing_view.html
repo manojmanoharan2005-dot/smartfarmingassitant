@@ -1,0 +1,419 @@
+{% extends "base.html" %}
+
+{% block title %}{{ activity.crop_display_name }} Growth Details - Smart Farming Assistant{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+.growth-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.growth-header {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 40px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    flex: 1;
+}
+
+.header-left h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-left .crop-icon {
+    font-size: 50px;
+}
+
+.header-left .current-stage {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-top: 10px;
+}
+
+.header-right {
+    text-align: center;
+}
+
+.progress-circle-large {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.progress-circle-large svg {
+    transform: rotate(-90deg);
+}
+
+.progress-text-large {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.progress-text-large .value {
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.progress-text-large .label {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.growth-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+}
+
+.growth-section {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.info-label {
+    font-size: 12px;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.info-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline-item {
+    position: relative;
+    padding: 16px 0 16px 24px;
+    border-left: 2px solid #e2e8f0;
+}
+
+.timeline-item.completed {
+    border-left-color: #10b981;
+}
+
+.timeline-item.current {
+    border-left-color: #3b82f6;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -9px;
+    top: 20px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #e2e8f0;
+}
+
+.timeline-item.completed::before {
+    background: #10b981;
+    border-color: #10b981;
+    content: '✓';
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.timeline-item.current::before {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.timeline-item:last-child {
+    border-left-color: transparent;
+}
+
+.timeline-stage {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 4px;
+}
+
+.timeline-item.current .timeline-stage {
+    color: #3b82f6;
+}
+
+.timeline-item.completed .timeline-stage {
+    color: #10b981;
+}
+
+.timeline-days {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.notes-section {
+    padding: 20px;
+    background: #fffbeb;
+    border-radius: 12px;
+    border: 1px solid #fde68a;
+    min-height: 100px;
+}
+
+.notes-text {
+    color: #92400e;
+    line-height: 1.6;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    border: none;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.btn-secondary {
+    background: white;
+    border: 2px solid #e2e8f0;
+    color: #475569;
+}
+
+.btn-secondary:hover {
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+    border-radius: 12px;
+    border: 1px solid #bbf7d0;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #059669;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: #166534;
+    font-weight: 600;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="growth-container">
+    <!-- Header -->
+    <div class="growth-header">
+        <div class="header-left">
+            <h1>
+                <span class="crop-icon">🌱</span>
+                {{ activity.crop_display_name or activity.crop }}
+            </h1>
+            <div class="current-stage">
+                Current Stage: {{ activity.current_stage or 'Growing' }}
+            </div>
+            <div style="font-size: 14px; opacity: 0.8; margin-top: 8px;">
+                Started: {{ activity.start_date }} | Day {{ activity.current_day or ((activity.created_at|string)[:10]) }}
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="progress-circle-large">
+                <svg width="150" height="150">
+                    <circle cx="75" cy="75" r="65" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="12"/>
+                    <circle cx="75" cy="75" r="65" fill="none" stroke="white" stroke-width="12" 
+                        stroke-dasharray="408.4" 
+                        stroke-dashoffset="{{ 408.4 - (408.4 * ((activity.progress or 0) / 100)) }}"
+                        stroke-linecap="round"/>
+                </svg>
+                <div class="progress-text-large">
+                    <div class="value">{{ activity.progress or 0 }}%</div>
+                    <div class="label">Complete</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="growth-grid">
+        <!-- Left Column -->
+        <div>
+            <!-- Growth Timeline -->
+            <div class="growth-section">
+                <div class="section-title">
+                    <i class="fas fa-tasks" style="color: #10b981;"></i>
+                    Growth Timeline
+                </div>
+                <div class="timeline">
+                    {% set stages = [
+                        {'name': 'Seed Sowing', 'days': '1-7'},
+                        {'name': 'Germination', 'days': '7-14'},
+                        {'name': 'Seedling', 'days': '14-30'},
+                        {'name': 'Vegetative Growth', 'days': '30-60'},
+                        {'name': 'Flowering', 'days': '60-75'},
+                        {'name': 'Fruit Development', 'days': '75-90'},
+                        {'name': 'Maturity', 'days': '90-110'},
+                        {'name': 'Harvest Ready', 'days': '110+'}
+                    ] %}
+                    
+                    {% for stage in stages %}
+                    <div class="timeline-item {% if stage.name == (activity.current_stage or 'Seed Sowing') %}current{% elif loop.index < stages.index(activity.current_stage or 'Seed Sowing') + 1 %}completed{% endif %}">
+                        <div class="timeline-stage">{{ stage.name }}</div>
+                        <div class="timeline-days">Days {{ stage.days }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="growth-section" style="margin-top: 25px;">
+                <div class="section-title">
+                    <i class="fas fa-sticky-note" style="color: #f59e0b;"></i>
+                    Notes & Observations
+                </div>
+                <div class="notes-section">
+                    <div class="notes-text">
+                        {{ activity.notes or 'No notes added yet. Click Edit to add observations about your crop.' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div>
+            <!-- Stats -->
+            <div class="growth-section">
+                <div class="section-title">
+                    <i class="fas fa-chart-bar" style="color: #3b82f6;"></i>
+                    Statistics
+                </div>
+                <div class="info-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">{{ activity.current_day or 0 }}</div>
+                        <div class="stat-label">Days Growing</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ activity.duration_days or 90 }}</div>
+                        <div class="stat-label">Total Duration</div>
+                    </div>
+                </div>
+                
+                <div class="info-item" style="margin-top: 16px;">
+                    <div class="info-label">Started On</div>
+                    <div class="info-value" style="font-size: 16px;">{{ activity.start_date or 'Recently' }}</div>
+                </div>
+                
+                <div class="info-item" style="margin-top: 12px;">
+                    <div class="info-label">Expected Harvest</div>
+                    <div class="info-value" style="font-size: 16px;">
+                        {% if activity.start_date and activity.duration_days %}
+                            {{ (activity.start_date|string + activity.duration_days|string) }}
+                        {% else %}
+                            Calculating...
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="growth-section" style="margin-top: 25px;">
+                <div class="section-title">
+                    <i class="fas fa-tools" style="color: #8b5cf6;"></i>
+                    Actions
+                </div>
+                <div class="action-buttons" style="flex-direction: column;">
+                    <button onclick="window.history.back()" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </button>
+                    <a href="{{ url_for('dashboard.dashboard') }}" class="btn btn-secondary">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

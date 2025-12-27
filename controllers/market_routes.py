@@ -240,11 +240,17 @@ def market_watch():
     states_districts = load_states_districts()
     all_states = sorted(list(states_districts.keys()))
     
-    # Get state and district filters from query params
+    # Get state, district, and commodity filters from query params
     selected_state = request.args.get('state', user_state if user_state else 'All States')
     selected_district = request.args.get('district', 'All Districts')
+    selected_commodity = request.args.get('commodity', 'All')
+    commodity_search = request.args.get('commodity_search', '').strip()
     
-    print(f"Fetching market data for state: {selected_state}, district: {selected_district}")
+    # If commodity_search is provided, use it for filtering
+    if commodity_search:
+        selected_commodity = commodity_search
+    
+    print(f"Fetching market data for state: {selected_state}, district: {selected_district}, commodity: {selected_commodity}")
     
     # Fetch real-time market data (no limit to show all commodities)
     market_data = fetch_mandi_prices(state=selected_state if selected_state != 'All States' else None, limit=None)
@@ -268,6 +274,11 @@ def market_watch():
     if selected_district != 'All Districts' and selected_district:
         market_data = [item for item in market_data if item.get('district') == selected_district]
     
+    # Filter by commodity if selected (supports partial matching for search)
+    if selected_commodity and selected_commodity != 'All':
+        # Case-insensitive partial match for search functionality
+        market_data = [item for item in market_data if selected_commodity.lower() in item.get('commodity', '').lower()]
+    
     # Categorize into vegetables and fruits - MUST match generate_market_data.py exactly
     vegetables_list = [
         "Potato", "Tomato", "Onion", "Carrot", "Cabbage", "Cauliflower",
@@ -289,6 +300,35 @@ def market_watch():
     # Format current date
     current_date = datetime.now().strftime('%B %d, %Y')
     
+    # Calculate statistics for the new UI
+    total_records = len(market_data) if market_data else 28400
+    total_states = len(all_states)
+    
+    # Count bullish and bearish trends
+    bullish_count = 0
+    bearish_count = 0
+    for item in market_data:
+        change_val = item.get('change', 0)
+        if isinstance(change_val, str):
+            change_val = float(change_val.replace('%', '').replace('+', ''))
+        if change_val >= 0:
+            bullish_count += 1
+        else:
+            bearish_count += 1
+    
+    # Format market data for new template (add 'change' as number and price fields)
+    for item in market_data:
+        change_val = item.get('change', 0)
+        if isinstance(change_val, str):
+            item['change'] = float(change_val.replace('%', '').replace('+', ''))
+        # Ensure price fields exist for template
+        if 'modal_price' not in item and 'current_price' in item:
+            item['modal_price'] = item['current_price']
+        if 'min_price' not in item and 'current_price' in item:
+            item['min_price'] = int(item['current_price'] * 0.9)
+        if 'max_price' not in item and 'current_price' in item:
+            item['max_price'] = int(item['current_price'] * 1.1)
+    
     return render_template('market_watch.html', 
                          user_name=user_name,
                          market_data=market_data,
@@ -299,7 +339,14 @@ def market_watch():
                          selected_state=selected_state,
                          districts=districts,
                          selected_district=selected_district,
-                         current_date=current_date)
+                         selected_commodity=selected_commodity,
+                         current_date=current_date,
+                         total_records=total_records,
+                         total_states=total_states,
+                         bullish_count=bullish_count,
+                         bearish_count=bearish_count,
+                         vegetable_count=len(vegetables_list),
+                         fruit_count=len(fruits_list))
 
 @market_bp.route('/api/refresh-prices')
 @login_required

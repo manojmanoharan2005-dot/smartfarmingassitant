@@ -2,5 +2,290 @@
   "2f63769a-eabf-43f2-9cd8-b133f44dcd79": [],
   "8322436d-f129-481d-9493-df7267373ee9": [],
   "eb5cac1f-5f2a-4f50-b324-95b286dfbc65": [],
-  "694b95f7275de1ad00752be3": []
+  "694b95f7275de1ad00752be3": [],
+  "d473eb96-df8a-4c83-8309-7e5bda0f902e": [
+    {
+      "user_id": "d473eb96-df8a-4c83-8309-7e5bda0f902e",
+      "crop_name": "coffee",
+      "crop_display_name": "Coffee",
+      "start_date": "2025-12-27",
+      "harvest_date": "2026-12-27",
+      "duration_days": 365,
+      "current_stage": 0,
+      "status": "active",
+      "tasks": [
+        {
+          "week": 4,
+          "task": "Prepare pits with organic manure"
+        },
+        {
+          "week": 6,
+          "task": "Transplant 6-month seedlings"
+        },
+        {
+          "week": 8,
+          "task": "Provide shade during establishment"
+        },
+        {
+          "week": 12,
+          "task": "First fertilizer application"
+        },
+        {
+          "week": 16,
+          "task": "Pruning and training"
+        },
+        {
+          "week": 20,
+          "task": "Mulching and weed control"
+        },
+        {
+          "week": 24,
+          "task": "Second fertilizer dose"
+        },
+        {
+          "week": 28,
+          "task": "Monitor for leaf rust"
+        },
+        {
+          "week": 32,
+          "task": "Third fertilizer application"
+        },
+        {
+          "week": 40,
+          "task": "Watch for berry borer"
+        },
+        {
+          "week": 48,
+          "task": "Check berry ripening"
+        },
+        {
+          "week": 52,
+          "task": "Selective harvest of ripe berries"
+        }
+      ],
+      "task_dates": {},
+      "completed_tasks": [],
+      "notes": "",
+      "created_at": "2025-12-27T11:13:39.803063",
+      "updated_at": "2025-12-27T11:13:39.803076",
+      "_id": "b486db39-163d-4fb7-8dd8-bf0bc7d1aeab"
+    }
+  ],
+  "3f192cf1-0629-48f2-89ff-06c32781fe28": [
+    {
+      "user_id": "3f192cf1-0629-48f2-89ff-06c32781fe28",
+      "crop_name": "pigeonpeas",
+      "crop_display_name": "Pigeon Peas",
+      "start_date": "2025-12-27",
+      "harvest_date": "2026-06-25",
+      "duration_days": 180,
+      "current_stage": 0,
+      "status": "active",
+      "tasks": [
+        {
+          "week": 1,
+          "task": "Land preparation and basal fertilizer"
+        },
+        {
+          "week": 2,
+          "task": "Sow seeds with Rhizobium"
+        },
+        {
+          "week": 4,
+          "task": "First weeding"
+        },
+        {
+          "week": 8,
+          "task": "Earthing up around plants"
+        },
+        {
+          "week": 12,
+          "task": "Monitor for pod borer"
+        },
+        {
+          "week": 16,
+          "task": "Second weeding"
+        },
+        {
+          "week": 20,
+          "task": "Watch for pod fly"
+        },
+        {
+          "week": 24,
+          "task": "Check pod maturity"
+        },
+        {
+          "week": 25,
+          "task": "First harvest of mature pods"
+        },
+        {
+          "week": 26,
+          "task": "Second picking of pods"
+        }
+      ],
+      "task_dates": {},
+      "completed_tasks": [],
+      "notes": "",
+      "created_at": "2025-12-27T11:28:53.040070",
+      "updated_at": "2025-12-27T11:28:53.040083",
+      "_id": "8124e142-e2de-495b-8f63-59f7574745f8"
+    }
+  ],
+  "87c1adf7-ba07-4f41-ae89-537bb6efc9f2": [],
+  "9d171757-5e0d-4091-bea2-441301c40127": [],
+  "0eb31d4f-4a01-4629-a85e-02f3a1fb975e": [
+    {
+      "user_id": "0eb31d4f-4a01-4629-a85e-02f3a1fb975e",
+      "crop_name": "coffee",
+      "crop_display_name": "Coffee",
+      "start_date": "2025-12-01",
+      "harvest_date": "2026-12-01",
+      "duration_days": 365,
+      "current_stage": "",
+      "status": "active",
+      "tasks": [
+        {
+          "week": 4,
+          "task": "Prepare pits with organic manure"
+        },
+        {
+          "week": 6,
+          "task": "Transplant 6-month seedlings"
+        },
+        {
+          "week": 8,
+          "task": "Provide shade during establishment"
+        },
+        {
+          "week": 12,
+          "task": "First fertilizer application"
+        },
+        {
+          "week": 16,
+          "task": "Pruning and training"
+        },
+        {
+          "week": 20,
+          "task": "Mulching and weed control"
+        },
+        {
+          "week": 24,
+          "task": "Second fertilizer dose"
+        },
+        {
+          "week": 28,
+          "task": "Monitor for leaf rust"
+        },
+        {
+          "week": 32,
+          "task": "Third fertilizer application"
+        },
+        {
+          "week": 40,
+          "task": "Watch for berry borer"
+        },
+        {
+          "week": 48,
+          "task": "Check berry ripening"
+        },
+        {
+          "week": 52,
+          "task": "Selective harvest of ripe berries"
+        }
+      ],
+      "task_dates": {
+        "0": "2025-12-08",
+        "1": "2025-12-15"
+      },
+      "completed_tasks": {
+        "watering": true,
+        "fertilizer": false,
+        "pest": false,
+        "weeding": false
+      },
+      "notes": "",
+      "created_at": "2025-12-27T14:22:14.197880",
+      "updated_at": "2025-12-27T14:40:20.884885",
+      "_id": "43e271f8-cdf5-4079-85b2-ae97890a9a15"
+    }
+  ],
+  "6b621393-8ceb-44ae-82c9-a8760bd3c300": [
+    {
+      "user_id": "6b621393-8ceb-44ae-82c9-a8760bd3c300",
+      "crop_name": "banana",
+      "crop_display_name": "Banana",
+      "start_date": "2025-12-27",
+      "harvest_date": "2026-10-23",
+      "duration_days": 300,
+      "current_stage": "",
+      "status": "active",
+      "tasks": [
+        {
+          "week": 1,
+          "task": "Prepare pits and apply organic manure"
+        },
+        {
+          "week": 2,
+          "task": "Plant healthy suckers"
+        },
+        {
+          "week": 4,
+          "task": "First irrigation and mulching"
+        },
+        {
+          "week": 8,
+          "task": "Apply first dose of fertilizer"
+        },
+        {
+          "week": 12,
+          "task": "Desuckering - remove extra suckers"
+        },
+        {
+          "week": 16,
+          "task": "Apply second fertilizer dose"
+        },
+        {
+          "week": 20,
+          "task": "Monitor for Panama disease"
+        },
+        {
+          "week": 24,
+          "task": "Third fertilizer application"
+        },
+        {
+          "week": 28,
+          "task": "Watch for bunch emergence"
+        },
+        {
+          "week": 32,
+          "task": "Support the pseudostem if needed"
+        },
+        {
+          "week": 36,
+          "task": "Cover bunch with protective bag"
+        },
+        {
+          "week": 40,
+          "task": "Monitor fruit maturity"
+        },
+        {
+          "week": 42,
+          "task": "Harvest when fingers are plump"
+        }
+      ],
+      "task_dates": {
+        "0": "2025-12-28"
+      },
+      "completed_tasks": {
+        "watering": true,
+        "fertilizer": true,
+        "pest": false,
+        "weeding": false
+      },
+      "notes": "",
+      "created_at": "2025-12-27T15:02:01.466962",
+      "updated_at": "2025-12-27T15:02:10.844297",
+      "_id": "409bc9c9-c7e5-4ec4-8bee-227ad2dfe171"
+    }
+  ]
 }

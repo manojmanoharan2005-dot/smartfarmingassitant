@@ -4,7 +4,303 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/crop.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+.form-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.form-card-header {
+    background: linear-gradient(135deg, var(--accent-green), #059669);
+    color: white;
+    padding: 24px 30px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.form-card-header .icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.form-card-header h2 {
+    font-size: 22px;
+    margin: 0 0 4px 0;
+}
+
+.form-card-header p {
+    font-size: 14px;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.form-card-body {
+    padding: 30px;
+}
+
+.form-section {
+    margin-bottom: 30px;
+}
+
+.form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent-green-light);
+}
+
+.form-section-title i {
+    color: var(--accent-green);
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.form-card .input-group {
+    display: flex;
+    flex-direction: column;
+    position: static;
+}
+
+.form-card .input-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.form-card .input-group label i {
+    position: static;
+    transform: none;
+    color: var(--accent-green);
+}
+
+.form-card .input-group input,
+.form-card .input-group select {
+    padding: 14px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-card .input-group input:focus,
+.form-card .input-group select:focus {
+    outline: none;
+    border-color: var(--accent-green);
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+.form-card .input-group small {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 6px;
+}
+
+.submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, var(--accent-green), #059669);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+}
+
+.results-section {
+    margin-top: 30px;
+}
+
+.results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.results-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.results-title i {
+    color: var(--accent-green);
+}
+
+.crop-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.crop-result-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.crop-result-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-green);
+}
+
+.crop-result-card.primary {
+    border-color: var(--accent-green);
+    background: linear-gradient(135deg, #f0fdf4 0%, white 100%);
+}
+
+.crop-card-header {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.crop-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--accent-green), #059669);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.crop-card-header h3 {
+    font-size: 20px;
+    margin: 0 0 4px 0;
+    color: var(--text-primary);
+}
+
+.confidence-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: var(--accent-green);
+    color: white;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.crop-card-body {
+    padding: 20px;
+}
+
+.crop-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.crop-info-item {
+    text-align: center;
+    padding: 12px;
+    background: var(--body-bg);
+    border-radius: var(--radius-sm);
+}
+
+.crop-info-item .value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-green);
+}
+
+.crop-info-item .label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.crop-card-footer {
+    padding: 16px 20px;
+    background: var(--body-bg);
+    display: flex;
+    gap: 12px;
+}
+
+.crop-action-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.crop-action-btn.primary {
+    background: var(--accent-green);
+    color: white;
+}
+
+.crop-action-btn.primary:hover {
+    background: #059669;
+}
+
+.crop-action-btn.secondary {
+    background: white;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.crop-action-btn.secondary:hover {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+</style>
 {% endblock %}
 
 {% block content %}
@@ -12,332 +308,228 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <div class="logo">
-                <span class="logo-icon">🌾</span>
-                <span class="logo-text">Farming Assistant</span>
+            <div class="sidebar-logo">🌾</div>
+            <div>
+                <div class="sidebar-title">Smart Farming</div>
+                <div class="sidebar-subtitle">Agricultural Platform</div>
             </div>
-            <p class="subtitle">Smart Agriculture Platform</p>
-        </div>
-        
-        <div class="welcome-section">
-            <p class="welcome-label">Welcome back,</p>
-            <h3 class="welcome-name">{{ user_name or "Farmer" }}! 👋</h3>
         </div>
         
         <nav class="sidebar-nav">
-            <a href="{{ url_for('dashboard.dashboard') }}" class="nav-item">
-                <span class="nav-icon">📊</span>
-                <span class="nav-text">Dashboard</span>
-            </a>
-            <a href="{{ url_for('crop.crop_suggestion') }}" class="nav-item active">
-                <span class="nav-icon">🌱</span>
-                <span class="nav-text">Crop Suggestion</span>
-            </a>
-            <a href="{{ url_for('fertilizer.fertilizer_recommend') }}" class="nav-item">
-                <span class="nav-icon">🧪</span>
-                <span class="nav-text">Fertilizer Advice</span>
-            </a>
-            <a href="{{ url_for('market.market_watch') }}" class="nav-item">
-                <span class="nav-icon">📈</span>
-                <span class="nav-text">Market Price</span>
-            </a>
-        </nav>
-    </div>
-
-    <!-- Green Header Section -->
-    <div class="dashboard-header">        
-        <div class="header-content">
-            <div class="header-left">
-                <h1>AI-Powered Crop Recommendation</h1>
-                <p>Get scientific crop suggestions based on soil nutrients and climate conditions</p>
+            <div class="nav-section">
+                <div class="nav-section-title">Main Menu</div>
+                <a href="{{ url_for('dashboard.dashboard') }}" class="nav-link">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{{ url_for('crop.crop_suggestion') }}" class="nav-link active">
+                    <i class="fas fa-seedling"></i>
+                    <span>Crop Suggestion</span>
+                </a>
+                <a href="{{ url_for('fertilizer.fertilizer_recommend') }}" class="nav-link">
+                    <i class="fas fa-flask"></i>
+                    <span>Fertilizer Advice</span>
+                </a>
+                <a href="{{ url_for('market.market_watch') }}" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Market Prices</span>
+                    <span class="badge">Live</span>
+                </a>
             </div>
-            <div class="header-right">
-                <span class="header-date">📅 Today, {{ current_date or "2024" }}</span>
-                <button class="logout-button" onclick="window.location.href='{{ url_for('auth.logout') }}'">Logout</button>
+        </nav>
+        
+        <div class="sidebar-user">
+            <div class="user-info">
+                <div class="user-avatar">{{ (user_name or 'F')[0] }}</div>
+                <div class="user-details">
+                    <h4>{{ user_name or 'Farmer' }}</h4>
+                    <span>Farmer</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Main Content Area -->
+    <!-- Main Content -->
     <div class="main-content">
-        <!-- Content Panel -->
-        <div class="content-panel">
-            <!-- Crop Recommendation Form -->
-            <div class="crop-form-container">
-                <div class="form-header">
-                    <div class="icon-wrapper">
-                        <span class="filter-icon">🔻</span>
-                    </div>
-                    <div class="form-title">
-                        <h2>Smart Crop Recommendation System</h2>
-                        <p>Enter your soil nutrient levels and environmental conditions to get AI-powered crop recommendations</p>
+        <!-- Hero Header -->
+        <div class="hero-header">
+            <div class="hero-content">
+                <div class="welcome-text">
+                    <i class="fas fa-seedling"></i> AI-Powered Analysis
+                </div>
+                <h1 class="hero-title">Smart Crop Recommendation</h1>
+                <p class="hero-subtitle">Get scientific crop suggestions based on your soil nutrients and climate conditions using machine learning.</p>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-icon green"><i class="fas fa-leaf"></i></div>
+                <div class="stat-info">
+                    <h4>22+</h4>
+                    <span>Crops Analyzed</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon blue"><i class="fas fa-flask"></i></div>
+                <div class="stat-info">
+                    <h4>7</h4>
+                    <span>Input Parameters</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon purple"><i class="fas fa-brain"></i></div>
+                <div class="stat-info">
+                    <h4>ML</h4>
+                    <span>AI Powered</span>
+                </div>
+            </div>
+            <div style="margin-left: auto;">
+                <a href="{{ url_for('auth.logout') }}" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Input Form -->
+            <div class="form-card">
+                <div class="form-card-header">
+                    <div class="icon"><i class="fas fa-seedling"></i></div>
+                    <div>
+                        <h2>Enter Your Field Data</h2>
+                        <p>Provide soil nutrient levels and environmental conditions for accurate recommendations</p>
                     </div>
                 </div>
-
-                <form method="POST" class="crop-form">
-                    <div class="form-sections">
+                <div class="form-card-body">
+                    <form method="POST">
                         <!-- Soil Nutrients Section -->
                         <div class="form-section">
-                            <h3 class="section-title">
-                                <span class="section-icon">🧪</span>
+                            <div class="form-section-title">
+                                <i class="fas fa-flask"></i>
                                 Soil Nutrients (mg/kg)
-                            </h3>
+                            </div>
                             <div class="input-grid">
                                 <div class="input-group">
-                                    <label for="nitrogen">Nitrogen (N):</label>
-                                    <input type="number" id="nitrogen" name="nitrogen" placeholder="80" step="0.01" required value="{{ input_data.nitrogen if input_data else '' }}">
+                                    <label><i class="fas fa-atom"></i> Nitrogen (N)</label>
+                                    <input type="number" name="nitrogen" placeholder="80" step="0.01" required value="{{ input_data.nitrogen if input_data else '' }}">
                                     <small>Range: 0-140 mg/kg (Avg: 80)</small>
                                 </div>
-                                
                                 <div class="input-group">
-                                    <label for="phosphorous">Phosphorus (P):</label>
-                                    <input type="number" id="phosphorous" name="phosphorous" placeholder="60" step="0.01" required value="{{ input_data.phosphorous if input_data else '' }}">
+                                    <label><i class="fas fa-atom"></i> Phosphorus (P)</label>
+                                    <input type="number" name="phosphorous" placeholder="60" step="0.01" required value="{{ input_data.phosphorous if input_data else '' }}">
                                     <small>Range: 5-145 mg/kg (Avg: 60)</small>
                                 </div>
-                                
                                 <div class="input-group">
-                                    <label for="potassium">Potassium (K):</label>
-                                    <input type="number" id="potassium" name="potassium" placeholder="40" step="0.01" required value="{{ input_data.potassium if input_data else '' }}">
+                                    <label><i class="fas fa-atom"></i> Potassium (K)</label>
+                                    <input type="number" name="potassium" placeholder="40" step="0.01" required value="{{ input_data.potassium if input_data else '' }}">
                                     <small>Range: 5-205 mg/kg (Avg: 40)</small>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Environmental Conditions Section -->
+                        <!-- Environmental Conditions -->
                         <div class="form-section">
-                            <h3 class="section-title">
-                                <span class="section-icon">🌡️</span>
+                            <div class="form-section-title">
+                                <i class="fas fa-cloud-sun"></i>
                                 Environmental Conditions
-                            </h3>
+                            </div>
                             <div class="input-grid">
                                 <div class="input-group">
-                                    <label for="temperature">Temperature:</label>
-                                    <input type="number" id="temperature" name="temperature" placeholder="25" step="0.01" required value="{{ input_data.temperature if input_data else '' }}">
+                                    <label><i class="fas fa-thermometer-half"></i> Temperature (°C)</label>
+                                    <input type="number" name="temperature" placeholder="25" step="0.01" required value="{{ input_data.temperature if input_data else '' }}">
                                     <small>Range: 8-44°C (Avg: 26°C)</small>
                                 </div>
-                                
                                 <div class="input-group">
-                                    <label for="humidity">Humidity:</label>
-                                    <input type="number" id="humidity" name="humidity" placeholder="70" step="0.01" min="0" max="100" required value="{{ input_data.humidity if input_data else '' }}">
+                                    <label><i class="fas fa-tint"></i> Humidity (%)</label>
+                                    <input type="number" name="humidity" placeholder="70" step="0.01" min="0" max="100" required value="{{ input_data.humidity if input_data else '' }}">
                                     <small>Range: 14-100% (Avg: 70%)</small>
                                 </div>
-                                
                                 <div class="input-group">
-                                    <label for="ph">Soil pH Level:</label>
-                                    <input type="number" id="ph" name="ph" placeholder="6.5" step="0.01" min="0" max="14" required value="{{ input_data.ph if input_data else '' }}">
+                                    <label><i class="fas fa-vial"></i> Soil pH Level</label>
+                                    <input type="number" name="ph" placeholder="6.5" step="0.01" min="0" max="14" required value="{{ input_data.ph if input_data else '' }}">
                                     <small>Range: 3.5-9.9 (Avg: 6.5)</small>
                                 </div>
-                                
                                 <div class="input-group">
-                                    <label for="rainfall">Annual Rainfall:</label>
-                                    <input type="number" id="rainfall" name="rainfall" placeholder="100" step="0.01" required value="{{ input_data.rainfall if input_data else '' }}">
+                                    <label><i class="fas fa-cloud-rain"></i> Annual Rainfall (mm)</label>
+                                    <input type="number" name="rainfall" placeholder="100" step="0.01" required value="{{ input_data.rainfall if input_data else '' }}">
                                     <small>Range: 20-300mm (Avg: 100mm)</small>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-actions">
                         <button type="submit" class="submit-btn">
-                            🔻 Get AI Crop Recommendations
+                            <i class="fas fa-magic"></i>
+                            Get AI Crop Recommendations
                         </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
 
-            <!-- CONDITIONAL RESULTS SECTION - Only shows after form submission -->
+            <!-- Results Section -->
             {% if recommendations %}
-            <div class="crop-results-section">
+            <div class="results-section">
                 <div class="results-header">
-                    <div class="header-icon">
-                        <span class="filter-icon">🔻</span>
-                    </div>
-                    <div class="header-content">
-                        <h2>🎯 AI-Powered Crop Recommendations</h2>
-                        <p>Based on your soil analysis: N={{input_data.nitrogen}}, P={{input_data.phosphorous}}, K={{input_data.potassium}}, Temp={{input_data.temperature}}°C, pH={{input_data.ph}}</p>
+                    <div class="results-title">
+                        <i class="fas fa-check-circle"></i>
+                        Recommended Crops for Your Field
                     </div>
                 </div>
-
-                <div class="crop-cards-grid">
+                <div class="crop-results-grid">
                     {% for crop in recommendations %}
-                    <div class="crop-card {{ 'high-priority' if crop.priority == 'High' else 'medium-priority' if crop.priority == 'Medium' else 'low-priority' }}">
-                        <div class="crop-header">
-                            <h3>{{ crop.name }}</h3>
-                            <span class="priority-badge {{ crop.priority.lower() }}">{{ crop.priority }} Priority</span>
-                        </div>
-                        
-                        <div class="crop-details">
-                            <div class="detail-item">
-                                <span class="icon">🎯</span>
-                                <span class="label">Suitability:</span>
-                                <span class="value">{{ "%.1f"|format(crop.confidence_percentage) }}%</span>
+                    <div class="crop-result-card {{ 'primary' if loop.index == 1 else '' }}">
+                        <div class="crop-card-header">
+                            <div class="crop-icon">
+                                {% if crop.name|lower in ['rice', 'wheat', 'maize'] %}🌾
+                                {% elif crop.name|lower in ['apple', 'mango', 'banana', 'orange', 'grapes'] %}🍎
+                                {% elif crop.name|lower in ['coffee'] %}☕
+                                {% elif crop.name|lower in ['cotton'] %}🧶
+                                {% else %}🌱{% endif %}
                             </div>
-                            
-                            <div class="detail-item">
-                                <span class="icon">🌡️</span>
-                                <span class="label">Temperature:</span>
-                                <span class="value">
-                                    {% if crop.name.lower() == 'rice' %}20-30°C (Optimum)
-                                    {% elif crop.name.lower() == 'wheat' %}15-25°C (Cool Season)
-                                    {% elif crop.name.lower() == 'maize' %}20-30°C (Warm Season)
-                                    {% elif crop.name.lower() == 'cotton' %}21-27°C (Moderate)
-                                    {% elif crop.name.lower() == 'jute' %}24-37°C (Hot & Humid)
-                                    {% elif crop.name.lower() == 'banana' %}26-30°C (Tropical)
-                                    {% else %}20-30°C (Suitable)
-                                    {% endif %}
-                                </span>
-                            </div>
-                            
-                            <div class="detail-item">
-                                <span class="icon">💧</span>
-                                <span class="label">Water Need:</span>
-                                <span class="value">
-                                    {% if crop.name.lower() in ['rice', 'jute'] %}High
-                                    {% elif crop.name.lower() in ['wheat', 'maize'] %}Moderate  
-                                    {% elif crop.name.lower() == 'cotton' %}Low-Moderate
-                                    {% else %}Moderate
-                                    {% endif %}
-                                </span>
-                            </div>
-                            
-                            <div class="detail-item">
-                                <span class="icon">🌧️</span>
-                                <span class="label">Rainfall:</span>
-                                <span class="value">
-                                    {% if crop.name.lower() == 'rice' %}1000-2000mm
-                                    {% elif crop.name.lower() == 'wheat' %}500-800mm
-                                    {% elif crop.name.lower() == 'maize' %}600-1000mm
-                                    {% elif crop.name.lower() == 'cotton' %}500-1000mm
-                                    {% elif crop.name.lower() == 'jute' %}1200-1500mm
-                                    {% elif crop.name.lower() == 'banana' %}1200-2500mm
-                                    {% else %}600-1200mm
-                                    {% endif %}
-                                </span>
-                            </div>
-                            
-                            <div class="detail-item">
-                                <span class="icon">⏱️</span>
-                                <span class="label">Duration:</span>
-                                <span class="value">
-                                    {% if crop.name.lower() == 'rice' %}120-180 days
-                                    {% elif crop.name.lower() == 'wheat' %}120-150 days
-                                    {% elif crop.name.lower() == 'maize' %}90-120 days
-                                    {% elif crop.name.lower() == 'cotton' %}180-200 days
-                                    {% elif crop.name.lower() == 'jute' %}120-150 days
-                                    {% elif crop.name.lower() == 'banana' %}9-12 months
-                                    {% else %}120-150 days
-                                    {% endif %}
-                                </span>
-                            </div>
-
-                            <div class="detail-item">
-                                <span class="icon">🔬</span>
-                                <span class="label">Soil pH:</span>
-                                <span class="value">
-                                    {% if crop.name.lower() == 'rice' %}6.0-7.5
-                                    {% elif crop.name.lower() == 'wheat' %}6.0-7.5
-                                    {% elif crop.name.lower() == 'maize' %}6.0-7.0
-                                    {% elif crop.name.lower() == 'cotton' %}5.8-8.0
-                                    {% elif crop.name.lower() == 'jute' %}6.0-7.5
-                                    {% elif crop.name.lower() == 'banana' %}6.5-7.5
-                                    {% else %}6.0-7.5
-                                    {% endif %}
+                            <div>
+                                <h3>{{ crop.name|title }}</h3>
+                                <span class="confidence-badge">
+                                    <i class="fas fa-star"></i>
+                                    {{ crop.confidence_percentage|round|int }}% Match
                                 </span>
                             </div>
                         </div>
-                        
-                        {% if crop.priority == 'High' %}
-                        <div class="growing-conditions">
-                            <h4>✨ Why This Crop is Recommended</h4>
-                            <ul>
-                                <li>🎯 Perfect match for your soil conditions</li>
-                                <li>🌡️ Optimal temperature range for your region</li>
-                                <li>💧 Suitable for your humidity levels</li>
-                                <li>🌧️ Rainfall requirements align with your area</li>
-                                <li>🔬 Soil pH is within ideal range</li>
-                                <li>📈 High probability of successful yield</li>
-                            </ul>
+                        <div class="crop-card-body">
+                            <div class="crop-info-grid">
+                                <div class="crop-info-item">
+                                    <div class="value">{{ crop.season or 'Kharif' }}</div>
+                                    <div class="label">Best Season</div>
+                                </div>
+                                <div class="crop-info-item">
+                                    <div class="value">{{ crop.duration or '90-120' }}</div>
+                                    <div class="label">Days to Harvest</div>
+                                </div>
+                                <div class="crop-info-item">
+                                    <div class="value">{{ crop.water or 'Medium' }}</div>
+                                    <div class="label">Water Need</div>
+                                </div>
+                                <div class="crop-info-item">
+                                    <div class="value">#{{ loop.index }}</div>
+                                    <div class="label">Rank</div>
+                                </div>
+                            </div>
                         </div>
-                        {% endif %}
-                        
-                        <div class="card-actions">
-                            <button class="btn-outline" onclick="viewDetails('{{ crop.name.lower() }}')">📄 Details</button>
-                            <button class="btn-start" onclick="startGrowing('{{ crop.name }}', {{ crop.probability }})">🌱 Start Growing</button>
+                        <div class="crop-card-footer">
+                            <a href="{{ url_for('growing.start_growing', crop_name=crop.name) }}" class="crop-action-btn primary">
+                                <i class="fas fa-play"></i> Start Growing
+                            </a>
+                            <button class="crop-action-btn secondary" onclick="alert('Details coming soon!')">
+                                <i class="fas fa-info-circle"></i> Details
+                            </button>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
-                
-                <!-- Summary Section -->
-                <div class="recommendation-summary">
-                    <div class="summary-card">
-                        <h3>📊 Recommendation Summary</h3>
-                        <div class="summary-stats">
-                            <div class="stat">
-                                <span class="stat-value">{{ recommendations|selectattr('priority', 'equalto', 'High')|list|length }}</span>
-                                <span class="stat-label">High Priority Crops</span>
-                            </div>
-                            <div class="stat">
-                                <span class="stat-value">{{ recommendations[0].name if recommendations else 'N/A' }}</span>
-                                <span class="stat-label">Top Recommendation</span>
-                            </div>
-                            <div class="stat">
-                                <span class="stat-value">{{ "%.0f"|format(recommendations[0].confidence_percentage) if recommendations else '0' }}%</span>
-                                <span class="stat-label">Confidence Score</span>
-                            </div>
-                        </div>
-                        <p class="summary-text">
-                            🎯 Based on your soil analysis, <strong>{{ recommendations[0].name if recommendations else 'N/A' }}</strong> 
-                            shows the highest compatibility with {{ "%.1f"|format(recommendations[0].confidence_percentage) if recommendations else '0' }}% confidence.
-                            Consider the soil preparation and seasonal timing for optimal results.
-                        </p>
-                    </div>
-                </div>
             </div>
             {% endif %}
-            <!-- END CONDITIONAL RESULTS SECTION -->
         </div>
     </div>
 </div>
-
-<script>
-function startGrowing(cropName, probability) {
-    // Redirect to start growing page
-    window.location.href = `/growing/start/${cropName.toLowerCase()}`;
-}
-
-function viewDetails(cropName) {
-    // Create a detailed modal or redirect to details page
-    const details = {
-        'rice': 'Rice is a staple crop requiring high water availability and warm temperatures. Best grown in flooded fields.',
-        'wheat': 'Wheat is a cool season crop that requires moderate rainfall and well-drained soil.',
-        'maize': 'Maize (corn) is a warm season crop with moderate water needs and good drought tolerance.',
-        'cotton': 'Cotton requires warm temperatures, moderate rainfall, and well-drained soil for optimal fiber production.',
-        'jute': 'Jute thrives in hot, humid conditions with high rainfall and clay-loam soil.',
-        'banana': 'Banana requires tropical climate with high humidity and consistent water supply.'
-    };
-    
-    alert(`🌾 ${cropName.toUpperCase()} DETAILS:\n\n${details[cropName] || 'Detailed information not available for this crop.'}`);
-}
-
-// Form validation
-document.querySelector('.crop-form').addEventListener('submit', function(e) {
-    const inputs = this.querySelectorAll('input[required]');
-    let valid = true;
-    
-    inputs.forEach(input => {
-        if (!input.value || isNaN(input.value)) {
-            input.style.borderColor = '#e74c3c';
-            valid = false;
-        } else {
-            input.style.borderColor = '';
-        }
-    });
-    
-    if (!valid) {
-        e.preventDefault();
-        alert('⚠️ Please fill in all required fields with valid numbers.');
-    }
-});
-</script>
 {% endblock %}

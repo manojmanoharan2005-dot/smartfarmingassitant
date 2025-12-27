@@ -401,16 +401,93 @@ def dashboard():
         'active_crops': len(growing_activities)
     }
     
+    # Get current date/time info for the template
+    now = datetime.now()
+    current_date = now.strftime('%B %d, %Y')
+    current_day = now.strftime('%d')
+    current_month = now.strftime('%B')
+    current_year = now.strftime('%Y')
+    current_hour = now.hour
+    
+    # Get market prices for dashboard
+    market_prices = []
+    try:
+        market_file = 'data/market_prices.json'
+        if os.path.exists(market_file):
+            with open(market_file, 'r', encoding='utf-8') as f:
+                market_data = json.load(f)
+                # Get sample prices for dashboard display
+                for item in market_data.get('data', [])[:10]:
+                    market_prices.append({
+                        'commodity': item.get('commodity', ''),
+                        'district': item.get('district', ''),
+                        'price': round(item.get('modal_price', 0) / 100, 2),  # Convert to per kg
+                        'change': round(random.uniform(-5, 5), 1)
+                    })
+    except Exception as e:
+        print(f"Error loading market prices: {e}")
+    
+    # Format growing activities for display
+    formatted_activities = []
+    for activity in growing_activities:
+        start_date = activity.get('start_date', '')
+        if start_date:
+            try:
+                start = datetime.strptime(start_date, '%Y-%m-%d')
+                days_since = (now - start).days
+                duration = activity.get('duration_days', 90)
+                progress = min(100, int((days_since / duration) * 100))
+                
+                formatted_activities.append({
+                    'id': activity.get('_id', ''),
+                    'crop': activity.get('crop_display_name', activity.get('crop', '')),
+                    'current_stage': activity.get('current_stage', 'Growing'),
+                    'progress': progress,
+                    'started': start.strftime('%b %d'),
+                    'current_day': days_since,
+                    'notes': activity.get('notes', '')
+                })
+            except:
+                pass
+    
+    # Format fertilizer recommendations for display
+    fertilizer_recommendations = []
+    for fert in saved_fertilizers[:6]:
+        saved_date = fert.get('saved_at', '')
+        try:
+            if saved_date:
+                date_obj = datetime.fromisoformat(saved_date.replace('Z', '+00:00')) if isinstance(saved_date, str) else saved_date
+                date_str = date_obj.strftime('%b %d, %Y')
+            else:
+                date_str = 'Recently'
+        except:
+            date_str = 'Recently'
+            
+        fertilizer_recommendations.append({
+            'id': fert.get('_id', ''),
+            'fertilizer': fert.get('name', 'Unknown'),
+            'crop': fert.get('crop_type', 'Unknown').title(),
+            'date': date_str
+        })
+    
     return render_template('dashboard.html', 
                          user=user,  # Complete user object with real data
+                         user_name=user.get('name', 'Farmer'),
                          saved_crops=saved_crops,
                          saved_fertilizers=saved_fertilizers,
-                         growing_activities=growing_activities,
+                         growing_activities=formatted_activities,
                          weather_data=weather_data,
                          notifications=notifications,
                          price_predictions=price_predictions,
                          recent_activity=recent_activity,
-                         stats=stats)
+                         stats=stats,
+                         current_date=current_date,
+                         current_day=current_day,
+                         current_month=current_month,
+                         current_year=current_year,
+                         current_hour=current_hour,
+                         market_prices=market_prices,
+                         fertilizer_recommendations=fertilizer_recommendations)
 
 @dashboard_bp.route('/api/weather-update')
 @login_required
