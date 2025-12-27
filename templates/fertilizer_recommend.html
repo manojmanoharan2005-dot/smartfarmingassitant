@@ -635,6 +635,10 @@
                             <input type="hidden" name="crop_type" value="{{ input_data.crop_type if input_data else '' }}">
                             <input type="hidden" name="dosage" value="{{ rec.dosage }}">
                             <input type="hidden" name="usage" value="{{ rec.usage }}">
+                            <input type="hidden" name="soil_type" value="{{ input_data.soil_type if input_data else '' }}">
+                            <input type="hidden" name="nitrogen" value="{{ input_data.nitrogen if input_data else '' }}">
+                            <input type="hidden" name="phosphorus" value="{{ input_data.phosphorous if input_data else '' }}">
+                            <input type="hidden" name="potassium" value="{{ input_data.potassium if input_data else '' }}">
                             <button type="submit" style="width: 100%; padding: 10px; background: {% if loop.index == 1 %}linear-gradient(135deg, #10b981, #059669){% else %}white{% endif %}; color: {% if loop.index == 1 %}white{% else %}#10b981{% endif %}; border: 2px solid #10b981; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease;">
                                 <i class="fas fa-bookmark"></i> Save This
                             </button>
@@ -698,6 +702,10 @@
                             <input type="hidden" name="crop_type" value="{{ input_data.crop_type if input_data else '' }}">
                             <input type="hidden" name="npk" value="{{ recommendation.npk }}">
                             <input type="hidden" name="dosage" value="{{ recommendation.dosage }}">
+                            <input type="hidden" name="soil_type" value="{{ input_data.soil_type if input_data else '' }}">
+                            <input type="hidden" name="nitrogen" value="{{ input_data.nitrogen if input_data else '' }}">
+                            <input type="hidden" name="phosphorus" value="{{ input_data.phosphorous if input_data else '' }}">
+                            <input type="hidden" name="potassium" value="{{ input_data.potassium if input_data else '' }}">
                             <button type="submit" class="action-btn primary" style="width: 100%;">
                                 <i class="fas fa-bookmark"></i> Save Recommendation
                             </button>

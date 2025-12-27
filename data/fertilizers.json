@@ -44,5 +44,23 @@
       "user_id": "0eb31d4f-4a01-4629-a85e-02f3a1fb975e",
       "saved_at": "2025-12-27T08:52:54.632608"
     }
+  ],
+  "43500d18-5f6c-43a5-9b4b-d82ae68ba6a9": [
+    {
+      "name": "Organic Compost",
+      "crop_type": "potato",
+      "priority": null,
+      "dosage": "2-5 tons/acre",
+      "usage": "Apply 2-3 weeks before sowing and mix well with soil",
+      "note": "",
+      "confidence": "0",
+      "soil_type": "Acidic Soil",
+      "nitrogen": "70.0",
+      "phosphorus": "80.0",
+      "potassium": "50.0",
+      "_id": "682f9a70-ad03-4226-8fba-5f5f89b00a05",
+      "user_id": "43500d18-5f6c-43a5-9b4b-d82ae68ba6a9",
+      "saved_at": "2025-12-27T10:23:53.527599"
+    }
   ]
 }

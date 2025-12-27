@@ -228,6 +228,7 @@ def fertilizer_recommend():
                 
                 input_data = {
                     'crop_type': crop,
+                    'soil_type': soil,
                     'nitrogen': nitrogen,
                     'phosphorous': phosphorous,
                     'potassium': potassium,
@@ -254,6 +255,7 @@ def fertilizer_recommend():
             
             input_data = {
                 'crop_type': crop,
+                'soil_type': soil,
                 'nitrogen': nitrogen,
                 'phosphorous': phosphorous,
                 'potassium': potassium,
@@ -288,7 +290,11 @@ def save_fertilizer():
             'dosage': request.form.get('dosage', 'Not specified'),
             'usage': request.form.get('usage', 'Follow package instructions'),
             'note': request.form.get('note', ''),
-            'confidence': request.form.get('confidence', '0')
+            'confidence': request.form.get('confidence', '0'),
+            'soil_type': request.form.get('soil_type', ''),
+            'nitrogen': request.form.get('nitrogen', ''),
+            'phosphorus': request.form.get('phosphorus', ''),
+            'potassium': request.form.get('potassium', '')
         }
 
         if save_fertilizer_recommendation:

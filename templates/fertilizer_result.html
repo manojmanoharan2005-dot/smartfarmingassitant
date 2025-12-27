@@ -40,6 +40,10 @@
                     <input type="hidden" name="description" value="{{ fertilizer.description }}">
                     <input type="hidden" name="application_rate" value="{{ fertilizer.application_rate }}">
                     <input type="hidden" name="price_range" value="{{ fertilizer.price_range }}">
+                    <input type="hidden" name="soil_type" value="{{ soil_type }}">
+                    <input type="hidden" name="nitrogen" value="{{ nitrogen|default('') }}">
+                    <input type="hidden" name="phosphorus" value="{{ phosphorus|default('') }}">
+                    <input type="hidden" name="potassium" value="{{ potassium|default('') }}">
                     <button type="submit" class="btn btn-success">Add to Dashboard</button>
                 </form>
             </div>

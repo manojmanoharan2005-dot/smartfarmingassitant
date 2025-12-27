@@ -467,7 +467,11 @@ def dashboard():
             'id': fert.get('_id', ''),
             'fertilizer': fert.get('name', 'Unknown'),
             'crop': fert.get('crop_type', 'Unknown').title(),
-            'date': date_str
+            'date': date_str,
+            'soil_type': fert.get('soil_type', ''),
+            'nitrogen': fert.get('nitrogen', ''),
+            'phosphorus': fert.get('phosphorus', ''),
+            'potassium': fert.get('potassium', '')
         })
     
     return render_template('dashboard.html', 
