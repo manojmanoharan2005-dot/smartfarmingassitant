@@ -262,6 +262,17 @@ def update_market_prices_job():
     except Exception as e:
         print(f"❌ Error in update job: {str(e)}")
 
+def is_data_stale(last_updated):
+    """Check if market data is stale (older than today)"""
+    if not last_updated:
+        return True
+    try:
+        last_date = datetime.fromisoformat(last_updated).date()
+        today = datetime.now().date()
+        return last_date < today
+    except Exception:
+        return True
+
 def init_scheduler(app):
     """Initialize scheduler for daily updates at 9:00 AM"""
     scheduler = BackgroundScheduler()
@@ -276,10 +287,13 @@ def init_scheduler(app):
         replace_existing=True
     )
     
-    # Run at startup if no data
+    # Run at startup if no data OR if data is stale (from a previous day)
     data, last_updated = load_market_data()
     if not data:
         print("📊 Generating initial market data for all India...")
+        update_market_prices_job()
+    elif is_data_stale(last_updated):
+        print(f"📊 Market data is stale (last updated: {last_updated}). Updating now...")
         update_market_prices_job()
     else:
         print(f"📊 Loaded {len(data)} records for all India, updated: {last_updated}")
