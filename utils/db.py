@@ -19,6 +19,8 @@ CROPS_FILE = os.path.join(DATA_DIR, 'crops.json')
 FERTILIZERS_FILE = os.path.join(DATA_DIR, 'fertilizers.json')
 DISEASES_FILE = os.path.join(DATA_DIR, 'diseases.json')
 GROWING_FILE = os.path.join(DATA_DIR, 'growing_activities.json')
+EQUIPMENT_FILE = os.path.join(DATA_DIR, 'equipment.json')
+NOTIFICATIONS_FILE = os.path.join(DATA_DIR, 'notifications.json')
 
 client = None
 db = None
@@ -30,10 +32,13 @@ def init_db(app):
     os.makedirs(DATA_DIR, exist_ok=True)
     
     # Initialize JSON files if they don't exist
-    for file_path in [USERS_FILE, CROPS_FILE, FERTILIZERS_FILE, DISEASES_FILE, GROWING_FILE]:
+    for file_path in [USERS_FILE, CROPS_FILE, FERTILIZERS_FILE, DISEASES_FILE, GROWING_FILE, EQUIPMENT_FILE, NOTIFICATIONS_FILE]:
         if not os.path.exists(file_path):
             with open(file_path, 'w') as f:
-                json.dump({}, f)
+                if file_path in [EQUIPMENT_FILE, NOTIFICATIONS_FILE]:
+                    json.dump([], f)
+                else:
+                    json.dump({}, f)
     
     print("✅ File-based database initialized successfully!")
     print("📁 Data will be stored in the 'data' directory")
@@ -557,4 +562,155 @@ def get_dashboard_notifications(user_id):
                 'priority': 'high'
             })
     
+    # Add persistent notifications
+    persistent = get_persistent_notifications(user_id)
+    notifications.extend(persistent)
+    
     return notifications
+
+def add_notification(user_id, type, message, priority='medium', title=None, data=None):
+    """Save a user notification to file"""
+    try:
+        notifications = []
+        if os.path.exists(NOTIFICATIONS_FILE):
+            with open(NOTIFICATIONS_FILE, 'r') as f:
+                notifications = json.load(f)
+        
+        # Determine title if not provided
+        if not title:
+            if type == 'equipment' or type == 'rental_request':
+                title = 'Equipment Rental'
+            elif type == 'system':
+                title = 'System Alert'
+            else:
+                title = 'Notification'
+
+        new_notif = {
+            'id': str(datetime.now().timestamp()),
+            'user_id': str(user_id),
+            'type': type,
+            'title': title,
+            'message': message,
+            'priority': priority,
+            'created_at': datetime.now().isoformat(),
+            'read': False,
+            'data': data or {}
+        }
+        notifications.append(new_notif)
+        
+        with open(NOTIFICATIONS_FILE, 'w') as f:
+            json.dump(notifications, f, indent=2)
+        return True
+    except Exception as e:
+        print(f"Error adding notification: {e}")
+        return False
+        
+def delete_notification(notification_id):
+    """Delete a notification by ID"""
+    try:
+        if not os.path.exists(NOTIFICATIONS_FILE):
+            return False
+            
+        with open(NOTIFICATIONS_FILE, 'r') as f:
+            notifications = json.load(f)
+            
+        initial_len = len(notifications)
+        notifications = [n for n in notifications if n.get('id') != notification_id]
+        
+        if len(notifications) < initial_len:
+            with open(NOTIFICATIONS_FILE, 'w') as f:
+                json.dump(notifications, f, indent=2)
+            return True
+        return False
+    except Exception as e:
+        print(f"Error deleting notification: {e}")
+        return False
+
+def update_equipment(equipment_id, update_data):
+    """Update generic equipment fields"""
+    try:
+        with open(EQUIPMENT_FILE, 'r') as f:
+            equipment = json.load(f)
+        
+        updated = False
+        for item in equipment:
+            if item.get('_id') == equipment_id:
+                item.update(update_data)
+                item['updated_at'] = datetime.now().isoformat()
+                updated = True
+                break
+        
+        if updated:
+            with open(EQUIPMENT_FILE, 'w') as f:
+                json.dump(equipment, f, indent=2)
+            return True
+        return False
+    except Exception as e:
+        print(f"Error updating equipment: {e}")
+        return False
+    except Exception as e:
+        print(f"Error adding notification: {e}")
+        return False
+
+def get_persistent_notifications(user_id):
+    """Retrieve saved notifications for a user"""
+    try:
+        if not os.path.exists(NOTIFICATIONS_FILE):
+            return []
+        with open(NOTIFICATIONS_FILE, 'r') as f:
+            all_notifs = json.load(f)
+            return [n for n in all_notifs if n.get('user_id') == str(user_id)]
+    except Exception as e:
+        print(f"Error loading notifications: {e}")
+        return []
+
+def get_all_equipment():
+    """Get all listed equipment"""
+    try:
+        if not os.path.exists(EQUIPMENT_FILE):
+            return []
+        with open(EQUIPMENT_FILE, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Error loading equipment: {e}")
+        return []
+
+def save_equipment(equipment_data):
+    """Save a new equipment listing"""
+    import uuid
+    try:
+        equipment = get_all_equipment()
+        
+        # Generate unique ID and basic fields
+        equipment_id = str(uuid.uuid4())
+        equipment_data['_id'] = equipment_id
+        equipment_data['created_at'] = datetime.utcnow().isoformat()
+        equipment_data['status'] = 'available'
+        
+        equipment.append(equipment_data)
+        
+        with open(EQUIPMENT_FILE, 'w') as f:
+            json.dump(equipment, f, indent=2)
+            
+        print(f"🚜 Equipment listed: {equipment_data.get('name')} [ID: {equipment_id}]")
+        return equipment_id
+    except Exception as e:
+        print(f"Error saving equipment: {e}")
+        return None
+
+def update_equipment_status(equipment_id, status):
+    """Update equipment status (available, rented, etc.)"""
+    try:
+        equipment = get_all_equipment()
+        for item in equipment:
+            if item.get('_id') == equipment_id:
+                item['status'] = status
+                item['updated_at'] = datetime.utcnow().isoformat()
+                break
+        
+        with open(EQUIPMENT_FILE, 'w') as f:
+            json.dump(equipment, f, indent=2)
+        return True
+    except Exception as e:
+        print(f"Error updating equipment status: {e}")
+        return False

@@ -7,313 +7,312 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/crop.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-.manual-container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
+    .manual-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
 
-.manual-header {
-    background: linear-gradient(135deg, #2D9F5D 0%, #26854B 100%);
-    color: white;
-    padding: 40px;
-    border-radius: 16px;
-    margin-bottom: 30px;
-    text-align: center;
-}
+    .manual-header {
+        background: linear-gradient(135deg, #2D9F5D 0%, #26854B 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 16px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
 
-.manual-header h1 {
-    font-size: 36px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-}
+    .manual-header h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
 
-.manual-header .crop-icon {
-    font-size: 50px;
-}
+    .manual-header .crop-icon {
+        font-size: 50px;
+    }
 
-.manual-section {
-    background: white;
-    border-radius: 16px;
-    padding: 30px;
-    margin-bottom: 25px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
+    .manual-section {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
 
-.section-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: #1a202c;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-bottom: 3px solid #2D9F5D;
-    padding-bottom: 12px;
-}
+    .section-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 3px solid #2D9F5D;
+        padding-bottom: 12px;
+    }
 
-.stages-timeline {
-    position: relative;
-    padding-left: 40px;
-}
+    .stages-timeline {
+        position: relative;
+        padding-left: 40px;
+    }
 
-.stage-item {
-    position: relative;
-    padding: 20px 0 20px 30px;
-    border-left: 3px solid #e5e7eb;
-}
+    .stage-item {
+        position: relative;
+        padding: 20px 0 20px 30px;
+        border-left: 3px solid #e5e7eb;
+    }
 
-.stage-item::before {
-    content: '';
-    position: absolute;
-    left: -9px;
-    top: 25px;
-    width: 16px;
-    height: 16px;
-    background: #2D9F5D;
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 0 0 3px #2D9F5D;
-}
+    .stage-item::before {
+        content: '';
+        position: absolute;
+        left: -9px;
+        top: 25px;
+        width: 16px;
+        height: 16px;
+        background: #2D9F5D;
+        border-radius: 50%;
+        border: 3px solid white;
+        box-shadow: 0 0 0 3px #2D9F5D;
+    }
 
-.stage-item:last-child {
-    border-left-color: transparent;
-}
+    .stage-item:last-child {
+        border-left-color: transparent;
+    }
 
-.stage-name {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1a202c;
-    margin-bottom: 8px;
-}
+    .stage-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 8px;
+    }
 
-.stage-duration {
-    font-size: 14px;
-    color: #6b7280;
-    margin-bottom: 8px;
-}
+    .stage-duration {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 8px;
+    }
 
-.stage-description {
-    color: #374151;
-    line-height: 1.6;
-}
+    .stage-description {
+        color: #374151;
+        line-height: 1.6;
+    }
 
-.tasks-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-}
+    .tasks-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
 
-.task-card {
-    background: #f9fafb;
-    border: 2px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 20px;
-    transition: all 0.3s ease;
-}
+    .task-card {
+        background: #f9fafb;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+        transition: all 0.3s ease;
+    }
 
-.task-card:hover {
-    border-color: #2D9F5D;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(45, 159, 93, 0.15);
-}
+    .task-card:hover {
+        border-color: #2D9F5D;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(45, 159, 93, 0.15);
+    }
 
-.task-week {
-    display: inline-block;
-    background: #2D9F5D;
-    color: white;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 12px;
-}
+    .task-week {
+        display: inline-block;
+        background: #2D9F5D;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
 
-.task-description {
-    color: #374151;
-    line-height: 1.5;
-    font-size: 15px;
-}
+    .task-description {
+        color: #374151;
+        line-height: 1.5;
+        font-size: 15px;
+    }
 
-.requirements-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
+    .requirements-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
 
-.requirement-card {
-    background: #f0fdf4;
-    border-left: 4px solid #2D9F5D;
-    padding: 20px;
-    border-radius: 8px;
-}
+    .requirement-card {
+        background: #f0fdf4;
+        border-left: 4px solid #2D9F5D;
+        padding: 20px;
+        border-radius: 8px;
+    }
 
-.requirement-label {
-    font-weight: 700;
-    color: #2D9F5D;
-    margin-bottom: 8px;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
+    .requirement-label {
+        font-weight: 700;
+        color: #2D9F5D;
+        margin-bottom: 8px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-.requirement-value {
-    color: #374151;
-    line-height: 1.6;
-}
+    .requirement-value {
+        color: #374151;
+        line-height: 1.6;
+    }
 
-.setup-form {
-    background: #fafafa;
-    border: 2px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 30px;
-}
+    .setup-form {
+        background: #fafafa;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 30px;
+    }
 
-.form-group {
-    margin-bottom: 20px;
-}
+    .form-group {
+        margin-bottom: 20px;
+    }
 
-.form-group label {
-    display: block;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
 
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 15px;
-    transition: all 0.3s ease;
-}
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+    }
 
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #2D9F5D;
-    box-shadow: 0 0 0 3px rgba(45, 159, 93, 0.1);
-}
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #2D9F5D;
+        box-shadow: 0 0 0 3px rgba(45, 159, 93, 0.1);
+    }
 
-.form-group textarea {
-    resize: vertical;
-    min-height: 100px;
-}
+    .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
 
-.date-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 20px;
-}
+    .date-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
 
-.date-card {
-    background: white;
-    border: 2px solid #2D9F5D;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-}
+    .date-card {
+        background: white;
+        border: 2px solid #2D9F5D;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+    }
 
-.date-label {
-    font-size: 14px;
-    color: #6b7280;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
+    .date-label {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-.date-value {
-    font-size: 24px;
-    font-weight: 700;
-    color: #2D9F5D;
-}
+    .date-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: #2D9F5D;
+    }
 
-.date-input {
-    width: 100%;
-    padding: 12px;
-    font-size: 18px;
-    font-weight: 600;
-    color: #2D9F5D;
-    background: white;
-    border: 2px solid #2D9F5D;
-    border-radius: 8px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+    .date-input {
+        width: 100%;
+        padding: 12px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #2D9F5D;
+        background: white;
+        border: 2px solid #2D9F5D;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
 
-.date-input:hover {
-    background: #f0fdf4;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(45, 159, 93, 0.2);
-}
+    .date-input:hover {
+        background: #f0fdf4;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(45, 159, 93, 0.2);
+    }
 
-.date-input:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(45, 159, 93, 0.2);
-}
+    .date-input:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(45, 159, 93, 0.2);
+    }
 
-.date-input[readonly] {
-    cursor: default;
-    background: #f3f4f6;
-    border-color: #d1d5db;
-    color: #6b7280;
-}
+    .date-input[readonly] {
+        cursor: default;
+        background: #f3f4f6;
+        border-color: #d1d5db;
+        color: #6b7280;
+    }
 
-.start-btn {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #2D9F5D 0%, #26854B 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(45, 159, 93, 0.3);
-}
+    .start-btn {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #2D9F5D 0%, #26854B 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(45, 159, 93, 0.3);
+    }
 
-.start-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(45, 159, 93, 0.4);
-}
+    .start-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(45, 159, 93, 0.4);
+    }
 
-.duration-badge {
-    display: inline-block;
-    background: #dcfce7;
-    color: #15803d;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 600;
-}
+    .duration-badge {
+        display: inline-block;
+        background: #dcfce7;
+        color: #15803d;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="dashboard-layout">
     <!-- Sidebar -->
+    <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <div class="logo">
-                <span class="logo-icon">🌾</span>
-                <span class="logo-text">Farming Assistant</span>
+            <div class="sidebar-logo">🌾</div>
+            <div>
+                <div class="sidebar-title">Smart Farming</div>
+                <div class="sidebar-subtitle">Agricultural Platform</div>
             </div>
-            <p class="subtitle">Smart Agriculture Platform</p>
         </div>
-        <div class="welcome-section">
-            <p class="welcome-label">Welcome back,</p>
-            <h3 class="welcome-name">{{ user_name }}! 👋</h3>
-        </div>
+
         <nav class="sidebar-nav">
             <div class="nav-section">
+                <div class="nav-section-title">Main Menu</div>
                 <a href="{{ url_for('dashboard.dashboard') }}" class="nav-link">
                     <i class="fas fa-th-large"></i>
                     <span>Dashboard</span>
@@ -326,8 +325,42 @@
                     <i class="fas fa-flask"></i>
                     <span>Fertilizer Advice</span>
                 </a>
+                <a href="{{ url_for('market.market_watch') }}" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Market Prices</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Tools</div>
+                <a href="#" class="nav-link" onclick="openCalculatorModal(); return false;">
+                    <i class="fas fa-calculator"></i>
+                    <span>Expense Calculator</span>
+                </a>
+                <a href="#" class="nav-link" onclick="openWeatherModal(); return false;">
+                    <i class="fas fa-cloud-sun"></i>
+                    <span>Weather Forecast</span>
+                </a>
+                <a href="#" class="nav-link" onclick="openGovtSchemesModal(); return false;">
+                    <i class="fas fa-landmark"></i>
+                    <span>Govt. Schemes</span>
+                </a>
+                <a href="#" class="nav-link" onclick="openEquipmentModal(); return false;">
+                    <i class="fas fa-truck-pickup"></i>
+                    <span>Equipment Sharing</span>
+                </a>
             </div>
         </nav>
+
+        <div class="sidebar-user">
+            <div class="user-info">
+                <div class="user-avatar">{{ user_name[0] if user_name else 'U' }}</div>
+                <div class="user-details">
+                    <h4>{{ user_name }}</h4>
+                    <span>Farmer</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Header -->
@@ -339,7 +372,8 @@
             </div>
             <div class="header-right">
                 <span class="header-date">📅 {{ current_date }}</span>
-                <button class="logout-button" onclick="window.location.href='{{ url_for('auth.logout') }}'">Logout</button>
+                <button class="logout-button"
+                    onclick="window.location.href='{{ url_for('auth.logout') }}'">Logout</button>
             </div>
         </div>
     </div>
@@ -426,40 +460,52 @@
                 </h2>
                 <form method="POST" action="{{ url_for('growing.save_growing') }}" class="setup-form">
                     <input type="hidden" name="crop_name" value="{{ crop_name }}">
-                    
+
                     <div class="date-info">
                         <div class="date-card">
                             <div class="date-label">🌱 Start Date</div>
-                            <input type="date" name="start_date" id="start_date" value="{{ start_date.strftime('%Y-%m-%d') }}" class="date-input" required>
+                            <input type="date" name="start_date" id="start_date"
+                                value="{{ start_date.strftime('%Y-%m-%d') }}" class="date-input" required>
                         </div>
                         <div class="date-card">
                             <div class="date-label">🎯 Expected Harvest</div>
-                            <input type="date" name="harvest_date" id="harvest_date" value="{{ harvest_date.strftime('%Y-%m-%d') }}" class="date-input" required readonly>
+                            <input type="date" name="harvest_date" id="harvest_date"
+                                value="{{ harvest_date.strftime('%Y-%m-%d') }}" class="date-input" required readonly>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="task_selection">📅 Schedule Your Tasks (Optional)</label>
-                        <div id="task_calendar" style="background: #f9fafb; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-                            <p style="color: #6b7280; font-size: 14px; margin-bottom: 15px;">Select tasks and set specific dates for each farming activity:</p>
-                            
+                        <div id="task_calendar"
+                            style="background: #f9fafb; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                            <p style="color: #6b7280; font-size: 14px; margin-bottom: 15px;">Select tasks and set
+                                specific dates for each farming activity:</p>
+
                             <!-- Task Selection Dropdown -->
-                            <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 12px; margin-bottom: 20px; align-items: end;">
+                            <div
+                                style="display: grid; grid-template-columns: 1fr auto auto; gap: 12px; margin-bottom: 20px; align-items: end;">
                                 <div>
-                                    <label style="display: block; margin-bottom: 5px; font-size: 13px; color: #374151; font-weight: 600;">Select Task</label>
-                                    <select id="task_selector" style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background: white;">
+                                    <label
+                                        style="display: block; margin-bottom: 5px; font-size: 13px; color: #374151; font-weight: 600;">Select
+                                        Task</label>
+                                    <select id="task_selector"
+                                        style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background: white;">
                                         <option value="">-- Choose a task --</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label style="display: block; margin-bottom: 5px; font-size: 13px; color: #374151; font-weight: 600;">Task Date</label>
-                                    <input type="date" id="task_date_selector" style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; width: 160px;">
+                                    <label
+                                        style="display: block; margin-bottom: 5px; font-size: 13px; color: #374151; font-weight: 600;">Task
+                                        Date</label>
+                                    <input type="date" id="task_date_selector"
+                                        style="padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; width: 160px;">
                                 </div>
-                                <button type="button" onclick="addSelectedTask()" style="background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; height: 42px;">
+                                <button type="button" onclick="addSelectedTask()"
+                                    style="background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; height: 42px;">
                                     ➕ Add
                                 </button>
                             </div>
-                            
+
                             <!-- Added Tasks List -->
                             <div id="added_tasks_list" style="display: grid; gap: 10px;">
                                 <!-- Selected tasks will appear here -->
@@ -469,7 +515,8 @@
 
                     <div class="form-group">
                         <label for="notes">📝 Additional Notes (Optional)</label>
-                        <textarea id="notes" name="notes" placeholder="Add any specific notes about your cultivation plan..."></textarea>
+                        <textarea id="notes" name="notes"
+                            placeholder="Add any specific notes about your cultivation plan..."></textarea>
                     </div>
 
                     <button type="submit" class="start-btn">
@@ -482,132 +529,132 @@
 </div>
 
 <script>
-// Crop tasks data
-const cropTasks = {{ crop.tasks|tojson }};
-let addedTasks = [];
+    // Crop tasks data
+    const cropTasks = {{ crop.tasks| tojson }};
+    let addedTasks = [];
 
-console.log('Crop tasks:', cropTasks);
+    console.log('Crop tasks:', cropTasks);
 
-// Populate task dropdown
-function populateTaskDropdown() {
-    const taskSelector = document.getElementById('task_selector');
-    
-    if (!cropTasks || cropTasks.length === 0) {
-        taskSelector.innerHTML = '<option value="">No tasks available</option>';
-        return;
-    }
-    
-    taskSelector.innerHTML = '<option value="">-- Choose a task --</option>';
-    
-    cropTasks.forEach((task, index) => {
-        const taskFull = typeof task === 'string' ? task : (task.task || task.name || 'Task ' + (index + 1));
-        
-        // Extract simple task name (first few words or key action)
-        let taskSimple = taskFull;
-        if (taskFull.toLowerCase().includes('sow')) taskSimple = 'Sowing';
-        else if (taskFull.toLowerCase().includes('irrigation') || taskFull.toLowerCase().includes('water')) taskSimple = 'Irrigation';
-        else if (taskFull.toLowerCase().includes('thinning')) taskSimple = 'Thinning';
-        else if (taskFull.toLowerCase().includes('fertilizer') || taskFull.toLowerCase().includes('manure')) taskSimple = 'Fertilizer Application';
-        else if (taskFull.toLowerCase().includes('training') || taskFull.toLowerCase().includes('vine')) taskSimple = 'Training/Mulching';
-        else if (taskFull.toLowerCase().includes('pollination')) taskSimple = 'Pollination';
-        else if (taskFull.toLowerCase().includes('monitor') || taskFull.toLowerCase().includes('pest')) taskSimple = 'Pest Monitoring';
-        else if (taskFull.toLowerCase().includes('maturity') || taskFull.toLowerCase().includes('check')) taskSimple = 'Maturity Check';
-        else if (taskFull.toLowerCase().includes('harvest')) taskSimple = 'Harvesting';
-        else if (taskFull.toLowerCase().includes('weed')) taskSimple = 'Weeding';
-        else if (taskFull.toLowerCase().includes('spray')) taskSimple = 'Spraying';
-        else if (taskFull.toLowerCase().includes('prune') || taskFull.toLowerCase().includes('trim')) taskSimple = 'Pruning';
-        else if (taskFull.toLowerCase().includes('prepare') || taskFull.toLowerCase().includes('land')) taskSimple = 'Land Preparation';
-        else {
-            // Take first 2-3 words as fallback
-            taskSimple = taskFull.split(' ').slice(0, 3).join(' ');
+    // Populate task dropdown
+    function populateTaskDropdown() {
+        const taskSelector = document.getElementById('task_selector');
+
+        if (!cropTasks || cropTasks.length === 0) {
+            taskSelector.innerHTML = '<option value="">No tasks available</option>';
+            return;
         }
-        
-        const option = document.createElement('option');
-        option.value = index;
-        option.textContent = taskSimple;
-        option.setAttribute('data-full', taskFull);
-        taskSelector.appendChild(option);
-    });
-    
-    // Set minimum date for task date selector
-    updateTaskDateMin();
-}
 
-function updateTaskDateMin() {
-    const startDate = document.getElementById('start_date').value;
-    const taskDateSelector = document.getElementById('task_date_selector');
-    if (startDate && taskDateSelector) {
-        taskDateSelector.min = startDate;
-    }
-}
+        taskSelector.innerHTML = '<option value="">-- Choose a task --</option>';
 
-function addSelectedTask() {
-    const taskSelector = document.getElementById('task_selector');
-    const taskDateSelector = document.getElementById('task_date_selector');
-    
-    const selectedIndex = taskSelector.value;
-    const selectedDate = taskDateSelector.value;
-    
-    if (!selectedIndex) {
-        alert('Please select a task');
-        return;
-    }
-    
-    if (!selectedDate) {
-        alert('Please select a date for the task');
-        return;
-    }
-    
-    const selectedOption = taskSelector.options[taskSelector.selectedIndex];
-    const taskSimple = selectedOption.textContent;
-    
-    // Check if task already added
-    if (addedTasks.some(t => t.index === selectedIndex)) {
-        alert('This task has already been added. Remove it first to change the date.');
-        return;
-    }
-    
-    // Add to list
-    addedTasks.push({
-        index: selectedIndex,
-        name: taskSimple,
-        date: selectedDate
-    });
-    
-    // Render added tasks
-    renderAddedTasks();
-    
-    // Reset selectors
-    taskSelector.value = '';
-    taskDateSelector.value = '';
-}
+        cropTasks.forEach((task, index) => {
+            const taskFull = typeof task === 'string' ? task : (task.task || task.name || 'Task ' + (index + 1));
 
-function removeTask(index) {
-    addedTasks = addedTasks.filter(t => t.index !== index);
-    renderAddedTasks();
-}
+            // Extract simple task name (first few words or key action)
+            let taskSimple = taskFull;
+            if (taskFull.toLowerCase().includes('sow')) taskSimple = 'Sowing';
+            else if (taskFull.toLowerCase().includes('irrigation') || taskFull.toLowerCase().includes('water')) taskSimple = 'Irrigation';
+            else if (taskFull.toLowerCase().includes('thinning')) taskSimple = 'Thinning';
+            else if (taskFull.toLowerCase().includes('fertilizer') || taskFull.toLowerCase().includes('manure')) taskSimple = 'Fertilizer Application';
+            else if (taskFull.toLowerCase().includes('training') || taskFull.toLowerCase().includes('vine')) taskSimple = 'Training/Mulching';
+            else if (taskFull.toLowerCase().includes('pollination')) taskSimple = 'Pollination';
+            else if (taskFull.toLowerCase().includes('monitor') || taskFull.toLowerCase().includes('pest')) taskSimple = 'Pest Monitoring';
+            else if (taskFull.toLowerCase().includes('maturity') || taskFull.toLowerCase().includes('check')) taskSimple = 'Maturity Check';
+            else if (taskFull.toLowerCase().includes('harvest')) taskSimple = 'Harvesting';
+            else if (taskFull.toLowerCase().includes('weed')) taskSimple = 'Weeding';
+            else if (taskFull.toLowerCase().includes('spray')) taskSimple = 'Spraying';
+            else if (taskFull.toLowerCase().includes('prune') || taskFull.toLowerCase().includes('trim')) taskSimple = 'Pruning';
+            else if (taskFull.toLowerCase().includes('prepare') || taskFull.toLowerCase().includes('land')) taskSimple = 'Land Preparation';
+            else {
+                // Take first 2-3 words as fallback
+                taskSimple = taskFull.split(' ').slice(0, 3).join(' ');
+            }
 
-function renderAddedTasks() {
-    const addedTasksList = document.getElementById('added_tasks_list');
-    
-    if (addedTasks.length === 0) {
-        addedTasksList.innerHTML = '<p style="color: #9ca3af; text-align: center; padding: 20px; font-size: 14px;">No tasks scheduled yet. Select a task above to add it.</p>';
-        return;
-    }
-    
-    addedTasksList.innerHTML = '';
-    
-    addedTasks.forEach(task => {
-        const taskDiv = document.createElement('div');
-        taskDiv.style.cssText = 'background: white; padding: 12px 15px; border-radius: 8px; border: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;';
-        
-        const formattedDate = new Date(task.date).toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric' 
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = taskSimple;
+            option.setAttribute('data-full', taskFull);
+            taskSelector.appendChild(option);
         });
-        
-        taskDiv.innerHTML = `
+
+        // Set minimum date for task date selector
+        updateTaskDateMin();
+    }
+
+    function updateTaskDateMin() {
+        const startDate = document.getElementById('start_date').value;
+        const taskDateSelector = document.getElementById('task_date_selector');
+        if (startDate && taskDateSelector) {
+            taskDateSelector.min = startDate;
+        }
+    }
+
+    function addSelectedTask() {
+        const taskSelector = document.getElementById('task_selector');
+        const taskDateSelector = document.getElementById('task_date_selector');
+
+        const selectedIndex = taskSelector.value;
+        const selectedDate = taskDateSelector.value;
+
+        if (!selectedIndex) {
+            alert('Please select a task');
+            return;
+        }
+
+        if (!selectedDate) {
+            alert('Please select a date for the task');
+            return;
+        }
+
+        const selectedOption = taskSelector.options[taskSelector.selectedIndex];
+        const taskSimple = selectedOption.textContent;
+
+        // Check if task already added
+        if (addedTasks.some(t => t.index === selectedIndex)) {
+            alert('This task has already been added. Remove it first to change the date.');
+            return;
+        }
+
+        // Add to list
+        addedTasks.push({
+            index: selectedIndex,
+            name: taskSimple,
+            date: selectedDate
+        });
+
+        // Render added tasks
+        renderAddedTasks();
+
+        // Reset selectors
+        taskSelector.value = '';
+        taskDateSelector.value = '';
+    }
+
+    function removeTask(index) {
+        addedTasks = addedTasks.filter(t => t.index !== index);
+        renderAddedTasks();
+    }
+
+    function renderAddedTasks() {
+        const addedTasksList = document.getElementById('added_tasks_list');
+
+        if (addedTasks.length === 0) {
+            addedTasksList.innerHTML = '<p style="color: #9ca3af; text-align: center; padding: 20px; font-size: 14px;">No tasks scheduled yet. Select a task above to add it.</p>';
+            return;
+        }
+
+        addedTasksList.innerHTML = '';
+
+        addedTasks.forEach(task => {
+            const taskDiv = document.createElement('div');
+            taskDiv.style.cssText = 'background: white; padding: 12px 15px; border-radius: 8px; border: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;';
+
+            const formattedDate = new Date(task.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+
+            taskDiv.innerHTML = `
             <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
                 <span style="font-weight: 600; color: #374151;">${task.name}</span>
                 <span style="color: #6b7280; font-size: 14px;">📅 ${formattedDate}</span>
@@ -617,38 +664,38 @@ function renderAddedTasks() {
             </button>
             <input type="hidden" name="task_date_${task.index}" value="${task.date}">
         `;
-        
-        addedTasksList.appendChild(taskDiv);
+
+            addedTasksList.appendChild(taskDiv);
+        });
+    }
+
+    // Auto-calculate harvest date when start date changes
+    const startDateInput = document.querySelector('input[name="start_date"]');
+    const harvestDateInput = document.querySelector('input[name="harvest_date"]');
+    const durationDays = {{ crop.duration_days }};
+
+    if (startDateInput && harvestDateInput) {
+        startDateInput.addEventListener('change', function () {
+            const startDate = new Date(this.value);
+            const harvestDate = new Date(startDate);
+            harvestDate.setDate(harvestDate.getDate() + durationDays);
+
+            // Format date as YYYY-MM-DD
+            const year = harvestDate.getFullYear();
+            const month = String(harvestDate.getMonth() + 1).padStart(2, '0');
+            const day = String(harvestDate.getDate()).padStart(2, '0');
+
+            harvestDateInput.value = `${year}-${month}-${day}`;
+
+            // Update minimum date for task selector
+            updateTaskDateMin();
+        });
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        populateTaskDropdown();
+        renderAddedTasks();
     });
-}
-
-// Auto-calculate harvest date when start date changes
-const startDateInput = document.querySelector('input[name="start_date"]');
-const harvestDateInput = document.querySelector('input[name="harvest_date"]');
-const durationDays = {{ crop.duration_days }};
-
-if (startDateInput && harvestDateInput) {
-    startDateInput.addEventListener('change', function() {
-        const startDate = new Date(this.value);
-        const harvestDate = new Date(startDate);
-        harvestDate.setDate(harvestDate.getDate() + durationDays);
-        
-        // Format date as YYYY-MM-DD
-        const year = harvestDate.getFullYear();
-        const month = String(harvestDate.getMonth() + 1).padStart(2, '0');
-        const day = String(harvestDate.getDate()).padStart(2, '0');
-        
-        harvestDateInput.value = `${year}-${month}-${day}`;
-        
-        // Update minimum date for task selector
-        updateTaskDateMin();
-    });
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-    populateTaskDropdown();
-    renderAddedTasks();
-});
 </script>
 {% endblock %}

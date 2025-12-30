@@ -13,6 +13,7 @@ from controllers.fertilizer_routes import fertilizer_bp
 from controllers.growing_routes import growing_bp
 from controllers.market_routes import market_bp
 from controllers.chat_routes import chat_bp
+from controllers.equipment_routes import equipment_bp
 from controllers.market_scheduler import init_scheduler
 # from controllers.community_routes import community_bp
 from utils.db import init_db
@@ -44,6 +45,7 @@ app.register_blueprint(fertilizer_bp)
 app.register_blueprint(growing_bp)
 app.register_blueprint(market_bp)
 app.register_blueprint(chat_bp)
+app.register_blueprint(equipment_bp)
 # app.register_blueprint(community_bp)
 
 # Global context processor for date and user info

@@ -63,24 +63,7 @@
       "saved_at": "2025-12-27T10:23:53.527599"
     }
   ],
-  "694fda7586def4f38072ebf5": [
-    {
-      "name": "Urea (46-0-0)",
-      "crop_type": "wheat",
-      "priority": null,
-      "dosage": "50-100 kg/acre",
-      "usage": "Apply in split doses: 50% at sowing, 25% at tillering, 25% at flowering",
-      "note": "",
-      "confidence": "0",
-      "soil_type": "Peaty Soil",
-      "nitrogen": "100.0",
-      "phosphorus": "100.0",
-      "potassium": "100.0",
-      "_id": "81dfaffa-7444-4463-8b04-a6a60a48c6b7",
-      "user_id": "694fda7586def4f38072ebf5",
-      "saved_at": "2025-12-27T13:11:01.809305"
-    }
-  ],
+  "694fda7586def4f38072ebf5": [],
   "66cc658c-174a-4335-aba7-4b19becabd30": [
     {
       "name": "MOP (0-0-60)",
