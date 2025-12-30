@@ -424,5 +424,57 @@
       "updated_at": "2025-12-30T11:14:38.003241",
       "_id": "c6e3e91a-170e-4725-9e82-6470ebe4998e"
     }
+  ],
+  "31c3408e-ec7f-48b5-882a-2d8b938ddbe8": [
+    {
+      "user_id": "31c3408e-ec7f-48b5-882a-2d8b938ddbe8",
+      "crop_name": "kidneybeans",
+      "crop_display_name": "Kidney Beans",
+      "start_date": "2025-12-30",
+      "harvest_date": "2026-03-30",
+      "duration_days": 90,
+      "current_stage": 0,
+      "status": "active",
+      "tasks": [
+        {
+          "week": 1,
+          "task": "Land preparation and basal fertilizer"
+        },
+        {
+          "week": 2,
+          "task": "Sow seeds at proper spacing"
+        },
+        {
+          "week": 3,
+          "task": "First irrigation after sowing"
+        },
+        {
+          "week": 5,
+          "task": "Weeding and earthing up"
+        },
+        {
+          "week": 7,
+          "task": "Monitor for anthracnose"
+        },
+        {
+          "week": 9,
+          "task": "Support poles for climbing varieties"
+        },
+        {
+          "week": 11,
+          "task": "Check pod maturity"
+        },
+        {
+          "week": 13,
+          "task": "Harvest and dry beans"
+        }
+      ],
+      "task_dates": {},
+      "completed_tasks": [],
+      "notes": "",
+      "created_at": "2025-12-30T11:49:38.998417",
+      "updated_at": "2025-12-30T11:49:38.998427",
+      "_id": "3db897fc-452b-49e8-9a94-23a092cf8293"
+    }
   ]
 }

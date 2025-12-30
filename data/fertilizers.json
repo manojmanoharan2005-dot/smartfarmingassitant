@@ -116,5 +116,23 @@
       "user_id": "6953452febe7e5a7c630ce4e",
       "saved_at": "2025-12-30T05:45:20.413159"
     }
+  ],
+  "31c3408e-ec7f-48b5-882a-2d8b938ddbe8": [
+    {
+      "name": "NPK 19-19-19",
+      "crop_type": "greengram",
+      "priority": null,
+      "dosage": "100-150 kg/acre",
+      "usage": "Apply as basal dose or during active growth phase",
+      "note": "",
+      "confidence": "0",
+      "soil_type": "Loamy Soil",
+      "nitrogen": "10.0",
+      "phosphorus": "10.0",
+      "potassium": "10.0",
+      "_id": "83e9ac1c-d228-4f7f-91b0-59279dfc26c4",
+      "user_id": "31c3408e-ec7f-48b5-882a-2d8b938ddbe8",
+      "saved_at": "2025-12-30T06:22:53.597207"
+    }
   ]
 }

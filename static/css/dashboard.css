@@ -381,6 +381,36 @@ body {
     color: var(--text-light);
 }
 
+.card-blue {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: #ffffff !important;
+}
+
+.card-blue .card-header {
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+.card-blue .card-title,
+.card-blue .weather-temp,
+.card-blue .weather-desc,
+.card-blue .weather-location,
+.card-blue .weather-detail-value {
+    color: #ffffff !important;
+}
+
+.card-blue .weather-detail-label {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.card-blue .weather-details {
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+.card-blue .weather-detail-icon {
+    color: #ffffff;
+    opacity: 0.9;
+}
+
 .card-header {
     padding: 20px 24px;
     border-bottom: 1px solid var(--border-color);

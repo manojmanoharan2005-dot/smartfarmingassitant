@@ -445,7 +445,7 @@
                     <!-- Right Column -->
                     <div class="right-column">
                         <!-- Weather Card - User's Registered District -->
-                        <div class="card">
+                        <div class="card card-blue">
                             <div class="card-header">
                                 <div class="card-title">
                                     <i class="fas fa-cloud-sun"></i> Live Weather
@@ -481,10 +481,11 @@
                                         <div class="weather-detail-label">Wind</div>
                                     </div>
                                     <div class="weather-detail">
-                                        <div class="weather-detail-icon">🌧️</div>
-                                        <div class="weather-detail-value" id="weather-rain">{% if weather_data.forecast
-                                            %}{{ weather_data.forecast[0].rain_chance }}{% else %}0{% endif %}%</div>
-                                        <div class="weather-detail-label">Rain</div>
+                                        <div class="weather-detail-icon">👁️</div>
+                                        <div class="weather-detail-value" id="weather-visibility">{% if
+                                            weather_data.current and weather_data.current.visibility
+                                            %}{{ weather_data.current.visibility }}{% else %}10{% endif %} km</div>
+                                        <div class="weather-detail-label">Visibility</div>
                                     </div>
                                 </div>
                                 {% if weather_data.alerts %}
@@ -2278,9 +2279,9 @@
                     <div style="font-size: 12px; color: var(--text-secondary);">Wind</div>
                 </div>
                 <div style="padding: 16px; background: var(--body-bg); border-radius: 8px;">
-                    <div style="font-size: 24px;">🌡️</div>
-                    <div style="font-weight: 700;">${Math.round(current.temperature_2m)}°C</div>
-                    <div style="font-size: 12px; color: var(--text-secondary);">Feels Like</div>
+                    <div style="font-size: 24px;">👁️</div>
+                    <div style="font-weight: 700;">${(current.visibility / 1000).toFixed(1)} km</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">Visibility</div>
                 </div>
             </div>
         </div>
@@ -2321,7 +2322,7 @@
                     const locationName = `${location.name}${location.admin1 ? ', ' + location.admin1 : ''}${location.country ? ', ' + location.country : ''}`;
 
                     // Fetch weather for coordinates
-                    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=auto`)
+                    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,visibility,weather_code&timezone=auto`)
                         .then(response => response.json())
                         .then(data => {
                             displayWeather(data, locationName);
@@ -2357,7 +2358,7 @@
                         const lat = position.coords.latitude;
                         const lon = position.coords.longitude;
 
-                        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=auto`)
+                        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,visibility,weather_code&timezone=auto`)
                             .then(response => response.json())
                             .then(data => {
                                 displayWeather(data, 'Your Location');
@@ -2737,7 +2738,7 @@
                             ) || geoData.results[0];
 
                             // Fetch weather for the district
-                            fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation_probability,weather_code&timezone=auto`)
+                            fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,visibility,weather_code&timezone=auto`)
                                 .then(response => response.json())
                                 .then(data => {
                                     const current = data.current;
@@ -2748,9 +2749,9 @@
                                     document.getElementById('weather-humidity').textContent = current.relative_humidity_2m + '%';
                                     document.getElementById('weather-wind').textContent = Math.round(current.wind_speed_10m) + ' km/h';
 
-                                    const rainEl = document.getElementById('weather-rain');
-                                    if (rainEl && current.precipitation_probability !== undefined) {
-                                        rainEl.textContent = current.precipitation_probability + '%';
+                                    const visibilityEl = document.getElementById('weather-visibility');
+                                    if (visibilityEl && current.visibility !== undefined) {
+                                        visibilityEl.textContent = (current.visibility / 1000).toFixed(1) + ' km';
                                     }
 
                                     // Update weather description and location

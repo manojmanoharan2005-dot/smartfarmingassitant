@@ -146,6 +146,7 @@ def get_weather_notifications(user_district, user_state):
         current_temp = int(current['temp_c'])
         humidity = int(current['humidity'])
         wind_speed = int(current['wind_kph'])
+        visibility = current.get('vis_km', 10)
         current_condition = current['condition']['text']
         
         # Map API conditions to icons
@@ -223,6 +224,7 @@ def get_weather_notifications(user_district, user_state):
         current_temp = random.randint(22, 35)
         humidity = random.randint(45, 85)
         wind_speed = random.randint(5, 25)
+        visibility = random.randint(5, 15)
         icon = '⛅'
         display_condition = current_condition
         
@@ -300,6 +302,7 @@ def get_weather_notifications(user_district, user_state):
             'temperature': current_temp,
             'humidity': humidity,
             'wind_speed': wind_speed,
+            'visibility': visibility,
             'location': f"{user_district}, {user_state}"
         },
         'forecast': forecast,
