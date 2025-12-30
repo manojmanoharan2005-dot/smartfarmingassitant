@@ -14,8 +14,8 @@ if not GEMINI_API_KEY:
     raise ValueError("GEMINI_API_KEY not found in .env file. Please add your API key to .env")
 genai.configure(api_key=GEMINI_API_KEY)
 
-# Initialize the model - use gemini-2.5-flash
-model = genai.GenerativeModel('gemini-2.5-flash')
+# Initialize the model - use gemma-3-4b-it
+model = genai.GenerativeModel('gemma-3-4b-it')
 
 # System context for the chatbot
 SYSTEM_CONTEXT = """You are a helpful Smart Farming AI Assistant. You help farmers with information about:
@@ -71,7 +71,7 @@ def chat_message():
         print(f"User message: {user_message}")
         
         # Create a new model instance for each request
-        chat_model = genai.GenerativeModel('gemini-2.5-flash')
+        chat_model = genai.GenerativeModel('gemma-3-4b-it')
         
         # Generate response with system context
         prompt = f"{SYSTEM_CONTEXT}\n\nUser Question: {user_message}\n\nProvide a helpful, concise answer:"
@@ -109,7 +109,7 @@ def test_api():
             }), 500
         
         # Simple test
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemma-3-4b-it')
         response = model.generate_content("Say 'Hello, Smart Farming!' in one sentence.")
         
         return jsonify({

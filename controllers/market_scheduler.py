@@ -11,7 +11,7 @@ scheduler_bp = Blueprint('scheduler', __name__)
 # Configure Gemini API
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'YOUR_GEMINI_API_KEY_HERE')
 genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemma-3-4b-it')
 
 # Market price data file
 MARKET_DATA_FILE = 'data/market_prices.json'

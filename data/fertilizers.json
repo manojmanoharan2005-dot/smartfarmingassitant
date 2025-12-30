@@ -98,5 +98,23 @@
       "user_id": "66cc658c-174a-4335-aba7-4b19becabd30",
       "saved_at": "2025-12-29T09:21:17.175522"
     }
+  ],
+  "6953452febe7e5a7c630ce4e": [
+    {
+      "name": "MOP (0-0-60)",
+      "crop_type": "watermelon",
+      "priority": null,
+      "dosage": "50-75 kg/acre",
+      "usage": "Apply during flowering and fruit formation stage",
+      "note": "",
+      "confidence": "0",
+      "soil_type": "Alkaline Soil",
+      "nitrogen": "100.0",
+      "phosphorus": "100.0",
+      "potassium": "20.0",
+      "_id": "33e4b8f8-32c3-4bd4-8431-e054a6fdb33f",
+      "user_id": "6953452febe7e5a7c630ce4e",
+      "saved_at": "2025-12-30T05:45:20.413159"
+    }
   ]
 }

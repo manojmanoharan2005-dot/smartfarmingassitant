@@ -178,6 +178,10 @@
                                             <div>
                                                 <div class="commodity-name">{{ pred.commodity }}</div>
                                                 <div class="commodity-location">{{ pred.market or user.district }}</div>
+                                                <a href="javascript:void(0)" class="trend-link"
+                                                    onclick="viewTrend('{{ pred.commodity }}')">
+                                                    <i class="fas fa-chart-line"></i> View Trend
+                                                </a>
                                             </div>
                                         </div>
                                         <div class="commodity-price">
@@ -212,6 +216,10 @@
                                             <div>
                                                 <div class="commodity-name">{{ price.commodity }}</div>
                                                 <div class="commodity-location">{{ price.district }}</div>
+                                                <a href="javascript:void(0)" class="trend-link"
+                                                    onclick="viewTrend('{{ price.commodity }}')">
+                                                    <i class="fas fa-chart-line"></i> View Trend
+                                                </a>
                                             </div>
                                         </div>
                                         <div class="commodity-price">
@@ -283,34 +291,63 @@
 
                     <!-- Middle Column -->
                     <div class="middle-column">
-                        <!-- Field Insights -->
-                        <div class="card">
-                            <div class="card-header">
+                        <!-- Market Price Trend Analysis -->
+                        <div class="card card-dark" id="trend-card">
+                            <div class="card-header" style="flex-wrap: wrap; gap: 10px;">
                                 <div class="card-title">
-                                    <i class="fas fa-leaf"></i> Field Insights
+                                    <i class="fas fa-chart-line"></i> Market Price Trend
+                                </div>
+                                <div class="commodity-selector" style="flex: 1; min-width: 150px;">
+                                    <select id="commodity-select"
+                                        style="width: 100%; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; font-size: 11px; outline: none; cursor: pointer;"
+                                        onchange="if(this.value) { loadPriceTrend(this.value); }">
+                                        <option value="" disabled selected>Select Crop...</option>
+                                    </select>
+                                </div>
+                                <div class="trend-periods" style="display: flex; gap: 8px;">
+                                    <button
+                                        onclick="loadPriceTrend(document.getElementById('trend-commodity-name').textContent, 7)"
+                                        class="period-btn active" id="btn-7d">7D</button>
+                                    <button
+                                        onclick="loadPriceTrend(document.getElementById('trend-commodity-name').textContent, 30)"
+                                        class="period-btn" id="btn-30d">30D</button>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <div class="insight-grid">
-                                    <div class="insight-card">
-                                        <div class="insight-icon"><i class="fas fa-check"></i></div>
-                                        <div class="insight-value">{{ stats.total_recommendations }}</div>
-                                        <div class="insight-label">Total Analysis</div>
+                            <div class="card-body" style="padding: 15px;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                    <div>
+                                        <h3 id="trend-commodity-name" style="margin: 0; font-size: 18px; color: white;">
+                                            Tomato</h3>
+                                        <div id="trend-location-info"
+                                            style="font-size: 11px; color: rgba(255,255,255,0.5);">Price analysis in {{
+                                            user.district }}</div>
                                     </div>
-                                    <div class="insight-card">
-                                        <div class="insight-icon"><i class="fas fa-seedling"></i></div>
-                                        <div class="insight-value">{{ stats.crops_suggested }}</div>
-                                        <div class="insight-label">Crops Suggested</div>
+                                    <div style="text-align: right;">
+                                        <div
+                                            style="display: flex; align-items: center; gap: 6px; justify-content: flex-end;">
+                                            <i id="trend-direction-icon" class="fas fa-arrow-trend-up"
+                                                style="color: #10b981;"></i>
+                                            <span id="trend-direction"
+                                                style="font-weight: 700; font-size: 14px; color: white;">Rising</span>
+                                        </div>
+                                        <div id="trend-change"
+                                            style="font-size: 12px; color: #10b981; font-weight: 600;">+8.5%</div>
                                     </div>
-                                    <div class="insight-card">
-                                        <div class="insight-icon"><i class="fas fa-flask"></i></div>
-                                        <div class="insight-value">{{ stats.fertilizers_saved }}</div>
-                                        <div class="insight-label">Fertilizer Plans</div>
-                                    </div>
-                                    <div class="insight-card">
-                                        <div class="insight-icon"><i class="fas fa-chart-line"></i></div>
-                                        <div class="insight-value">{{ stats.active_crops }}</div>
-                                        <div class="insight-label">Active Growing</div>
+                                </div>
+
+                                <div style="height: 180px; width: 100%; position: relative;">
+                                    <canvas id="priceTrendChart"></canvas>
+                                </div>
+
+                                <div
+                                    style="margin-top: 15px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
+                                    <div
+                                        style="font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        Farmer Recommendation</div>
+                                    <div id="trend-recommendation" style="font-size: 13px; color: white;">
+                                        <span style="color: #ef4444; font-weight: 700;">Wait</span> - Price is
+                                        increasing, consider selling after 3 days.
                                     </div>
                                 </div>
                             </div>
@@ -346,6 +383,8 @@
                             </div>
                         </div>
                         {% endif %}
+
+                        <!-- Field Insights -->
 
                         <!-- Active Crop Management -->
                         <div class="card mt-2">
@@ -1921,6 +1960,204 @@
             document.getElementById('chatbotWindow').classList.add('active');
         }
 
+        // Function to fetch and render price trend chart
+        let priceTrendChart = null;
+
+        function loadPriceTrend(commodity, days = 7) {
+            if (!commodity) return;
+
+            // Update active button state
+            document.getElementById('btn-7d').classList.toggle('active', days === 7);
+            document.getElementById('btn-30d').classList.toggle('active', days === 30);
+
+            const state = "{{ user.state }}";
+            const district = "{{ user.district }}";
+
+            fetch(`/api/price-trend/${commodity}?state=${state}&district=${district}&days=${days}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        renderTrendChart(data);
+                    } else {
+                        console.error('Trend data error:', data.error);
+                    }
+                })
+                .catch(error => console.error('Error fetching trend:', error));
+        }
+
+        function renderTrendChart(data) {
+            const canvas = document.getElementById('priceTrendChart');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+
+            const labels = data.trend_data.map(item => {
+                const date = new Date(item.date);
+                return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+            });
+
+            const prices = data.trend_data.map(item => item.modal_price / 100); // Convert to per kg
+
+            if (priceTrendChart) {
+                priceTrendChart.destroy();
+            }
+
+            const gradient = ctx.createLinearGradient(0, 0, 0, 180);
+            gradient.addColorStop(0, 'rgba(16, 185, 129, 0.4)');
+            gradient.addColorStop(1, 'rgba(16, 185, 129, 0)');
+
+            priceTrendChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: `${data.commodity} Price`,
+                        data: prices,
+                        backgroundColor: gradient,
+                        borderColor: '#10b981',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        hoverBackgroundColor: '#10b981',
+                        hoverBorderColor: '#fff',
+                        barPercentage: 0.6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#1e293b',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#334155',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function (context) {
+                                    return `Price: ₹${context.raw.toFixed(2)}/kg`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.5)',
+                                font: {
+                                    size: 10
+                                },
+                                maxRotation: 0
+                            }
+                        },
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.5)',
+                                font: {
+                                    size: 10
+                                },
+                                callback: function (value) {
+                                    return '₹' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Update summary info
+            document.getElementById('trend-commodity-name').textContent = data.commodity;
+
+            // Update location info based on data level
+            const locationInfo = document.getElementById('trend-location-info');
+            if (data.data_level === 'district') {
+                locationInfo.textContent = `Price analysis in {{ user.district }}`;
+            } else if (data.data_level === 'state') {
+                locationInfo.textContent = `Price analysis in {{ user.state }} Avg`;
+            } else {
+                locationInfo.textContent = `Price analysis (National Avg)`;
+            }
+
+            document.getElementById('trend-direction').textContent = data.analysis.direction;
+            document.getElementById('trend-change').textContent = (data.analysis.change_percent >= 0 ? '+' : '') + data.analysis.change_percent + '%';
+
+            const directionIcon = document.getElementById('trend-direction-icon');
+            if (data.analysis.direction === 'Rising') {
+                directionIcon.className = 'fas fa-arrow-trend-up';
+                directionIcon.style.color = '#10b981';
+                document.getElementById('trend-change').style.color = '#10b981';
+                document.getElementById('trend-recommendation').innerHTML = '<span style="color: #ef4444; font-weight: 700;">Wait</span> - Price is increasing, consider selling after 3 days.';
+            } else if (data.analysis.direction === 'Falling') {
+                directionIcon.className = 'fas fa-arrow-trend-down';
+                directionIcon.style.color = '#ef4444';
+                document.getElementById('trend-change').style.color = '#ef4444';
+                document.getElementById('trend-recommendation').innerHTML = '<span style="color: #10b981; font-weight: 700;">Sell Now</span> - Price might drop further, sell today.';
+            } else {
+                directionIcon.className = 'fas fa-arrows-left-right';
+                directionIcon.style.color = '#f97316';
+                document.getElementById('trend-change').style.color = '#f97316';
+                document.getElementById('trend-recommendation').innerHTML = '<span style="color: #f97316; font-weight: 700;">Hold/Sell</span> - Price is stable, you can sell if needed.';
+            }
+        }
+
+        // Function to scroll to trend and load it
+        function viewTrend(commodity) {
+            const select = document.getElementById('commodity-select');
+            if (select) select.value = commodity;
+
+            document.getElementById('trend-commodity-name').textContent = commodity;
+            loadPriceTrend(commodity);
+            document.getElementById('trend-card').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize trend on load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Populate commodity select dropdown with specific list of crops
+            const commodities = [
+                "Potato", "Tomato", "Onion", "Carrot", "Cabbage", "Cauliflower", "Spinach",
+                "Brinjal (Eggplant)", "Lady's Finger (Okra)", "Beetroot", "Radish",
+                "Capsicum", "Pumpkin", "Bottle Gourd", "Bitter Gourd", "Ridge Gourd",
+                "Green Peas", "Beans", "Mushrooms", "Corn", "Apple", "Banana",
+                "Mango", "Orange", "Grapes", "Papaya", "Pineapple", "Guava",
+                "Watermelon", "Muskmelon", "Pomegranate", "Strawberry", "Cherry",
+                "Kiwi", "Lemon", "Pear", "Peach", "Plum", "Coconut", "Custard Apple"
+            ];
+
+            const select = document.getElementById('commodity-select');
+            if (select) {
+                // Add unique sorted commodities
+                [...new Set(commodities)].sort().forEach(c => {
+                    const option = document.createElement('option');
+                    option.value = c;
+                    option.textContent = c;
+                    option.style.backgroundColor = "#1e293b"; // Ensure readable in dark mode
+                    option.style.color = "white";
+                    select.appendChild(option);
+                });
+            }
+
+            const defaultCommodity = "{{ price_predictions[0].commodity if price_predictions else (market_prices[0].commodity if market_prices else 'Tomato') }}";
+            if (defaultCommodity) {
+                if (select) select.value = defaultCommodity;
+                setTimeout(() => loadPriceTrend(defaultCommodity), 1000);
+            }
+        });
+
         function handleChatKeypress(event) {
             if (event.key === 'Enter') {
                 sendChatMessage();
@@ -1953,21 +2190,37 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    messagesContainer.innerHTML += `
+                    console.log('API Response:', data);
+
+                    // Check if the response was successful
+                    if (data.success && data.response) {
+                        messagesContainer.innerHTML += `
             <div class="chat-message bot">
                 <div class="message-avatar">🤖</div>
                 <div class="message-content">${data.response}</div>
             </div>
         `;
+                    } else {
+                        // Handle error response
+                        const errorMsg = data.error || 'Sorry, I couldn\'t process your request. Please try again.';
+                        messagesContainer.innerHTML += `
+            <div class="chat-message bot">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">${errorMsg}</div>
+            </div>
+        `;
+                    }
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 })
                 .catch(error => {
+                    console.error('Fetch error:', error);
                     messagesContainer.innerHTML += `
             <div class="chat-message bot">
                 <div class="message-avatar">🤖</div>
                 <div class="message-content">Sorry, I couldn't process your request. Please try again.</div>
             </div>
         `;
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 });
         }
 

@@ -1423,3 +1423,42 @@ body {
 .full-width-section {
     grid-column: 1 / -1;
 }
+
+/* ============================================
+   TREND CHART STYLES
+   ============================================ */
+.period-btn {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.period-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.period-btn.active {
+    background: var(--accent-green);
+    border-color: var(--accent-green);
+    color: white;
+}
+
+.trend-link {
+    font-size: 11px;
+    color: var(--accent-green);
+    text-decoration: none;
+    margin-top: 4px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.trend-link:hover {
+    text-decoration: underline;
+}
