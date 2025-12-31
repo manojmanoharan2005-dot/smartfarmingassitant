@@ -6,331 +6,300 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-.filter-card {
-    background: var(--card-bg);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    padding: 24px;
-    margin-bottom: 24px;
-}
+    .filter-card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        padding: 24px;
+        margin-bottom: 24px;
+    }
 
-.filter-row {
-    display: flex;
-    gap: 16px;
-    align-items: flex-end;
-    flex-wrap: wrap;
-}
+    .filter-row {
+        display: flex;
+        gap: 16px;
+        align-items: flex-end;
+        flex-wrap: wrap;
+    }
 
-.filter-group {
-    flex: 1;
-    min-width: 200px;
-    position: relative;
-}
+    .filter-group {
+        flex: 1;
+        min-width: 200px;
+        position: relative;
+    }
 
-.filter-group label {
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-}
+    .filter-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+    }
 
-.filter-group select {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid var(--border-color);
-    border-radius: var(--radius-md);
-    font-size: 14px;
-    transition: all 0.3s ease;
-    background: white;
-}
+    .filter-group select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: white;
+    }
 
-.filter-group select:focus {
-    outline: none;
-    border-color: var(--accent-blue);
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-}
+    .filter-group select:focus {
+        outline: none;
+        border-color: var(--accent-blue);
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    }
 
-.filter-btn {
-    padding: 12px 24px;
-    background: linear-gradient(135deg, var(--accent-blue), #2563eb);
-    color: white;
-    border: none;
-    border-radius: var(--radius-md);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+    .filter-btn {
+        padding: 12px 24px;
+        background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+        color: white;
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-.filter-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-}
+    .filter-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
 
-.market-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 20px;
-}
+    .market-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 20px;
+    }
 
-.market-card {
-    background: var(--card-bg);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
-    transition: all 0.3s ease;
-    border-left: 4px solid var(--accent-green);
-}
+    .market-card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border-left: 4px solid var(--accent-green);
+    }
 
-.market-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-}
+    .market-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+    }
 
-.market-card.bearish {
-    border-left-color: var(--accent-red);
-}
+    .market-card.bearish {
+        border-left-color: var(--accent-red);
+    }
 
-.market-card-header {
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    border-bottom: 1px solid var(--border-color);
-}
+    .market-card-header {
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid var(--border-color);
+    }
 
-.commodity-info {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
+    .commodity-info {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
 
-.commodity-icon {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, var(--accent-green), #059669);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-}
+    .commodity-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--accent-green), #059669);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
 
-.commodity-info h3 {
-    font-size: 18px;
-    margin: 0 0 4px 0;
-    color: var(--text-primary);
-}
+    .commodity-info h3 {
+        font-size: 18px;
+        margin: 0 0 4px 0;
+        color: var(--text-primary);
+    }
 
-.commodity-info .location {
-    font-size: 13px;
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
+    .commodity-info .location {
+        font-size: 13px;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
 
-.trend-badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-}
+    .trend-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
 
-.trend-badge.bullish {
-    background: var(--accent-green-light);
-    color: #059669;
-}
+    .trend-badge.bullish {
+        background: var(--accent-green-light);
+        color: #059669;
+    }
 
-.trend-badge.bearish {
-    background: #fee2e2;
-    color: #dc2626;
-}
+    .trend-badge.bearish {
+        background: #fee2e2;
+        color: #dc2626;
+    }
 
-.market-card-body {
-    padding: 20px;
-}
+    .market-card-body {
+        padding: 20px;
+    }
 
-.price-display {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    margin-bottom: 16px;
-}
+    .price-display {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
 
-.price-display .price {
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--accent-green);
-}
+    .price-display .price {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--accent-green);
+    }
 
-.price-display .unit {
-    font-size: 14px;
-    color: var(--text-secondary);
-}
+    .price-display .unit {
+        font-size: 14px;
+        color: var(--text-secondary);
+    }
 
-.price-change {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 600;
-}
+    .price-change {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+    }
 
-.price-change.positive {
-    background: var(--accent-green-light);
-    color: #059669;
-}
+    .price-change.positive {
+        background: var(--accent-green-light);
+        color: #059669;
+    }
 
-.price-change.negative {
-    background: #fee2e2;
-    color: #dc2626;
-}
+    .price-change.negative {
+        background: #fee2e2;
+        color: #dc2626;
+    }
 
-.price-details {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border-color);
-}
+    .price-details {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border-color);
+    }
 
-.price-detail {
-    text-align: center;
-}
+    .price-detail {
+        text-align: center;
+    }
 
-.price-detail .value {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-primary);
-}
+    .price-detail .value {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
 
-.price-detail .label {
-    font-size: 11px;
-    color: var(--text-secondary);
-    margin-top: 2px;
-    text-transform: uppercase;
-}
+    .price-detail .label {
+        font-size: 11px;
+        color: var(--text-secondary);
+        margin-top: 2px;
+        text-transform: uppercase;
+    }
 
-.prediction-box {
-    background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
-    border-radius: var(--radius-md);
-    padding: 16px;
-    margin-top: 16px;
-    color: white;
-}
 
-.prediction-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    opacity: 0.9;
-}
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+    }
 
-.prediction-value {
-    font-size: 22px;
-    font-weight: 700;
-}
+    .empty-state-icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+    }
 
-.confidence-bar {
-    background: rgba(255,255,255,0.3);
-    border-radius: 10px;
-    height: 6px;
-    margin-top: 10px;
-    overflow: hidden;
-}
+    .empty-state h3 {
+        font-size: 20px;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+    }
 
-.confidence-fill {
-    background: white;
-    height: 100%;
-    border-radius: 10px;
-}
+    .empty-state p {
+        color: var(--text-secondary);
+        margin-bottom: 20px;
+    }
 
-.confidence-text {
-    font-size: 11px;
-    margin-top: 6px;
-    opacity: 0.8;
-}
+    .summary-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
 
-.empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    background: var(--card-bg);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-}
+    .summary-card {
+        background: var(--card-bg);
+        border-radius: var(--radius-md);
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        box-shadow: var(--shadow-sm);
+    }
 
-.empty-state-icon {
-    font-size: 64px;
-    margin-bottom: 20px;
-}
+    .summary-card .icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
 
-.empty-state h3 {
-    font-size: 20px;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-}
+    .summary-card .icon.green {
+        background: var(--accent-green-light);
+    }
 
-.empty-state p {
-    color: var(--text-secondary);
-    margin-bottom: 20px;
-}
+    .summary-card .icon.blue {
+        background: rgba(59, 130, 246, 0.1);
+    }
 
-.summary-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    margin-bottom: 24px;
-}
+    .summary-card .icon.orange {
+        background: rgba(249, 115, 22, 0.1);
+    }
 
-.summary-card {
-    background: var(--card-bg);
-    border-radius: var(--radius-md);
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    box-shadow: var(--shadow-sm);
-}
+    .summary-card .icon.purple {
+        background: rgba(139, 92, 246, 0.1);
+    }
 
-.summary-card .icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-}
+    .summary-card .info h4 {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+    }
 
-.summary-card .icon.green { background: var(--accent-green-light); }
-.summary-card .icon.blue { background: rgba(59, 130, 246, 0.1); }
-.summary-card .icon.orange { background: rgba(249, 115, 22, 0.1); }
-.summary-card .icon.purple { background: rgba(139, 92, 246, 0.1); }
-
-.summary-card .info h4 {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0;
-}
-
-.summary-card .info p {
-    font-size: 13px;
-    color: var(--text-secondary);
-    margin: 4px 0 0 0;
-}
+    .summary-card .info p {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin: 4px 0 0 0;
+    }
 </style>
 {% endblock %}
 
@@ -345,7 +314,7 @@
                 <div class="sidebar-subtitle">Agricultural Platform</div>
             </div>
         </div>
-        
+
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-section-title">Main Menu</div>
@@ -368,7 +337,7 @@
                 </a>
             </div>
         </nav>
-        
+
         <div class="sidebar-user">
             <div class="user-info">
                 <div class="user-avatar">{{ (user_name or 'F')[0] }}</div>
@@ -389,7 +358,8 @@
                     <i class="fas fa-chart-line"></i> Real-Time Updates
                 </div>
                 <h1 class="hero-title">Live Market Prices</h1>
-                <p class="hero-subtitle">Track commodity prices across 28,400+ markets in India. Updated daily at 9:00 AM.</p>
+                <p class="hero-subtitle">Track commodity prices across 28,400+ markets in India. Updated daily at 9:00
+                    AM.</p>
             </div>
         </div>
 
@@ -424,7 +394,8 @@
                 </div>
             </div>
             <div style="margin-left: auto;">
-                <a href="{{ url_for('auth.logout') }}" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                <a href="{{ url_for('auth.logout') }}"
+                    style="background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>
@@ -440,7 +411,8 @@
                         <select name="state" id="stateSelect" onchange="updateDistricts()">
                             <option value="All States">All States</option>
                             {% for state in states %}
-                            <option value="{{ state }}" {% if selected_state == state %}selected{% endif %}>{{ state }}</option>
+                            <option value="{{ state }}" {% if selected_state==state %}selected{% endif %}>{{ state }}
+                            </option>
                             {% endfor %}
                         </select>
                     </div>
@@ -449,66 +421,110 @@
                         <select name="district" id="districtSelect">
                             <option value="All Districts">All Districts</option>
                             {% for district in districts %}
-                            <option value="{{ district }}" {% if selected_district == district %}selected{% endif %}>{{ district }}</option>
+                            <option value="{{ district }}" {% if selected_district==district %}selected{% endif %}>{{
+                                district }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="filter-group">
                         <label><i class="fas fa-carrot"></i> Commodity</label>
-                        <input type="text" name="commodity_search" id="commoditySearch" 
-                               placeholder="Search commodity..." 
-                               value="{{ selected_commodity if selected_commodity and selected_commodity != 'All' else '' }}"
-                               autocomplete="off"
-                               style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 14px;">
-                        <div id="commoditySuggestions" style="display: none; position: absolute; background: white; border: 1px solid var(--border-color); border-radius: 8px; max-height: 200px; overflow-y: auto; z-index: 100; width: calc(100% - 32px); box-shadow: var(--shadow-md);"></div>
+                        <input type="text" name="commodity_search" id="commoditySearch"
+                            placeholder="Search commodity..."
+                            value="{{ selected_commodity if selected_commodity and selected_commodity != 'All' else '' }}"
+                            autocomplete="off"
+                            style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 14px;">
+                        <div id="commoditySuggestions"
+                            style="display: none; position: absolute; background: white; border: 1px solid var(--border-color); border-radius: 8px; max-height: 200px; overflow-y: auto; z-index: 100; width: calc(100% - 32px); box-shadow: var(--shadow-md);">
+                        </div>
                     </div>
                     <div class="filter-group" style="min-width: 180px;">
                         <label><i class="fas fa-filter"></i> Category</label>
                         <select name="commodity" id="commoditySelect">
-                            <option value="All" {% if selected_commodity == 'All' or not selected_commodity %}selected{% endif %}>All Commodities</option>
+                            <option value="All" {% if selected_commodity=='All' or not selected_commodity %}selected{%
+                                endif %}>All Commodities</option>
                             <optgroup label="🥬 Vegetables (20)">
-                                <option value="Potato" {% if selected_commodity == 'Potato' %}selected{% endif %}>Potato</option>
-                                <option value="Tomato" {% if selected_commodity == 'Tomato' %}selected{% endif %}>Tomato</option>
-                                <option value="Onion" {% if selected_commodity == 'Onion' %}selected{% endif %}>Onion</option>
-                                <option value="Carrot" {% if selected_commodity == 'Carrot' %}selected{% endif %}>Carrot</option>
-                                <option value="Cabbage" {% if selected_commodity == 'Cabbage' %}selected{% endif %}>Cabbage</option>
-                                <option value="Cauliflower" {% if selected_commodity == 'Cauliflower' %}selected{% endif %}>Cauliflower</option>
-                                <option value="Spinach" {% if selected_commodity == 'Spinach' %}selected{% endif %}>Spinach</option>
-                                <option value="Brinjal (Eggplant)" {% if selected_commodity == 'Brinjal (Eggplant)' %}selected{% endif %}>Brinjal (Eggplant)</option>
-                                <option value="Lady's Finger (Okra)" {% if selected_commodity == "Lady's Finger (Okra)" %}selected{% endif %}>Lady's Finger (Okra)</option>
-                                <option value="Beetroot" {% if selected_commodity == 'Beetroot' %}selected{% endif %}>Beetroot</option>
-                                <option value="Radish" {% if selected_commodity == 'Radish' %}selected{% endif %}>Radish</option>
-                                <option value="Capsicum" {% if selected_commodity == 'Capsicum' %}selected{% endif %}>Capsicum</option>
-                                <option value="Pumpkin" {% if selected_commodity == 'Pumpkin' %}selected{% endif %}>Pumpkin</option>
-                                <option value="Bottle Gourd" {% if selected_commodity == 'Bottle Gourd' %}selected{% endif %}>Bottle Gourd</option>
-                                <option value="Bitter Gourd" {% if selected_commodity == 'Bitter Gourd' %}selected{% endif %}>Bitter Gourd</option>
-                                <option value="Ridge Gourd" {% if selected_commodity == 'Ridge Gourd' %}selected{% endif %}>Ridge Gourd</option>
-                                <option value="Green Peas" {% if selected_commodity == 'Green Peas' %}selected{% endif %}>Green Peas</option>
-                                <option value="Beans" {% if selected_commodity == 'Beans' %}selected{% endif %}>Beans</option>
-                                <option value="Mushroom" {% if selected_commodity == 'Mushroom' %}selected{% endif %}>Mushroom</option>
-                                <option value="Corn" {% if selected_commodity == 'Corn' %}selected{% endif %}>Corn</option>
+                                <option value="Potato" {% if selected_commodity=='Potato' %}selected{% endif %}>Potato
+                                </option>
+                                <option value="Tomato" {% if selected_commodity=='Tomato' %}selected{% endif %}>Tomato
+                                </option>
+                                <option value="Onion" {% if selected_commodity=='Onion' %}selected{% endif %}>Onion
+                                </option>
+                                <option value="Carrot" {% if selected_commodity=='Carrot' %}selected{% endif %}>Carrot
+                                </option>
+                                <option value="Cabbage" {% if selected_commodity=='Cabbage' %}selected{% endif %}>
+                                    Cabbage</option>
+                                <option value="Cauliflower" {% if selected_commodity=='Cauliflower' %}selected{% endif
+                                    %}>Cauliflower</option>
+                                <option value="Spinach" {% if selected_commodity=='Spinach' %}selected{% endif %}>
+                                    Spinach</option>
+                                <option value="Brinjal (Eggplant)" {% if selected_commodity=='Brinjal (Eggplant)'
+                                    %}selected{% endif %}>Brinjal (Eggplant)</option>
+                                <option value="Lady's Finger (Okra)" {% if selected_commodity=="Lady's Finger (Okra)"
+                                    %}selected{% endif %}>Lady's Finger (Okra)</option>
+                                <option value="Beetroot" {% if selected_commodity=='Beetroot' %}selected{% endif %}>
+                                    Beetroot</option>
+                                <option value="Radish" {% if selected_commodity=='Radish' %}selected{% endif %}>Radish
+                                </option>
+                                <option value="Capsicum" {% if selected_commodity=='Capsicum' %}selected{% endif %}>
+                                    Capsicum</option>
+                                <option value="Pumpkin" {% if selected_commodity=='Pumpkin' %}selected{% endif %}>
+                                    Pumpkin</option>
+                                <option value="Bottle Gourd" {% if selected_commodity=='Bottle Gourd' %}selected{% endif
+                                    %}>Bottle Gourd</option>
+                                <option value="Bitter Gourd" {% if selected_commodity=='Bitter Gourd' %}selected{% endif
+                                    %}>Bitter Gourd</option>
+                                <option value="Ridge Gourd" {% if selected_commodity=='Ridge Gourd' %}selected{% endif
+                                    %}>Ridge Gourd</option>
+                                <option value="Green Peas" {% if selected_commodity=='Green Peas' %}selected{% endif %}>
+                                    Green Peas</option>
+                                <option value="Beans" {% if selected_commodity=='Beans' %}selected{% endif %}>Beans
+                                </option>
+                                <option value="Mushroom" {% if selected_commodity=='Mushroom' %}selected{% endif %}>
+                                    Mushroom</option>
+                                <option value="Corn" {% if selected_commodity=='Corn' %}selected{% endif %}>Corn
+                                </option>
                             </optgroup>
                             <optgroup label="🍎 Fruits (20)">
-                                <option value="Apple" {% if selected_commodity == 'Apple' %}selected{% endif %}>Apple</option>
-                                <option value="Banana" {% if selected_commodity == 'Banana' %}selected{% endif %}>Banana</option>
-                                <option value="Mango" {% if selected_commodity == 'Mango' %}selected{% endif %}>Mango</option>
-                                <option value="Orange" {% if selected_commodity == 'Orange' %}selected{% endif %}>Orange</option>
-                                <option value="Grapes" {% if selected_commodity == 'Grapes' %}selected{% endif %}>Grapes</option>
-                                <option value="Papaya" {% if selected_commodity == 'Papaya' %}selected{% endif %}>Papaya</option>
-                                <option value="Pineapple" {% if selected_commodity == 'Pineapple' %}selected{% endif %}>Pineapple</option>
-                                <option value="Guava" {% if selected_commodity == 'Guava' %}selected{% endif %}>Guava</option>
-                                <option value="Watermelon" {% if selected_commodity == 'Watermelon' %}selected{% endif %}>Watermelon</option>
-                                <option value="Muskmelon" {% if selected_commodity == 'Muskmelon' %}selected{% endif %}>Muskmelon</option>
-                                <option value="Pomegranate" {% if selected_commodity == 'Pomegranate' %}selected{% endif %}>Pomegranate</option>
-                                <option value="Strawberry" {% if selected_commodity == 'Strawberry' %}selected{% endif %}>Strawberry</option>
-                                <option value="Cherry" {% if selected_commodity == 'Cherry' %}selected{% endif %}>Cherry</option>
-                                <option value="Kiwi" {% if selected_commodity == 'Kiwi' %}selected{% endif %}>Kiwi</option>
-                                <option value="Lemon" {% if selected_commodity == 'Lemon' %}selected{% endif %}>Lemon</option>
-                                <option value="Pear" {% if selected_commodity == 'Pear' %}selected{% endif %}>Pear</option>
-                                <option value="Peach" {% if selected_commodity == 'Peach' %}selected{% endif %}>Peach</option>
-                                <option value="Plum" {% if selected_commodity == 'Plum' %}selected{% endif %}>Plum</option>
-                                <option value="Coconut" {% if selected_commodity == 'Coconut' %}selected{% endif %}>Coconut</option>
-                                <option value="Custard Apple" {% if selected_commodity == 'Custard Apple' %}selected{% endif %}>Custard Apple</option>
+                                <option value="Apple" {% if selected_commodity=='Apple' %}selected{% endif %}>Apple
+                                </option>
+                                <option value="Banana" {% if selected_commodity=='Banana' %}selected{% endif %}>Banana
+                                </option>
+                                <option value="Mango" {% if selected_commodity=='Mango' %}selected{% endif %}>Mango
+                                </option>
+                                <option value="Orange" {% if selected_commodity=='Orange' %}selected{% endif %}>Orange
+                                </option>
+                                <option value="Grapes" {% if selected_commodity=='Grapes' %}selected{% endif %}>Grapes
+                                </option>
+                                <option value="Papaya" {% if selected_commodity=='Papaya' %}selected{% endif %}>Papaya
+                                </option>
+                                <option value="Pineapple" {% if selected_commodity=='Pineapple' %}selected{% endif %}>
+                                    Pineapple</option>
+                                <option value="Guava" {% if selected_commodity=='Guava' %}selected{% endif %}>Guava
+                                </option>
+                                <option value="Watermelon" {% if selected_commodity=='Watermelon' %}selected{% endif %}>
+                                    Watermelon</option>
+                                <option value="Muskmelon" {% if selected_commodity=='Muskmelon' %}selected{% endif %}>
+                                    Muskmelon</option>
+                                <option value="Pomegranate" {% if selected_commodity=='Pomegranate' %}selected{% endif
+                                    %}>Pomegranate</option>
+                                <option value="Strawberry" {% if selected_commodity=='Strawberry' %}selected{% endif %}>
+                                    Strawberry</option>
+                                <option value="Cherry" {% if selected_commodity=='Cherry' %}selected{% endif %}>Cherry
+                                </option>
+                                <option value="Kiwi" {% if selected_commodity=='Kiwi' %}selected{% endif %}>Kiwi
+                                </option>
+                                <option value="Lemon" {% if selected_commodity=='Lemon' %}selected{% endif %}>Lemon
+                                </option>
+                                <option value="Pear" {% if selected_commodity=='Pear' %}selected{% endif %}>Pear
+                                </option>
+                                <option value="Peach" {% if selected_commodity=='Peach' %}selected{% endif %}>Peach
+                                </option>
+                                <option value="Plum" {% if selected_commodity=='Plum' %}selected{% endif %}>Plum
+                                </option>
+                                <option value="Coconut" {% if selected_commodity=='Coconut' %}selected{% endif %}>
+                                    Coconut</option>
+                                <option value="Custard Apple" {% if selected_commodity=='Custard Apple' %}selected{%
+                                    endif %}>Custard Apple</option>
                             </optgroup>
                         </select>
                     </div>
@@ -558,8 +574,10 @@
                     <div class="market-card-header">
                         <div class="commodity-info">
                             <div class="commodity-icon">
-                                {% if item.commodity in ['Tomato', 'Potato', 'Onion', 'Cabbage', 'Cauliflower', 'Carrot', 'Brinjal', 'Spinach'] %}🥬
-                                {% elif item.commodity in ['Apple', 'Banana', 'Mango', 'Orange', 'Grapes', 'Papaya', 'Watermelon', 'Guava'] %}🍎
+                                {% if item.commodity in ['Tomato', 'Potato', 'Onion', 'Cabbage', 'Cauliflower',
+                                'Carrot', 'Brinjal', 'Spinach'] %}🥬
+                                {% elif item.commodity in ['Apple', 'Banana', 'Mango', 'Orange', 'Grapes', 'Papaya',
+                                'Watermelon', 'Guava'] %}🍎
                                 {% else %}🌾{% endif %}
                             </div>
                             <div>
@@ -597,18 +615,6 @@
                                 <div class="label">Max</div>
                             </div>
                         </div>
-                        <div class="prediction-box">
-                            <div class="prediction-header">
-                                <i class="fas fa-brain"></i> AI Price Prediction (7 days)
-                            </div>
-                            <div class="prediction-value">
-                                ₹{{ ((item.modal_price * (1 + (item.change / 100))) / 100)|round(2) }}/kg
-                            </div>
-                            <div class="confidence-bar">
-                                <div class="confidence-fill" style="width: {{ 70 + (loop.index % 20) }}%"></div>
-                            </div>
-                            <div class="confidence-text">{{ 70 + (loop.index % 20) }}% confidence</div>
-                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -625,104 +631,104 @@
 </div>
 
 <script>
-const statesDistricts = {{ states_districts|tojson|safe if states_districts else '{}' }};
+    const statesDistricts = {{ states_districts | tojson | safe }} || {};
 
-// All 40 commodities for autocomplete
-const allCommodities = [
-    // Vegetables (20)
-    "Potato", "Tomato", "Onion", "Carrot", "Cabbage", "Cauliflower",
-    "Spinach", "Brinjal (Eggplant)", "Lady's Finger (Okra)", "Beetroot",
-    "Radish", "Capsicum", "Pumpkin", "Bottle Gourd", "Bitter Gourd",
-    "Ridge Gourd", "Green Peas", "Beans", "Mushroom", "Corn",
-    // Fruits (20)
-    "Apple", "Banana", "Mango", "Orange", "Grapes", "Papaya",
-    "Pineapple", "Guava", "Watermelon", "Muskmelon", "Pomegranate",
-    "Strawberry", "Cherry", "Kiwi", "Lemon", "Pear", "Peach",
-    "Plum", "Coconut", "Custard Apple"
-];
+    // All 40 commodities for autocomplete
+    const allCommodities = [
+        // Vegetables (20)
+        "Potato", "Tomato", "Onion", "Carrot", "Cabbage", "Cauliflower",
+        "Spinach", "Brinjal (Eggplant)", "Lady's Finger (Okra)", "Beetroot",
+        "Radish", "Capsicum", "Pumpkin", "Bottle Gourd", "Bitter Gourd",
+        "Ridge Gourd", "Green Peas", "Beans", "Mushroom", "Corn",
+        // Fruits (20)
+        "Apple", "Banana", "Mango", "Orange", "Grapes", "Papaya",
+        "Pineapple", "Guava", "Watermelon", "Muskmelon", "Pomegranate",
+        "Strawberry", "Cherry", "Kiwi", "Lemon", "Pear", "Peach",
+        "Plum", "Coconut", "Custard Apple"
+    ];
 
-function updateDistricts() {
-    const stateSelect = document.getElementById('stateSelect');
-    const districtSelect = document.getElementById('districtSelect');
-    const selectedState = stateSelect.value;
-    
-    districtSelect.innerHTML = '<option value="All Districts">All Districts</option>';
-    
-    if (selectedState && selectedState !== 'All States' && statesDistricts[selectedState]) {
-        statesDistricts[selectedState].forEach(district => {
-            const option = document.createElement('option');
-            option.value = district;
-            option.textContent = district;
-            districtSelect.appendChild(option);
+    function updateDistricts() {
+        const stateSelect = document.getElementById('stateSelect');
+        const districtSelect = document.getElementById('districtSelect');
+        const selectedState = stateSelect.value;
+
+        districtSelect.innerHTML = '<option value="All Districts">All Districts</option>';
+
+        if (selectedState && selectedState !== 'All States' && statesDistricts[selectedState]) {
+            statesDistricts[selectedState].forEach(district => {
+                const option = document.createElement('option');
+                option.value = district;
+                option.textContent = district;
+                districtSelect.appendChild(option);
+            });
+        }
+    }
+
+    // Commodity search autocomplete
+    const commoditySearch = document.getElementById('commoditySearch');
+    const commoditySuggestions = document.getElementById('commoditySuggestions');
+    const commoditySelect = document.getElementById('commoditySelect');
+
+    if (commoditySearch) {
+        commoditySearch.addEventListener('input', function () {
+            const query = this.value.toLowerCase().trim();
+            commoditySuggestions.innerHTML = '';
+
+            if (query.length < 1) {
+                commoditySuggestions.style.display = 'none';
+                return;
+            }
+
+            const matches = allCommodities.filter(c => c.toLowerCase().includes(query));
+
+            if (matches.length > 0) {
+                commoditySuggestions.style.display = 'block';
+                matches.forEach(commodity => {
+                    const div = document.createElement('div');
+                    div.textContent = commodity;
+                    div.style.padding = '10px 16px';
+                    div.style.cursor = 'pointer';
+                    div.style.borderBottom = '1px solid #e2e8f0';
+                    div.addEventListener('mouseenter', function () {
+                        this.style.background = '#f1f5f9';
+                    });
+                    div.addEventListener('mouseleave', function () {
+                        this.style.background = 'white';
+                    });
+                    div.addEventListener('click', function () {
+                        commoditySearch.value = commodity;
+                        commoditySelect.value = commodity;
+                        commoditySuggestions.style.display = 'none';
+                    });
+                    commoditySuggestions.appendChild(div);
+                });
+            } else {
+                commoditySuggestions.style.display = 'none';
+            }
+        });
+
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!commoditySearch.contains(e.target) && !commoditySuggestions.contains(e.target)) {
+                commoditySuggestions.style.display = 'none';
+            }
+        });
+
+        // Clear dropdown when using search
+        commoditySearch.addEventListener('focus', function () {
+            if (this.value) {
+                commoditySelect.value = 'All';
+            }
         });
     }
-}
 
-// Commodity search autocomplete
-const commoditySearch = document.getElementById('commoditySearch');
-const commoditySuggestions = document.getElementById('commoditySuggestions');
-const commoditySelect = document.getElementById('commoditySelect');
-
-if (commoditySearch) {
-    commoditySearch.addEventListener('input', function() {
-        const query = this.value.toLowerCase().trim();
-        commoditySuggestions.innerHTML = '';
-        
-        if (query.length < 1) {
-            commoditySuggestions.style.display = 'none';
-            return;
-        }
-        
-        const matches = allCommodities.filter(c => c.toLowerCase().includes(query));
-        
-        if (matches.length > 0) {
-            commoditySuggestions.style.display = 'block';
-            matches.forEach(commodity => {
-                const div = document.createElement('div');
-                div.textContent = commodity;
-                div.style.padding = '10px 16px';
-                div.style.cursor = 'pointer';
-                div.style.borderBottom = '1px solid #e2e8f0';
-                div.addEventListener('mouseenter', function() {
-                    this.style.background = '#f1f5f9';
-                });
-                div.addEventListener('mouseleave', function() {
-                    this.style.background = 'white';
-                });
-                div.addEventListener('click', function() {
-                    commoditySearch.value = commodity;
-                    commoditySelect.value = commodity;
-                    commoditySuggestions.style.display = 'none';
-                });
-                commoditySuggestions.appendChild(div);
-            });
-        } else {
-            commoditySuggestions.style.display = 'none';
-        }
-    });
-    
-    // Hide suggestions when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!commoditySearch.contains(e.target) && !commoditySuggestions.contains(e.target)) {
-            commoditySuggestions.style.display = 'none';
-        }
-    });
-    
-    // Clear dropdown when using search
-    commoditySearch.addEventListener('focus', function() {
-        if (this.value) {
-            commoditySelect.value = 'All';
-        }
-    });
-}
-
-// Clear search when using dropdown
-if (commoditySelect) {
-    commoditySelect.addEventListener('change', function() {
-        if (this.value !== 'All') {
-            commoditySearch.value = '';
-        }
-    });
-}
+    // Clear search when using dropdown
+    if (commoditySelect) {
+        commoditySelect.addEventListener('change', function () {
+            if (this.value !== 'All') {
+                commoditySearch.value = '';
+            }
+        });
+    }
 </script>
 {% endblock %}

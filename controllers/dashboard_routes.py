@@ -213,7 +213,11 @@ def get_weather_notifications(user_district, user_state):
                 'icon': day_icon,
                 'high': high_temp,
                 'low': low_temp,
-                'rain_chance': rain_chance
+                'rain_chance': rain_chance,
+                'humidity': int(day_data['day'].get('avghumidity', 0)),
+                'wind': int(day_data['day'].get('maxwind_kph', 0)),
+                'uv': day_data['day'].get('uv', 0),
+                'moon_phase': day_data['astro'].get('moon_phase', 'N/A')
             })
     
     except Exception as e:
@@ -238,7 +242,11 @@ def get_weather_notifications(user_district, user_state):
                 'icon': '🌤️',
                 'high': random.randint(28, 38),
                 'low': random.randint(18, 26),
-                'rain_chance': random.randint(0, 30)
+                'rain_chance': random.randint(0, 30),
+                'humidity': random.randint(40, 70),
+                'wind': random.randint(10, 20),
+                'uv': random.randint(1, 10),
+                'moon_phase': 'New Moon' if i == 0 else 'Waxing Crescent'
             })
     
     # Generate farming alerts based on weather
@@ -342,6 +350,18 @@ def dashboard():
     saved_fertilizers = get_user_fertilizers(user_id)
     growing_activities = get_user_growing_activities(user_id)
     notifications = get_dashboard_notifications(user_id)
+    for notif in notifications:
+        if 'created_at' in notif:
+            try:
+                if isinstance(notif['created_at'], str):
+                    dt = datetime.strptime(notif['created_at'], '%Y-%m-%d %H:%M:%S')
+                else:
+                    dt = notif['created_at']
+                notif['time_ago'] = format_time_ago(dt)
+            except:
+                notif['time_ago'] = "Recently"
+        else:
+            notif['time_ago'] = "Recently"
     
     # Generate recent activity based on saved items and growing activities
     recent_activity = []
@@ -419,8 +439,34 @@ def dashboard():
         if os.path.exists(market_file):
             with open(market_file, 'r', encoding='utf-8') as f:
                 market_data = json.load(f)
-                # Get sample prices for dashboard display
-                for item in market_data.get('data', [])[:10]:
+                all_market_data = market_data.get('data', [])
+                
+                # Get district and state for matching
+                u_dist = user.get('district', session.get('user_district'))
+                u_state = user.get('state', session.get('user_state'))
+                
+                # Filter for local or relevant data
+                relevant = [i for i in all_market_data if i.get('district') == u_dist]
+                if not relevant:
+                    relevant = [i for i in all_market_data if i.get('state') == u_state]
+                if not relevant:
+                    relevant = all_market_data
+                
+                # Ensure mix including fruits
+                f_list = ['Apple', 'Banana', 'Mango', 'Orange', 'Grapes', 'Papaya', 'Pineapple', 
+                         'Guava', 'Watermelon', 'Muskmelon', 'Pomegranate', 'Strawberry', 
+                         'Cherry', 'Kiwi', 'Lemon', 'Pear', 'Peach', 'Plum', 'Coconut']
+                
+                veggies = [i for i in relevant if not any(f.lower() in i.get('commodity', '').lower() for f in f_list)]
+                fruit_items = [i for i in relevant if any(f.lower() in i.get('commodity', '').lower() for f in f_list)]
+                
+                # If local fruits missing, get from state
+                if not fruit_items and u_state:
+                     fruit_items = [i for i in all_market_data if i.get('state') == u_state and any(f.lower() in i.get('commodity', '').lower() for f in f_list)]
+                
+                display_items = veggies[:6] + fruit_items[:4]
+                
+                for item in display_items:
                     market_prices.append({
                         'commodity': item.get('commodity', ''),
                         'district': item.get('district', ''),
@@ -443,14 +489,25 @@ def dashboard():
                 start = datetime.strptime(start_date, '%Y-%m-%d')
                 days_since = (now - start).days
                 duration = activity.get('duration_days', 90)
-                progress = min(100, int((days_since / duration) * 100))
+                time_progress = min(100, int((days_since / duration) * 100))
                 
                 # Convert stage number to name if needed
                 current_stage = activity.get('current_stage', 'Growing')
+                stage_progress = 0
                 if isinstance(current_stage, int):
+                    stage_progress = int((current_stage + 1) / len(STAGE_NAMES) * 100)
                     current_stage = STAGE_NAMES[current_stage] if current_stage < len(STAGE_NAMES) else 'Growing'
                 elif current_stage is None or current_stage == '':
                     current_stage = 'Seed Sowing'
+                    stage_progress = 12 # First stage approx
+                else:
+                    # Named stage
+                    if current_stage in STAGE_NAMES:
+                        stage_idx = STAGE_NAMES.index(current_stage)
+                        stage_progress = int((stage_idx + 1) / len(STAGE_NAMES) * 100)
+                
+                # Use the maximum of time-based or stage-based progress for visual representation
+                progress = max(time_progress, stage_progress)
                 
                 formatted_activities.append({
                     'id': activity.get('_id', ''),

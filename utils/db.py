@@ -21,6 +21,7 @@ DISEASES_FILE = os.path.join(DATA_DIR, 'diseases.json')
 GROWING_FILE = os.path.join(DATA_DIR, 'growing_activities.json')
 EQUIPMENT_FILE = os.path.join(DATA_DIR, 'equipment.json')
 NOTIFICATIONS_FILE = os.path.join(DATA_DIR, 'notifications.json')
+EXPENSES_FILE = os.path.join(DATA_DIR, 'expenses.json')
 
 client = None
 db = None
@@ -547,7 +548,8 @@ def get_dashboard_notifications(user_id):
                     'type': 'task',
                     'crop': activity['crop_display_name'],
                     'message': f"Week {task['week']} task: {task['task']}",
-                    'priority': 'high'
+                    'priority': 'high',
+                    'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 })
         
         # Check if harvest is near (within 7 days)
@@ -559,7 +561,8 @@ def get_dashboard_notifications(user_id):
                 'type': 'harvest',
                 'crop': activity['crop_display_name'],
                 'message': f"Harvest ready in {days_to_harvest} days!",
-                'priority': 'high'
+                'priority': 'high',
+                'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             })
     
     # Add persistent notifications
@@ -714,3 +717,63 @@ def update_equipment_status(equipment_id, status):
     except Exception as e:
         print(f"Error updating equipment status: {e}")
         return False
+
+def save_expense(expense_data):
+    """Save a new expense entry (supports both MongoDB and JSON file fallback)"""
+    global db
+    try:
+        if db is not None:
+            # Check if ObjectId is needed for user_id
+            from bson import ObjectId
+            if 'user_id' in expense_data and isinstance(expense_data['user_id'], str):
+                try:
+                    expense_data['user_id'] = ObjectId(expense_data['user_id'])
+                except:
+                    pass
+            
+            result = db.expenses.insert_one(expense_data)
+            return str(result.inserted_id)
+        else:
+            # File fallback
+            import uuid
+            expense_id = str(uuid.uuid4())
+            expense_data['_id'] = expense_id
+            
+            expenses = []
+            if os.path.exists(EXPENSES_FILE):
+                with open(EXPENSES_FILE, 'r') as f:
+                    try:
+                        expenses = json.load(f)
+                    except:
+                        expenses = []
+            
+            expenses.append(expense_data)
+            with open(EXPENSES_FILE, 'w') as f:
+                json.dump(expenses, f, indent=2)
+            
+            return expense_id
+    except Exception as e:
+        print(f"Error saving expense: {e}")
+        return None
+
+def get_user_expenses(user_id):
+    """Get all expenses for a user (supports both MongoDB and JSON file fallback)"""
+    global db
+    try:
+        if db is not None:
+            from bson import ObjectId
+            query = {'user_id': ObjectId(user_id) if isinstance(user_id, str) else user_id}
+            return list(db.expenses.find(query).sort('entry_date', -1))
+        else:
+            # File fallback
+            if os.path.exists(EXPENSES_FILE):
+                with open(EXPENSES_FILE, 'r') as f:
+                    try:
+                        all_expenses = json.load(f)
+                        return [exp for exp in all_expenses if str(exp.get('user_id')) == str(user_id)]
+                    except:
+                        return []
+            return []
+    except Exception as e:
+        print(f"Error fetching expenses: {e}")
+        return []

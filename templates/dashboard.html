@@ -4,7 +4,234 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/api/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* Premium Notification Modal Styling */
+    #notificationModal .card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    .notif-header {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        padding: 24px 30px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .notif-title {
+        color: white;
+        font-size: 20px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .notif-item {
+        padding: 20px;
+        border-radius: 16px;
+        background: white;
+        border: 1px solid #f1f5f9;
+        transition: all 0.3s ease;
+        margin-bottom: 12px;
+        display: flex;
+        gap: 18px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .notif-item:hover {
+        transform: translateX(8px);
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
+        border-color: #3b82f6;
+    }
+
+    .notif-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: #3b82f6;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .notif-item:hover::before {
+        opacity: 1;
+    }
+
+    .notif-icon-box {
+        width: 52px;
+        height: 52px;
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+    }
+
+    .notif-item:hover .notif-icon-box {
+        transform: rotate(-10deg) scale(1.1);
+    }
+
+    .notif-content-title {
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 5px;
+        font-size: 15px;
+    }
+
+    .notif-content-msg {
+        font-size: 14px;
+        color: #64748b;
+        line-height: 1.5;
+    }
+
+    .notif-time {
+        font-size: 12px;
+        color: #94a3b8;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .notif-action-bar {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .notif-btn-primary {
+        padding: 8px 20px;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .notif-btn-primary:hover {
+        background: #2563eb;
+        transform: translateY(-2px);
+    }
+
+    .notif-btn-secondary {
+        padding: 8px 20px;
+        background: #f1f5f9;
+        color: #64748b;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .notif-btn-secondary:hover {
+        background: #e2e8f0;
+    }
+
+    /* Download Modal Styling */
+    .download-option-card {
+        padding: 16px;
+        border-radius: 16px;
+        background: white;
+        border: 1px solid #f1f5f9;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        cursor: pointer;
+        margin-bottom: 12px;
+    }
+
+    .download-option-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
+        border-color: #10b981;
+    }
+
+    .download-icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+
+    .download-main-info {
+        flex: 1;
+    }
+
+    .download-main-title {
+        font-weight: 700;
+        color: #1e293b;
+        font-size: 15px;
+        margin-bottom: 2px;
+    }
+
+    .download-main-desc {
+        font-size: 12px;
+        color: #64748b;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+</style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 {% endblock %}
@@ -132,7 +359,24 @@
                         <span>Crops Suggested</span>
                     </div>
                 </div>
-                <div style="margin-left: auto; display: flex; gap: 12px;">
+                <div style="margin-left: auto; display: flex; gap: 12px; align-items: center;">
+                    <!-- Download Report Button -->
+                    <button class="download-report-btn" onclick="openDownloadModal()" title="Download Reports"
+                        style="width: 44px; height: 44px; font-size: 18px; background: rgba(16, 185, 129, 0.15); color: #10b981; border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+                        <i class="fas fa-file-download"></i>
+                    </button>
+
+                    <!-- Notification Button -->
+                    <button class="notification-toggle-btn" onclick="toggleNotificationPanel()"
+                        style="width: 44px; height: 44px; font-size: 18px; background: rgba(59, 130, 246, 0.15); color: #3b82f6; border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; transition: all 0.3s ease;">
+                        <i class="fas fa-bell"></i>
+                        {% if notifications %}
+                        <span
+                            style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; min-width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; border: 2px solid #1a1c1e; box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);">{{
+                            notifications|length }}</span>
+                        {% endif %}
+                    </button>
+
                     <button class="chatbot-toggle" onclick="openChatbotModal()"
                         style="width: 44px; height: 44px; font-size: 18px;">
                         <i class="fas fa-robot"></i>
@@ -251,53 +495,7 @@
                             </a>
                         </div>
 
-                        <!-- Quick Actions -->
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <i class="fas fa-bolt"></i> Quick Actions
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="quick-actions-grid">
-                                    <a href="{{ url_for('crop.crop_suggestion') }}" class="quick-action-btn">
-                                        <div class="quick-action-icon"><i class="fas fa-seedling"></i></div>
-                                        <div class="quick-action-text">
-                                            <h4>Crop Analysis</h4>
-                                            <span>Get recommendations</span>
-                                        </div>
-                                    </a>
-                                    <a href="{{ url_for('fertilizer.fertilizer_recommend') }}" class="quick-action-btn">
-                                        <div class="quick-action-icon"><i class="fas fa-flask"></i></div>
-                                        <div class="quick-action-text">
-                                            <h4>Fertilizer Plan</h4>
-                                            <span>Optimize nutrients</span>
-                                        </div>
-                                    </a>
-                                    <a href="{{ url_for('market.market_watch') }}" class="quick-action-btn">
-                                        <div class="quick-action-icon"><i class="fas fa-chart-line"></i></div>
-                                        <div class="quick-action-text">
-                                            <h4>Market Watch</h4>
-                                            <span>Track prices</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="quick-action-btn" onclick="openChatbotModal(); return false;">
-                                        <div class="quick-action-icon"><i class="fas fa-robot"></i></div>
-                                        <div class="quick-action-text">
-                                            <h4>AI Assistant</h4>
-                                            <span>Ask questions</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="quick-action-btn" onclick="openEquipmentModal(); return false;">
-                                        <div class="quick-action-icon"><i class="fas fa-truck-pickup"></i></div>
-                                        <div class="quick-action-text">
-                                            <h4>Equipment Sharing</h4>
-                                            <span>Rent farm machinery</span>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
 
                     <!-- Middle Column -->
@@ -364,61 +562,7 @@
                             </div>
                         </div>
 
-                        <!-- Notifications -->
-                        {% if notifications %}
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <i class="fas fa-bell"></i> Notifications
-                                </div>
-                                <span class="card-badge">{{ notifications|length }}</span>
-                            </div>
-                            <div class="card-body">
-                                {% for notification in notifications[:4] %}
-                                <div class="commodity-item"
-                                    style="border-bottom-color: var(--border-color); flex-direction: column; align-items: flex-start;">
-                                    <div class="commodity-info" style="width: 100%;">
-                                        <div class="commodity-icon" style="background: rgba(16, 185, 129, 0.1);">
-                                            {% if notification.type == 'task' %}⚡
-                                            {% elif notification.type == 'harvest' %}🎯
-                                            {% elif notification.type == 'equipment' or notification.type ==
-                                            'rental_request' %}🚜
-                                            {% else %}📢{% endif %}
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div class="commodity-name"
-                                                style="color: var(--text-primary); font-weight: 600;">{{
-                                                notification.title or notification.crop }}</div>
-                                            <div class="commodity-location"
-                                                style="color: var(--text-secondary); font-size: 0.9em; margin-bottom: 4px;">
-                                                {{
-                                                notification.message }}</div>
 
-                                            <!-- Debug: show if data exists -->
-                                            {% if notification.data and notification.data.get('is_actionable') %}
-                                            <div
-                                                style="display: flex; gap: 10px; margin-top: 8px; width: 100%; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;">
-                                                <button
-                                                    onclick="handleRentalAction('accept', '{{ notification.data.equipment_id }}', '{{ notification.id }}', '{{ notification.data.requester_id }}')"
-                                                    class="action-btn-accept"
-                                                    style="padding: 6px 16px; font-size: 13px; border-radius: 6px; border: none; background: #10b981; color: white; cursor: pointer; font-weight: 500; transition: all 0.2s;">
-                                                    <i class="fas fa-check-circle"></i> Accept Request
-                                                </button>
-                                                <button
-                                                    onclick="handleRentalAction('reject', '{{ notification.data.equipment_id }}', '{{ notification.id }}', '{{ notification.data.requester_id }}')"
-                                                    class="action-btn-reject"
-                                                    style="padding: 6px 16px; font-size: 13px; border-radius: 6px; border: 1px solid #ef4444; background: rgba(239, 68, 68, 0.1); color: #ef4444; cursor: pointer; font-weight: 500; transition: all 0.2s;">
-                                                    <i class="fas fa-times-circle"></i> Reject
-                                                </button>
-                                            </div>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
 
                         <!-- Field Insights -->
 
@@ -482,12 +626,17 @@
                     <!-- Right Column -->
                     <div class="right-column">
                         <!-- Weather Card - User's Registered District -->
-                        <div class="card card-blue">
+                        <div class="card card-blue weather-card">
                             <div class="card-header">
                                 <div class="card-title">
                                     <i class="fas fa-cloud-sun"></i> Live Weather
                                 </div>
-                                <span class="card-badge" style="background: #10b981;">Live</span>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <i class="fas fa-sync-alt" onclick="refreshWeather()"
+                                        style="cursor: pointer; font-size: 14px; opacity: 0.7;"
+                                        title="Refresh Weather"></i>
+                                    <span class="card-badge" style="background: #10b981;">Live</span>
+                                </div>
                             </div>
                             <div class="card-body">
                                 {% if weather_data and weather_data.current %}
@@ -821,6 +970,148 @@
         </div>
     </div>
 
+    <!-- Notification Modal -->
+    <div class="modal-overlay" id="notificationModal" style="display: none;">
+        <div class="card" style="width: 580px; max-width: 95vw; max-height: 85vh; overflow-y: auto; border: none;">
+            <div class="notif-header">
+                <div class="notif-title">
+                    <i class="fas fa-bell" style="color: #3b82f6;"></i>
+                    Notifications
+                    <span
+                        style="font-size: 14px; font-weight: 500; background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 4px 12px; border-radius: 20px; margin-left: 8px;">{{
+                        notifications|length if notifications else 0 }} New</span>
+                </div>
+                <button onclick="closeNotificationModal()"
+                    style="background: rgba(255,255,255,0.1); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 20px; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; transition: all 0.3s;">×</button>
+            </div>
+            <div class="card-body" style="padding: 25px; background: #f8fafc;">
+                {% if notifications %}
+                <div style="display: flex; flex-direction: column;">
+                    {% for notification in notifications %}
+                    <div class="notif-item">
+                        <div class="notif-icon-box">
+                            {% if notification.type == 'task' %}⚡
+                            {% elif notification.type == 'harvest' %}🎯
+                            {% elif notification.type == 'equipment' or notification.type == 'rental_request' %}🚜
+                            {% else %}📢{% endif %}
+                        </div>
+                        <div style="flex: 1;">
+                            <div class="notif-content-title">{{ notification.title or notification.crop }}</div>
+                            <div class="notif-content-msg">{{ notification.message }}</div>
+                            <div class="notif-time"><i class="far fa-clock"></i> {{ notification.time_ago }}</div>
+
+                            {% if notification.data and (notification.data.get('is_actionable') or
+                            notification.data.get('action_type') == 'rental') %}
+                            <div class="notif-action-bar">
+                                <button
+                                    onclick="handleRentalAction('accept', '{{ notification.data.equipment_id }}', '{{ notification.id }}', '{{ notification.data.requester_id }}')"
+                                    class="notif-btn-primary">
+                                    <i class="fas fa-check"></i> Accept Request
+                                </button>
+                                <button
+                                    onclick="handleRentalAction('reject', '{{ notification.data.equipment_id }}', '{{ notification.id }}', '{{ notification.data.requester_id }}')"
+                                    class="notif-btn-secondary">
+                                    <i class="fas fa-times"></i> Dismiss
+                                </button>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div style="text-align: center; padding: 60px 20px;">
+                    <div
+                        style="width: 100px; height: 100px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);">
+                        <i class="fas fa-bell-slash" style="font-size: 40px; color: #cbd5e1;"></i>
+                    </div>
+                    <h3 style="color: #1e293b; margin-bottom: 8px;">All caught up!</h3>
+                    <p style="color: #64748b; font-size: 15px;">You don't have any new notifications right now.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Center Modal -->
+    <div class="modal-overlay" id="downloadModal" style="display: none;">
+        <div class="card"
+            style="width: 500px; max-width: 95vw; border: none; border-radius: 24px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+            <div class="card-header"
+                style="background: linear-gradient(135deg, #065f46 0%, #10b981 100%); padding: 24px; border: none;">
+                <div class="card-title" style="color: white; font-size: 20px; font-weight: 700;">
+                    <i class="fas fa-cloud-download-alt" style="margin-right: 10px;"></i> Download Center
+                </div>
+                <button onclick="closeDownloadModal()"
+                    style="background: rgba(255,255,255,0.2); border: none; width: 32px; height: 32px; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="card-body" style="padding: 24px; background: #f8fafc;">
+                <p style="font-size: 14px; color: #64748b; margin-bottom: 20px; font-weight: 500;">Generate and download
+                    professional PDF reports for your farm.</p>
+
+                <div class="download-option-card" onclick="generateReport(this, 'Market Report')">
+                    <div class="download-icon-box" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="download-main-info">
+                        <div class="download-main-title">District Market Report</div>
+                        <div class="download-main-desc">Current commodity prices for {{ user.district }}</div>
+                        <div id="last-gen-market-report" style="font-size: 10px; margin-top: 4px; color: #94a3b8;">Not
+                            yet generated</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #cbd5e1;"></i>
+                </div>
+
+                <div class="download-option-card" onclick="generateReport(this, 'Crop Plan PDF')">
+                    <div class="download-icon-box" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <div class="download-main-info">
+                        <div class="download-main-title">Growing Activities</div>
+                        <div class="download-main-desc">Status and schedule for your active crops</div>
+                        <div id="last-gen-crop-plan-pdf" style="font-size: 10px; margin-top: 4px; color: #94a3b8;">Not
+                            yet generated</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #cbd5e1;"></i>
+                </div>
+
+
+                <div class="download-option-card" onclick="generateReport(this, 'Profit Summary')">
+                    <div class="download-icon-box" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div class="download-main-info">
+                        <div class="download-main-title">Expense Summary</div>
+                        <div class="download-main-desc">Financial breakdown from calculator</div>
+                        <div id="last-gen-profit-summary" style="font-size: 10px; margin-top: 4px; color: #94a3b8;">Not
+                            yet generated</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #cbd5e1;"></i>
+                </div>
+
+                <div class="download-option-card" onclick="generateReport(this, 'Weather Report')">
+                    <div class="download-icon-box" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">
+                        <i class="fas fa-cloud-sun"></i>
+                    </div>
+                    <div class="download-main-info">
+                        <div class="download-main-title">7-Day Weather Forecast</div>
+                        <div class="download-main-desc">Meteorological trends for your area</div>
+                        <div id="last-gen-weather-report" style="font-size: 10px; margin-top: 4px; color: #94a3b8;">Not
+                            yet generated</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #cbd5e1;"></i>
+                </div>
+            </div>
+            <div style="padding: 16px 24px; background: white; border-top: 1px solid #f1f5f9; text-align: center;">
+                <span
+                    style="font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Powered
+                    by Smart Farming Assistant AI</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Advanced Expense Calculator Modal -->
     <div class="modal-overlay" id="calculatorModal" style="display: none;">
         <div class="card" style="width: 1200px; max-width: 95vw; max-height: 90vh; overflow-y: auto;">
@@ -844,13 +1135,72 @@
                             style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px;"
                             onchange="loadBenchmarkData()">
                             <option value="">Select Crop</option>
-                            <option value="rice">Rice</option>
-                            <option value="wheat">Wheat</option>
-                            <option value="cotton">Cotton</option>
-                            <option value="sugarcane">Sugarcane</option>
-                            <option value="vegetables">Vegetables</option>
-                            <option value="pulses">Pulses</option>
-                            <option value="oilseeds">Oilseeds</option>
+                            <optgroup label="Cereals">
+                                <option value="rice">Rice</option>
+                                <option value="wheat">Wheat</option>
+                                <option value="maize">Maize (Corn)</option>
+                            </optgroup>
+                            <optgroup label="Pulses & Legumes">
+                                <option value="blackgram">Black Gram</option>
+                                <option value="chickpea">Chickpea</option>
+                                <option value="kidneybeans">Kidney Beans</option>
+                                <option value="lentil">Lentil</option>
+                                <option value="mothbeans">Moth Beans</option>
+                                <option value="mungbean">Mung Bean</option>
+                                <option value="pigeonpeas">Pigeon Peas</option>
+                                <option value="greenpeas">Green Peas</option>
+                                <option value="beans">Beans</option>
+                                <option value="pulses">Other Pulses</option>
+                            </optgroup>
+                            <optgroup label="Vegetables">
+                                <option value="potato">Potato</option>
+                                <option value="tomato">Tomato</option>
+                                <option value="onion">Onion</option>
+                                <option value="carrot">Carrot</option>
+                                <option value="cabbage">Cabbage</option>
+                                <option value="cauliflower">Cauliflower</option>
+                                <option value="spinach">Spinach</option>
+                                <option value="brinjal">Brinjal (Eggplant)</option>
+                                <option value="okra">Lady's Finger (Okra)</option>
+                                <option value="beetroot">Beetroot</option>
+                                <option value="radish">Radish</option>
+                                <option value="capsicum">Capsicum</option>
+                                <option value="pumpkin">Pumpkin</option>
+                                <option value="bottlegourd">Bottle Gourd</option>
+                                <option value="bittergourd">Bitter Gourd</option>
+                                <option value="ridgegourd">Ridge Gourd</option>
+                                <option value="mushroom">Mushroom</option>
+                                <option value="vegetables">Other Vegetables</option>
+                            </optgroup>
+                            <optgroup label="Fruits">
+                                <option value="apple">Apple</option>
+                                <option value="banana">Banana</option>
+                                <option value="mango">Mango</option>
+                                <option value="orange">Orange</option>
+                                <option value="grapes">Grapes</option>
+                                <option value="papaya">Papaya</option>
+                                <option value="pineapple">Pineapple</option>
+                                <option value="guava">Guava</option>
+                                <option value="watermelon">Watermelon</option>
+                                <option value="muskmelon">Muskmelon</option>
+                                <option value="pomegranate">Pomegranate</option>
+                                <option value="strawberry">Strawberry</option>
+                                <option value="cherry">Cherry</option>
+                                <option value="kiwi">Kiwi</option>
+                                <option value="lemon">Lemon</option>
+                                <option value="pear">Pear</option>
+                                <option value="peach">Peach</option>
+                                <option value="plum">Plum</option>
+                                <option value="custardapple">Custard Apple</option>
+                            </optgroup>
+                            <optgroup label="Cash Crops & Others">
+                                <option value="cotton">Cotton</option>
+                                <option value="sugarcane">Sugarcane</option>
+                                <option value="jute">Jute</option>
+                                <option value="coffee">Coffee</option>
+                                <option value="coconut">Coconut</option>
+                                <option value="oilseeds">Oilseeds</option>
+                            </optgroup>
                         </select>
                     </div>
                     <div style="background: var(--body-bg); padding: 15px; border-radius: 12px;">
@@ -1413,86 +1763,6 @@
                             <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">{{ stats.active_crops if
                                 stats else 0 }}</div>
                             <div style="font-size: 11px; color: #64748b;">Active Crops</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Downloadable Reports Section -->
-                <div class="reports-section">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                        <h4 class="reports-title" style="margin: 0;">
-                            <i class="fas fa-file-download" style="color: var(--accent-blue);"></i> Downloadable
-                            Reports
-                        </h4>
-                        <select
-                            style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 11px; color: var(--text-secondary); outline: none;">
-                            <option>English</option>
-                            <option>Hindi</option>
-                            <option>Marathi</option>
-                        </select>
-                    </div>
-
-                    <div class="report-cards">
-                        <!-- Crop Plan PDF -->
-                        <div class="report-card crop" onclick="generateReport(this, 'Crop Plan PDF')"
-                            style="cursor: pointer;">
-                            <div class="report-info">
-                                <div class="report-name">Crop Plan PDF</div>
-                                <div class="report-desc">Detailed sowing to harvest schedule with fertilizer
-                                    timeline.</div>
-                                <div class="report-meta">
-                                    <span><i class="fas fa-calendar-check"></i> Last: Today</span>
-                                    <span><i class="fas fa-file-alt"></i> 1.2 MB</span>
-                                </div>
-                            </div>
-                            <button class="report-btn">
-                                <i class="fas fa-download"></i>
-                            </button>
-                            <div class="report-tooltip">
-                                Essential for bank loans and government subsidy applications. Contains full
-                                cultivation timeline.
-                            </div>
-                        </div>
-
-                        <!-- Harvest Report -->
-                        <div class="report-card harvest" onclick="generateReport(this, 'Harvest Report')"
-                            style="cursor: pointer;">
-                            <div class="report-info">
-                                <div class="report-name">Harvest Report</div>
-                                <div class="report-desc">Maturity status, weather conditions, and yield estimation.
-                                </div>
-                                <div class="report-meta">
-                                    <span><i class="fas fa-clock"></i> Last: 7 days ago</span>
-                                    <span><i class="fas fa-file-alt"></i> 0.8 MB</span>
-                                </div>
-                            </div>
-                            <button class="report-btn">
-                                <i class="fas fa-download"></i>
-                            </button>
-                            <div class="report-tooltip">
-                                Use for selling to agribusiness buyers and claiming crop insurance.
-                            </div>
-                        </div>
-
-                        <!-- Profit Summary -->
-                        <div class="report-card profit" onclick="generateReport(this, 'Profit Summary')"
-                            style="cursor: pointer;">
-                            <div class="report-info">
-                                <div class="report-name">Profit Summary</div>
-                                <div class="report-desc">Income, expenses, net profit analysis and ROI analytics.
-                                </div>
-                                <div class="report-meta">
-                                    <span><i class="fas fa-chart-pie"></i> Last: Never</span>
-                                    <span><i class="fas fa-file-excel"></i> 0.5 MB</span>
-                                </div>
-                            </div>
-                            <button class="report-btn">
-                                <i class="fas fa-download"></i>
-                            </button>
-                            <div class="report-tooltip">
-                                Financial health check for tax filing and future investment planning.
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -2864,13 +3134,71 @@
 
         // Benchmark data for different crops (₹ per acre)
         const cropBenchmarks = {
+            // Cereals
             rice: { seed: 2000, fertilizer: 6000, pesticide: 2500, total: 35000 },
             wheat: { seed: 1500, fertilizer: 5000, pesticide: 2000, total: 28000 },
+            maize: { seed: 1500, fertilizer: 5000, pesticide: 2000, total: 30000 },
+
+            // Cash Crops
             cotton: { seed: 3000, fertilizer: 7000, pesticide: 4000, total: 42000 },
             sugarcane: { seed: 8000, fertilizer: 10000, pesticide: 3000, total: 60000 },
-            vegetables: { seed: 4000, fertilizer: 8000, pesticide: 3500, total: 45000 },
+            jute: { seed: 1000, fertilizer: 3000, pesticide: 1500, total: 25000 },
+            coffee: { seed: 5000, fertilizer: 8000, pesticide: 3000, total: 50000 },
+            coconut: { seed: 4000, fertilizer: 6000, pesticide: 2000, total: 40000 },
+            oilseeds: { seed: 2200, fertilizer: 5500, pesticide: 2800, total: 30000 },
+
+            // Pulses & Legumes (Standardized average)
             pulses: { seed: 1800, fertilizer: 4000, pesticide: 1500, total: 22000 },
-            oilseeds: { seed: 2200, fertilizer: 5500, pesticide: 2800, total: 30000 }
+            blackgram: { seed: 1800, fertilizer: 4000, pesticide: 1500, total: 22000 },
+            chickpea: { seed: 2000, fertilizer: 4500, pesticide: 1500, total: 25000 },
+            kidneybeans: { seed: 2000, fertilizer: 4500, pesticide: 2000, total: 26000 },
+            lentil: { seed: 1500, fertilizer: 3500, pesticide: 1500, total: 20000 },
+            mothbeans: { seed: 1500, fertilizer: 3000, pesticide: 1000, total: 18000 },
+            mungbean: { seed: 1800, fertilizer: 4000, pesticide: 1500, total: 22000 },
+            pigeonpeas: { seed: 2000, fertilizer: 4500, pesticide: 2000, total: 24000 },
+            greenpeas: { seed: 2500, fertilizer: 5000, pesticide: 2500, total: 30000 },
+            beans: { seed: 2000, fertilizer: 4500, pesticide: 2000, total: 28000 },
+
+            // Vegetables (Standardized average)
+            vegetables: { seed: 4000, fertilizer: 8000, pesticide: 3500, total: 45000 },
+            potato: { seed: 15000, fertilizer: 8000, pesticide: 4000, total: 55000 },
+            tomato: { seed: 5000, fertilizer: 10000, pesticide: 5000, total: 60000 },
+            onion: { seed: 4000, fertilizer: 8000, pesticide: 3500, total: 50000 },
+            carrot: { seed: 3000, fertilizer: 6000, pesticide: 2500, total: 40000 },
+            cabbage: { seed: 2500, fertilizer: 6000, pesticide: 3000, total: 40000 },
+            cauliflower: { seed: 2500, fertilizer: 6000, pesticide: 3000, total: 40000 },
+            spinach: { seed: 2000, fertilizer: 4000, pesticide: 1500, total: 25000 },
+            brinjal: { seed: 3000, fertilizer: 7000, pesticide: 4000, total: 45000 },
+            okra: { seed: 3000, fertilizer: 6000, pesticide: 3500, total: 40000 },
+            beetroot: { seed: 3000, fertilizer: 6000, pesticide: 2500, total: 35000 },
+            radish: { seed: 1500, fertilizer: 4000, pesticide: 1500, total: 25000 },
+            capsicum: { seed: 10000, fertilizer: 12000, pesticide: 6000, total: 80000 },
+            pumpkin: { seed: 2000, fertilizer: 5000, pesticide: 2000, total: 30000 },
+            bottlegourd: { seed: 2000, fertilizer: 5000, pesticide: 2000, total: 30000 },
+            bittergourd: { seed: 2500, fertilizer: 6000, pesticide: 3000, total: 35000 },
+            ridgegourd: { seed: 2000, fertilizer: 5000, pesticide: 2000, total: 30000 },
+            mushroom: { seed: 20000, fertilizer: 5000, pesticide: 2000, total: 100000 },
+
+            // Fruits (Standardized average)
+            apple: { seed: 20000, fertilizer: 15000, pesticide: 10000, total: 80000 },
+            banana: { seed: 10000, fertilizer: 15000, pesticide: 5000, total: 70000 },
+            mango: { seed: 5000, fertilizer: 10000, pesticide: 4000, total: 50000 },
+            orange: { seed: 8000, fertilizer: 12000, pesticide: 6000, total: 60000 },
+            grapes: { seed: 15000, fertilizer: 20000, pesticide: 10000, total: 100000 },
+            papaya: { seed: 5000, fertilizer: 10000, pesticide: 3000, total: 50000 },
+            pineapple: { seed: 10000, fertilizer: 12000, pesticide: 4000, total: 60000 },
+            guava: { seed: 5000, fertilizer: 8000, pesticide: 3000, total: 40000 },
+            watermelon: { seed: 5000, fertilizer: 8000, pesticide: 4000, total: 45000 },
+            muskmelon: { seed: 6000, fertilizer: 9000, pesticide: 5000, total: 50000 },
+            pomegranate: { seed: 10000, fertilizer: 15000, pesticide: 8000, total: 75000 },
+            strawberry: { seed: 30000, fertilizer: 20000, pesticide: 10000, total: 120000 },
+            cherry: { seed: 25000, fertilizer: 15000, pesticide: 10000, total: 90000 },
+            kiwi: { seed: 30000, fertilizer: 20000, pesticide: 10000, total: 100000 },
+            lemon: { seed: 5000, fertilizer: 8000, pesticide: 4000, total: 45000 },
+            pear: { seed: 10000, fertilizer: 10000, pesticide: 5000, total: 60000 },
+            peach: { seed: 10000, fertilizer: 10000, pesticide: 5000, total: 60000 },
+            plum: { seed: 10000, fertilizer: 10000, pesticide: 5000, total: 60000 },
+            custardapple: { seed: 5000, fertilizer: 6000, pesticide: 3000, total: 40000 }
         };
 
         function loadBenchmarkData() {
@@ -3048,7 +3376,7 @@
             }
         }
 
-        function saveExpenseEntry() {
+        async function saveExpenseEntry() {
             const entry = {
                 date: document.getElementById('entryDate')?.value,
                 cropType: document.getElementById('cropType')?.value,
@@ -3067,15 +3395,56 @@
                 marketPrice: parseFloat(document.getElementById('marketPrice')?.value) || 0
             };
 
+            if (!entry.date) {
+                alert('Please select an entry date');
+                return;
+            }
+
             const total = Object.values(entry.expenses).reduce((a, b) => a + b, 0);
             entry.total = total;
             entry.revenue = entry.expectedYield * entry.marketPrice;
             entry.profit = entry.revenue - total;
 
-            expenseHistory.push(entry);
-            localStorage.setItem('farmExpenseHistory', JSON.stringify(expenseHistory));
+            try {
+                const response = await fetch('/api/expenses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(entry)
+                });
 
-            alert('✅ Expense entry saved successfully!');
+                const result = await response.json();
+                if (result.success) {
+                    expenseHistory.push(entry);
+                    localStorage.setItem('farmExpenseHistory', JSON.stringify(expenseHistory));
+                    alert('✅ Expense entry saved successfully to database!');
+                } else {
+                    alert('❌ Failed to save to database: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error saving expense:', error);
+                // Fallback to local storage if API fails
+                expenseHistory.push(entry);
+                localStorage.setItem('farmExpenseHistory', JSON.stringify(expenseHistory));
+                alert('⚠️ Saved to local storage (Backend unavailable)');
+            }
+        }
+
+        function toggleNotificationPanel() {
+            document.getElementById('notificationModal').style.display = 'flex';
+        }
+
+        function closeNotificationModal() {
+            document.getElementById('notificationModal').style.display = 'none';
+        }
+
+        function openDownloadModal() {
+            document.getElementById('downloadModal').style.display = 'flex';
+        }
+
+        function closeDownloadModal() {
+            document.getElementById('downloadModal').style.display = 'none';
         }
 
         function exportToPDF() {
@@ -3157,9 +3526,12 @@
 
             // Add loading state
             cardElement.classList.add('report-loading');
-            const btnIcon = cardElement.querySelector('.report-btn i');
-            const originalIconClass = btnIcon.className;
-            btnIcon.className = 'fas fa-spinner fa-spin';
+            const btnIcon = cardElement.querySelector('.report-btn i') || cardElement.querySelector('.download-icon-box i') || cardElement.querySelector('i');
+            let originalIconClass = '';
+            if (btnIcon) {
+                originalIconClass = btnIcon.className;
+                btnIcon.className = 'fas fa-spinner fa-spin';
+            }
 
             // Show toast notification
             const toast = document.createElement('div');
@@ -3177,6 +3549,10 @@
                     apiEndpoint = '/api/report/harvest';
                 } else if (reportName === 'Profit Summary') {
                     apiEndpoint = '/api/report/profit';
+                } else if (reportName === 'Market Report') {
+                    apiEndpoint = '/api/report/market-watch';
+                } else if (reportName === 'Weather Report') {
+                    apiEndpoint = '/api/report/weather';
                 }
 
                 const response = await fetch(apiEndpoint);
@@ -3185,7 +3561,7 @@
                 // Check if data is available
                 if (!result.success || !result.data) {
                     cardElement.classList.remove('report-loading');
-                    btnIcon.className = originalIconClass;
+                    if (btnIcon) btnIcon.className = originalIconClass;
 
                     // Show "Not Found" message
                     toast.innerHTML = `<div class="toast-content"><i class="fas fa-exclamation-circle" style="color: #f59e0b;"></i> ${result.message || 'No data available'}</div>`;
@@ -3230,171 +3606,480 @@
                 doc.setTextColor(0);
 
                 if (reportName === 'Crop Plan PDF') {
-                    doc.text('Active Crop Planning Schedule', 20, y);
-                    y += 10;
+                    // PREMIUM REDESIGN: CROP PLAN
+                    doc.setFillColor(6, 78, 59);
+                    doc.rect(0, y - 5, 210, 25, 'F');
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(16);
+                    doc.setTextColor(255);
+                    doc.text('CROP CULTIVATION & PLANNING', 105, y + 10, { align: 'center' });
+                    y += 35;
+
                     doc.setFontSize(10);
-                    doc.text(`Total Active Crops: ${reportData.crops.length}`, 20, y);
+                    doc.setFont("helvetica", "normal");
+                    doc.setTextColor(100);
+                    doc.text(`Active cultivation status and scheduling for ${reportData.crops.length} crops.`, 20, y);
                     y += 15;
 
-                    // Crop Details
+                    // KPI Cards
+                    const dCW = 82;
+                    const dCH = 25;
+                    const dGap = 6;
+
+                    doc.setFillColor(16, 185, 129);
+                    doc.roundedRect(20, y, dCW, dCH, 3, 3, 'F');
+                    doc.setTextColor(255);
+                    doc.setFontSize(8);
+                    doc.text('TOTAL ACTIVE CROPS', 20 + dCW / 2, y + 8, { align: 'center' });
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(`${reportData.crops.length}`, 20 + dCW / 2, y + 18, { align: 'center' });
+
+                    const avgProgress = reportData.crops.length > 0 ? (reportData.crops.reduce((acc, c) => acc + (parseInt(c.progress) || 0), 0) / reportData.crops.length).toFixed(0) : 0;
+                    doc.setFillColor(5, 150, 105);
+                    doc.roundedRect(20 + dCW + dGap, y, dCW, dCH, 3, 3, 'F');
+                    doc.setFontSize(8);
+                    doc.setFont("helvetica", "normal");
+                    doc.text('AVG. MATURITY PROGRESS', 20 + dCW + dGap + dCW / 2, y + 8, { align: 'center' });
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(`${avgProgress}%`, 20 + dCW + dGap + dCW / 2, y + 18, { align: 'center' });
+
+                    y += dCH + 15;
+
+                    doc.setFontSize(12);
+                    doc.setTextColor(15, 23, 42);
+                    doc.text('Current Field Activities', 20, y);
+                    y += 8;
+
                     reportData.crops.forEach((crop, index) => {
+                        doc.setFillColor(248, 250, 252);
+                        doc.roundedRect(20, y, 170, 32, 2, 2, 'F');
+
                         doc.setFont("helvetica", "bold");
                         doc.setFontSize(11);
-                        doc.text(`${index + 1}. ${crop.crop}`, 20, y);
-                        y += 7;
+                        doc.setTextColor(6, 78, 59);
+                        doc.text(`${crop.crop.toUpperCase()}`, 25, y + 8);
 
                         doc.setFont("helvetica", "normal");
                         doc.setFontSize(9);
-                        doc.text(`Current Stage: ${crop.stage}`, 25, y);
-                        y += 5;
-                        doc.text(`Progress: ${crop.progress}% (Day ${crop.current_day})`, 25, y);
-                        y += 5;
-                        doc.text(`Started: ${crop.started}`, 25, y);
-                        y += 5;
-                        if (crop.notes) {
-                            doc.text(`Notes: ${crop.notes.substring(0, 60)}`, 25, y);
-                            y += 5;
-                        }
-                        y += 5;
+                        doc.setTextColor(71, 85, 105);
+                        doc.text(`Started: ${crop.started}`, 25, y + 15);
+                        doc.text(`Stage: ${crop.stage}`, 25, y + 21);
+                        doc.text(`Current Day: ${crop.current_day}`, 25, y + 27);
 
+                        // Progress bar in card
+                        const progW = 60;
+                        doc.setFillColor(226, 232, 240);
+                        doc.rect(120, y + 12, progW, 3, 'F');
+                        doc.setFillColor(16, 185, 129);
+                        doc.rect(120, y + 12, (parseInt(crop.progress) / 100) * progW, 3, 'F');
+
+                        doc.setFont("helvetica", "bold");
+                        doc.text(`${crop.progress}% COMPLETE`, 120, y + 10);
+
+                        y += 38;
                         if (y > 260) {
                             doc.addPage();
                             y = 20;
                         }
                     });
 
-                    // Fertilizer Recommendations
-                    if (reportData.fertilizers && reportData.fertilizers.length > 0) {
-                        y += 10;
-                        doc.setFont("helvetica", "bold");
-                        doc.setFontSize(12);
-                        doc.text('Recent Fertilizer Recommendations', 20, y);
-                        y += 10;
-
-                        reportData.fertilizers.forEach((fert, index) => {
-                            doc.setFont("helvetica", "normal");
-                            doc.setFontSize(9);
-                            doc.text(`• ${fert.fertilizer} for ${fert.crop} (${fert.date})`, 25, y);
-                            y += 5;
-                        });
-                    }
-
-                } else if (reportName === 'Harvest Report') {
-                    doc.text('Harvest Readiness & Yield Estimation', 20, y);
-                    y += 10;
-                    doc.setFontSize(10);
-                    doc.text(`Crops Ready/Near Harvest: ${reportData.crops.length}`, 20, y);
-                    y += 15;
-
-                    reportData.crops.forEach((crop, index) => {
-                        doc.setFont("helvetica", "bold");
-                        doc.setFontSize(11);
-                        doc.text(`${index + 1}. ${crop.crop}`, 20, y);
-                        y += 7;
-
-                        doc.setFont("helvetica", "normal");
-                        doc.setFontSize(9);
-                        doc.text(`Maturity: ${crop.progress}% Complete`, 25, y);
-                        y += 5;
-                        doc.text(`Current Stage: ${crop.stage}`, 25, y);
-                        y += 5;
-                        doc.text(`Estimated Yield: ${crop.estimated_yield}`, 25, y);
-                        y += 5;
-                        doc.text(`Harvest Window: ${crop.harvest_window}`, 25, y);
-                        y += 5;
-                        doc.text(`Days Since Planting: ${crop.current_day}`, 25, y);
-                        y += 10;
-
-                        if (y > 260) {
-                            doc.addPage();
-                            y = 20;
-                        }
-                    });
 
                 } else if (reportName === 'Profit Summary') {
-                    doc.text('Financial Performance Analysis', 20, y);
-                    y += 10;
+                    // PREMIUM DASHBOARD REDESIGN
+                    doc.setFillColor(15, 23, 42);
+                    doc.rect(0, y - 5, 210, 25, 'F');
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(16);
+                    doc.setTextColor(255);
+                    doc.text('FINANCIAL PERFORMANCE DASHBOARD', 105, y + 10, { align: 'center' });
+                    y += 35;
+
                     doc.setFontSize(10);
-                    doc.text(`Based on ${reportData.total_entries} expense entries`, 20, y);
+                    doc.setFont("helvetica", "normal");
+                    doc.setTextColor(100);
+                    doc.text(`Comprehensive financial analysis based on ${reportData.total_entries} cumulative expense records.`, 20, y);
                     y += 15;
 
-                    // Financial Summary Box
-                    doc.setFillColor(240, 255, 240);
-                    doc.rect(20, y, 170, 40, 'F');
+                    // Row 1: KPI Cards (Revenue, Expenses, Profit)
+                    const dCW = 55;
+                    const dCH = 32;
+                    const dGap = 5;
+                    let curX = 17.5;
 
+                    // Total Revenue Card - Cyan
+                    doc.setFillColor(8, 145, 178);
+                    doc.roundedRect(curX, y, dCW, dCH, 3, 3, 'F');
+                    doc.setTextColor(255);
+                    doc.setFontSize(8);
+                    doc.text('TOTAL REVENUE', curX + dCW / 2, y + 10, { align: 'center' });
                     doc.setFontSize(14);
-                    doc.setTextColor(22, 101, 52);
-                    doc.text(`Net Profit: ₹${reportData.net_profit.toLocaleString()}`, 105, y + 12, { align: 'center' });
+                    doc.setFont("helvetica", "bold");
+                    doc.text(`₹${reportData.total_revenue.toLocaleString('en-IN')}`, curX + dCW / 2, y + 22, { align: 'center' });
 
-                    doc.setFontSize(11);
-                    doc.setTextColor(0);
-                    doc.text(`ROI: ${reportData.roi.toFixed(2)}%`, 105, y + 22, { align: 'center' });
+                    // Total Expenses Card - Rose
+                    curX += dCW + dGap;
+                    doc.setFillColor(225, 29, 72);
+                    doc.roundedRect(curX, y, dCW, dCH, 3, 3, 'F');
+                    doc.setTextColor(255);
+                    doc.setFontSize(8);
+                    doc.setFont("helvetica", "normal");
+                    doc.text('TOTAL EXPENSES', curX + dCW / 2, y + 10, { align: 'center' });
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(`₹${reportData.total_expenses.toLocaleString('en-IN')}`, curX + dCW / 2, y + 22, { align: 'center' });
 
-                    y += 50;
+                    // Net Profit Card - Emerald
+                    curX += dCW + dGap;
+                    const isProfit = reportData.net_profit >= 0;
+                    doc.setFillColor(isProfit ? 16 : 220, isProfit ? 185 : 38, isProfit ? 129 : 38);
+                    doc.roundedRect(curX, y, dCW, dCH, 3, 3, 'F');
+                    doc.setTextColor(255);
+                    doc.setFontSize(8);
+                    doc.setFont("helvetica", "normal");
+                    doc.text('NET PROFIT', curX + dCW / 2, y + 10, { align: 'center' });
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(`₹${reportData.net_profit.toLocaleString('en-IN')}`, curX + dCW / 2, y + 22, { align: 'center' });
+
+                    y += dCH + 12;
+
+                    // Summary Utility Bar
+                    doc.setFillColor(241, 245, 249);
+                    doc.roundedRect(20, y, 170, 12, 2, 2, 'F');
+                    doc.setTextColor(71, 85, 105);
+                    doc.setFontSize(9);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(`ROI Analysis: ${reportData.roi.toFixed(2)}%`, 45, y + 8);
+                    const netMargin = reportData.total_revenue > 0 ? ((reportData.net_profit / reportData.total_revenue) * 100).toFixed(1) : 0;
+                    doc.text(`Profit Margin: ${netMargin}%`, 135, y + 8);
+
+                    y += 22;
+
+                    // Visual Comparison Section
                     doc.setFontSize(12);
-                    doc.text(`Total Revenue: ₹${reportData.total_revenue.toLocaleString()}`, 25, y);
+                    doc.setTextColor(15, 23, 42);
+                    doc.text('Revenue vs Expenditure Visual Comparison', 20, y);
+                    y += 8;
+
+                    const mValue = Math.max(reportData.total_revenue, reportData.total_expenses);
+                    const barW = 120;
+                    const rW = reportData.total_revenue > 0 ? (reportData.total_revenue / mValue) * barW : 2;
+                    const eW = reportData.total_expenses > 0 ? (reportData.total_expenses / mValue) * barW : 2;
+
+                    // Chart Bars
+                    doc.setFillColor(8, 145, 178, 0.1);
+                    doc.rect(50, y, barW, 6, 'F');
+                    doc.setFillColor(8, 145, 178);
+                    doc.rect(50, y, rW, 6, 'F');
+                    doc.setFontSize(8);
+                    doc.setTextColor(100);
+                    doc.text('Revenue', 20, y + 4.5);
                     y += 10;
-                    doc.text(`Total Expenses: ₹${reportData.total_expenses.toLocaleString()}`, 25, y);
-                    y += 15;
 
-                    // Crop-wise breakdown
-                    if (reportData.crop_wise && Object.keys(reportData.crop_wise).length > 0) {
-                        doc.setFont("helvetica", "bold");
-                        doc.text('Crop-wise Breakdown:', 20, y);
-                        y += 10;
+                    doc.setFillColor(225, 29, 72, 0.1);
+                    doc.rect(50, y, barW, 6, 'F');
+                    doc.setFillColor(225, 29, 72);
+                    doc.rect(50, y, eW, 6, 'F');
+                    doc.text('Expenses', 20, y + 4.5);
 
-                        doc.setFont("helvetica", "normal");
-                        doc.setFontSize(10);
+                    y += 18;
 
+                    // Detailed Analytics Table
+                    doc.setFontSize(12);
+                    doc.setFont("helvetica", "bold");
+                    doc.setTextColor(15, 23, 42);
+                    doc.text('Crop-wise Performance Break-down', 20, y);
+                    y += 8;
+
+                    // Professional Table Header
+                    doc.setFillColor(51, 65, 85);
+                    doc.rect(20, y, 170, 8, 'F');
+                    doc.setTextColor(255);
+                    doc.setFontSize(8);
+                    doc.text('CROP TYPE', 25, y + 5.5);
+                    doc.text('REVENUE (₹)', 75, y + 5.5);
+                    doc.text('EXPENSES (₹)', 115, y + 5.5);
+                    doc.text('EARNINGS (₹)', 155, y + 5.5);
+
+                    y += 13;
+                    doc.setTextColor(30, 41, 59);
+                    doc.setFont("helvetica", "normal");
+                    doc.setFontSize(9);
+
+                    if (reportData.crop_wise) {
                         for (const [crop, data] of Object.entries(reportData.crop_wise)) {
-                            const cropProfit = data.revenue - data.expenses;
-                            doc.text(`${crop}:`, 25, y);
-                            doc.text(`Revenue: ₹${data.revenue.toLocaleString()}`, 70, y);
-                            doc.text(`Profit: ₹${cropProfit.toLocaleString()}`, 130, y);
-                            y += 6;
+                            const earnings = data.revenue - data.expenses;
+                            doc.text(crop.toUpperCase(), 25, y);
+                            doc.text(data.revenue.toLocaleString('en-IN'), 75, y);
+                            doc.text(data.expenses.toLocaleString('en-IN'), 115, y);
+
+                            if (earnings >= 0) {
+                                doc.setTextColor(16, 185, 129);
+                                doc.text(`+${earnings.toLocaleString('en-IN')}`, 155, y);
+                            } else {
+                                doc.setTextColor(225, 29, 72);
+                                doc.text(`-${Math.abs(earnings).toLocaleString('en-IN')}`, 155, y);
+                            }
+                            doc.setTextColor(30, 41, 59);
+                            doc.setDrawColor(241, 245, 249);
+                            doc.line(20, y + 2, 190, y + 2);
+
+                            y += 10;
+                            if (y > 270) {
+                                doc.addPage();
+                                y = 20;
+                            }
                         }
                     }
 
-                    y += 10;
-                    doc.setFontSize(9);
+                    y += 15;
+                    doc.setFontSize(8);
+                    doc.setTextColor(148, 163, 184);
+                    doc.text('* Data based on the digital records in Smart Farming Assistant ledger.', 105, y, { align: 'center' });
+                } else if (reportName === 'Market Report') {
+                    // PREMIUM REDESIGN: MARKET REPORT
+                    doc.setFillColor(30, 58, 138); // Dark Blue
+                    doc.rect(0, y - 5, 210, 25, 'F');
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(16);
+                    doc.setTextColor(255);
+                    doc.text('REGIONAL MARKET PRICE TRENDS', 105, y + 10, { align: 'center' });
+                    y += 35;
+
+                    doc.setFontSize(10);
+                    doc.setFont("helvetica", "normal");
                     doc.setTextColor(100);
-                    doc.text('* Data based on entries in Expense Calculator', 20, y);
+                    doc.text(`Latest commodity prices and trends for ${reportData.user.district || 'All Markets'}.`, 20, y);
+                    y += 15;
+
+                    // KPI Cards
+                    const dCW = 82;
+                    const dCH = 25;
+                    const dGap = 6;
+
+                    doc.setFillColor(59, 130, 246);
+                    doc.roundedRect(20, y, dCW, dCH, 3, 3, 'F');
+                    doc.setTextColor(255);
+                    doc.setFontSize(8);
+                    doc.text('TRACKED COMMODITIES', 20 + dCW / 2, y + 8, { align: 'center' });
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(`${reportData.prices ? reportData.prices.length : 0}`, 20 + dCW / 2, y + 18, { align: 'center' });
+
+                    doc.setFillColor(37, 99, 235);
+                    doc.roundedRect(20 + dCW + dGap, y, dCW, dCH, 3, 3, 'F');
+                    doc.setFontSize(8);
+                    doc.setFont("helvetica", "normal");
+                    doc.text('REGION FOCUS', 20 + dCW + dGap + dCW / 2, y + 8, { align: 'center' });
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(`${reportData.user.district || 'State'}`, 20 + dCW + dGap + dCW / 2, y + 18, { align: 'center' });
+
+                    y += dCH + 15;
+
+                    // Professional Table Header
+                    doc.setFillColor(30, 41, 59);
+                    doc.rect(20, y, 170, 8, 'F');
+                    doc.setTextColor(255);
+                    doc.setFontSize(8);
+                    doc.text('COMMODITY', 25, y + 5.5);
+                    doc.text('MARKET', 80, y + 5.5);
+                    doc.text('PRICE (₹/Q)', 150, y + 5.5);
+
+                    y += 13;
+                    doc.setTextColor(30, 41, 59);
+                    doc.setFont("helvetica", "normal");
+                    doc.setFontSize(9);
+
+                    if (reportData.prices && reportData.prices.length > 0) {
+                        reportData.prices.forEach((item, index) => {
+                            if (index % 2 === 0) {
+                                doc.setFillColor(248, 250, 252);
+                                doc.rect(20, y - 5, 170, 8, 'F');
+                            }
+                            const commodity = item.commodity || 'Unknown';
+                            const market = item.market || item.district || 'Local Market';
+                            const price = item.modal_price !== undefined ? item.modal_price.toString() : 'N/A';
+
+                            doc.text(commodity.toUpperCase(), 25, y);
+                            doc.text(market, 80, y);
+                            doc.setFont("helvetica", "bold");
+                            doc.text(`₹${price}`, 150, y);
+                            doc.setFont("helvetica", "normal");
+
+                            doc.setDrawColor(241, 245, 249);
+                            doc.line(20, y + 2, 190, y + 2);
+
+                            y += 8;
+                            if (y > 270) {
+                                doc.addPage();
+                                y = 20;
+                            }
+                        });
+                    } else {
+                        doc.text('No market data found for your district today.', 25, y);
+                    }
+
+                } else if (reportName === 'Weather Report') {
+                    // PREMIUM REDESIGN: WEATHER REPORT
+                    doc.setFillColor(30, 58, 138); // Dark Blue Focus
+                    doc.rect(0, y - 5, 210, 25, 'F');
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(16);
+                    doc.setTextColor(255);
+                    doc.text('METEOROLOGICAL ADVISORY DASHBOARD', 105, y + 10, { align: 'center' });
+                    y += 35;
+
+                    const weather = reportData.weather;
+                    doc.setFontSize(10);
+                    doc.setFont("helvetica", "normal");
+                    doc.setTextColor(100);
+                    doc.text(`7-day agricultural forecast and field advisories for ${reportData.user.district}.`, 20, y);
+                    y += 15;
+
+                    // KPI Cards
+                    const dCW = 54;
+                    const dCH = 25;
+                    const dGap = 4;
+
+                    doc.setFillColor(59, 130, 246);
+                    doc.roundedRect(20, y, dCW, dCH, 3, 3, 'F');
+                    doc.setTextColor(255);
+                    doc.setFontSize(7);
+                    doc.text('CURRENT TEMP', 20 + dCW / 2, y + 8, { align: 'center' });
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(`${weather.current.temperature}°C`, 20 + dCW / 2, y + 18, { align: 'center' });
+
+                    doc.setFillColor(37, 99, 235);
+                    doc.roundedRect(20 + dCW + dGap, y, dCW, dCH, 3, 3, 'F');
+                    doc.setFontSize(7);
+                    doc.setFont("helvetica", "normal");
+                    doc.text('HUMIDITY', 20 + (dCW + dGap) + dCW / 2, y + 8, { align: 'center' });
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(`${weather.current.humidity}%`, 20 + (dCW + dGap) + dCW / 2, y + 18, { align: 'center' });
+
+                    doc.setFillColor(29, 78, 216);
+                    doc.roundedRect(20 + 2 * (dCW + dGap), y, dCW, dCH, 3, 3, 'F');
+                    doc.setFontSize(7);
+                    doc.setFont("helvetica", "normal");
+                    doc.text('WIND SPEED', 20 + 2 * (dCW + dGap) + dCW / 2, y + 8, { align: 'center' });
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(`${weather.current.wind_speed} KM/H`, 20 + 2 * (dCW + dGap) + dCW / 2, y + 18, { align: 'center' });
+
+                    y += dCH + 15;
+
+                    doc.setFontSize(11);
+                    doc.setTextColor(15, 23, 42);
+                    doc.setFont("helvetica", "bold");
+                    doc.text('7-Day Daily Forecast:', 20, y);
+                    y += 8;
+
+                    // Header for forecast table
+                    doc.setFillColor(30, 41, 59);
+                    doc.rect(20, y, 175, 8, 'F');
+                    doc.setTextColor(255);
+                    doc.setFontSize(7);
+                    doc.text('DAY', 25, y + 5.5);
+                    doc.text('CONDITION', 55, y + 5.5);
+                    doc.text('TEMP (L/H)', 95, y + 5.5);
+                    doc.text('UV/RAIN', 125, y + 5.5);
+                    doc.text('MOON PHASE', 150, y + 5.5);
+                    doc.text('WIND', 180, y + 5.5);
+                    y += 12;
+
+                    doc.setFont("helvetica", "normal");
+                    doc.setTextColor(30, 41, 59);
+                    weather.forecast.forEach((day, index) => {
+                        if (index % 2 === 0) {
+                            doc.setFillColor(248, 250, 252);
+                            doc.rect(20, y - 5, 175, 8, 'F');
+                        }
+                        doc.text(day.day.toUpperCase(), 25, y);
+                        doc.text(day.condition.substring(0, 18), 55, y);
+                        doc.text(`${day.low}°C - ${day.high}°C`, 95, y);
+                        doc.text(`UV ${day.uv || 0} / ${day.rain_chance}%`, 125, y);
+                        doc.text(day.moon_phase || 'N/A', 150, y);
+                        doc.text(`${day.wind || '-'}kph`, 180, y);
+
+                        doc.setDrawColor(241, 245, 249);
+                        doc.line(20, y + 2, 195, y + 2);
+                        y += 8;
+
+                        if (y > 275) {
+                            doc.addPage();
+                            y = 20;
+                        }
+                    });
+
+                    // Agricultural Advisory
+                    y += 12;
+                    doc.setFillColor(239, 246, 255);
+                    doc.setDrawColor(59, 130, 246);
+                    doc.roundedRect(20, y, 170, 40, 2, 2, 'FD');
+
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(10);
+                    doc.setTextColor(30, 58, 138);
+                    doc.text('FIELD-LEVEL AGRICULTURAL ADVISORY:', 25, y + 8);
+
+                    doc.setFont("helvetica", "normal");
+                    doc.setFontSize(8);
+                    doc.setTextColor(71, 85, 105);
+
+                    const rainDays = weather.forecast.filter(d => d.rain_chance > 40).length;
+                    let advText = "";
+                    if (rainDays > 2) {
+                        advText = "[RAIN ALERT] Heavy rain expected. Postpone irrigation and fertilizer application. Ensure field drainage.";
+                    } else if (weather.current.temperature > 35) {
+                        advText = "[SUN ALERT] High heat spell. Increase irrigation frequency. Apply mulch to conserve soil moisture.";
+                    } else {
+                        advText = "[ADVICE] Favorable conditions. Continue standard cultural practices and scheduled activities.";
+                    }
+
+                    const lines = doc.splitTextToSize(advText, 160);
+                    doc.text(lines, 25, y + 16);
                 }
 
-                // Footer
+                // Standard Footer & Save logic for all reports
                 doc.setFontSize(8);
                 doc.setTextColor(150);
                 doc.text('Smart Farming Assistant - Generated via User Dashboard', 105, 280, { align: 'center' });
 
-                // Save File
                 const fileName = `${reportName.replace(/\s+/g, '_').toLowerCase()}_${today.replace(/\//g, '-')}.pdf`;
                 doc.save(fileName);
 
-                // Save generation timestamp
-                localStorage.setItem('lastGen_' + reportName, Date.now());
+                const storageKey = 'last_gen_' + reportName.toLowerCase().replace(/\s+/g, '-');
+                localStorage.setItem(storageKey, Date.now());
+                if (typeof updateLastGeneratedDates === 'function') updateLastGeneratedDates();
 
-                // Update UI immediately for this specific item
-                updateReportHistory();
-
-                // Success Actions
                 cardElement.classList.remove('report-loading');
-                btnIcon.className = originalIconClass;
-                toast.innerHTML = `<div class="toast-content"><i class="fas fa-check-circle" style="color: #4ade80;"></i> ${reportName} Downloaded!</div>`;
-                const metaSpan = cardElement.querySelector('.report-meta span:first-child');
-                if (metaSpan) metaSpan.innerHTML = '<i class="fas fa-calendar-check"></i> Last: Just now';
+                if (btnIcon) btnIcon.className = originalIconClass;
+
+                toast.innerHTML = `<div class="toast-content"><i class="fas fa-check-circle" style="color: #10b981;"></i> ${reportName} Ready!</div>`;
+                toast.style.background = '#ecfdf5';
+                toast.style.color = '#065f46';
+                toast.style.border = '2px solid #34d399';
+
+                setTimeout(() => {
+                    toast.style.animation = 'slideOut 0.3s ease-in';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
 
             } catch (error) {
-                console.error('PDF Generation Error:', error);
-                cardElement.classList.remove('report-loading');
-                btnIcon.className = originalIconClass;
+                console.error('Report Generation Error:', error);
+                if (cardElement) cardElement.classList.remove('report-loading');
+                if (btnIcon) btnIcon.className = originalIconClass;
                 toast.innerHTML = `<div class="toast-content"><i class="fas fa-exclamation-circle" style="color: #ef4444;"></i> Error generating report</div>`;
+                setTimeout(() => {
+                    toast.style.animation = 'slideOut 0.3s ease-in';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
             }
-
-            // Remove toast
-            setTimeout(() => {
-                toast.style.animation = 'slideOut 0.3s ease-in';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
         }
 
         function updateReportHistory() {
@@ -3454,79 +4139,73 @@
             calculateLoan();
         }
 
-        // Initialize weather on page load using user's registered district
+        function updateLastGeneratedDates() {
+            const reportIds = ['crop-plan-pdf', 'profit-summary', 'market-report', 'weather-report'];
+            reportIds.forEach(id => {
+                const timestamp = localStorage.getItem(`last_gen_${id}`);
+                const element = document.getElementById(`last-gen-${id}`);
+                if (timestamp && element) {
+                    const date = new Date(parseInt(timestamp));
+                    const now = new Date();
+                    const diffTime = Math.abs(now - date);
+                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                    let timeStr = "";
+                    if (diffDays === 0) timeStr = "Today";
+                    else if (diffDays === 1) timeStr = "Yesterday";
+                    else timeStr = `${diffDays} days ago`;
+                    element.textContent = `Last Generated: ${timeStr}`;
+                    element.style.color = "#10b981";
+                    element.style.fontWeight = "600";
+                }
+            });
+        }
+
+        // Live Weather Update System
+        function refreshWeather() {
+            const weatherCard = document.querySelector('.weather-card');
+            if (weatherCard) weatherCard.style.opacity = '0.7';
+
+            fetch('/api/weather-update')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) throw new Error(data.error);
+
+                    const current = data.current;
+
+                    // Update main metrics
+                    const tempEl = document.getElementById('weather-temp');
+                    const humEl = document.getElementById('weather-humidity');
+                    const windEl = document.getElementById('weather-wind');
+                    const visEl = document.getElementById('weather-visibility');
+                    const descEl = document.getElementById('weather-desc');
+                    const locEl = document.getElementById('weather-location');
+                    const iconEl = document.querySelector('.weather-icon-large');
+
+                    if (tempEl) tempEl.textContent = Math.round(current.temperature) + '°C';
+                    if (humEl) humEl.textContent = current.humidity + '%';
+                    if (windEl) windEl.textContent = current.wind_speed + ' km/h';
+                    if (visEl) visEl.textContent = current.visibility + ' km';
+                    if (descEl) descEl.textContent = current.condition;
+                    if (locEl) locEl.textContent = current.location;
+                    if (iconEl) iconEl.textContent = current.icon;
+
+                    if (weatherCard) weatherCard.style.opacity = '1';
+                })
+                .catch(error => {
+                    console.error('Weather Pulse Error:', error);
+                    // Silent retry or partial update
+                });
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
-            // Initialize report history content
+            updateLastGeneratedDates();
             updateReportHistory();
 
-            // Get user's registered district from the template
-            const userDistrict = "{{ user.district | default('') }}";
-            const userState = "{{ user.state | default('') }}";
+            // Initial fetch
+            refreshWeather();
 
-            if (userDistrict && userState) {
-                // Fetch weather for user's registered district
-                const locationQuery = `${userDistrict}, ${userState}, India`;
-
-                // First get coordinates for the district
-                fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(userDistrict)}&count=5&language=en&format=json`)
-                    .then(response => response.json())
-                    .then(geoData => {
-                        if (geoData.results && geoData.results.length > 0) {
-                            // Find the best match for the state
-                            let location = geoData.results.find(r =>
-                                r.admin1 && r.admin1.toLowerCase().includes(userState.toLowerCase().replace(' nadu', '').replace(' pradesh', ''))
-                            ) || geoData.results[0];
-
-                            // Fetch weather for the district
-                            fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,visibility,weather_code&timezone=auto`)
-                                .then(response => response.json())
-                                .then(data => {
-                                    const current = data.current;
-                                    const weatherIcon = getWeatherIcon(current.weather_code || 0);
-
-                                    // Update dashboard weather card
-                                    document.getElementById('weather-temp').textContent = Math.round(current.temperature_2m) + '°C';
-                                    document.getElementById('weather-humidity').textContent = current.relative_humidity_2m + '%';
-                                    document.getElementById('weather-wind').textContent = Math.round(current.wind_speed_10m) + ' km/h';
-
-                                    const visibilityEl = document.getElementById('weather-visibility');
-                                    if (visibilityEl && current.visibility !== undefined) {
-                                        visibilityEl.textContent = (current.visibility / 1000).toFixed(1) + ' km';
-                                    }
-
-                                    // Update weather description and location
-                                    const descEl = document.getElementById('weather-desc');
-                                    if (descEl) {
-                                        const conditions = ['Clear', 'Partly Cloudy', 'Cloudy', 'Foggy', 'Drizzle', 'Rain', 'Snow', 'Thunderstorm'];
-                                        const code = current.weather_code || 0;
-                                        let condition = 'Clear';
-                                        if (code === 0) condition = 'Clear Sky';
-                                        else if (code <= 3) condition = 'Partly Cloudy';
-                                        else if (code <= 48) condition = 'Foggy';
-                                        else if (code <= 67) condition = 'Rainy';
-                                        else if (code <= 77) condition = 'Snowy';
-                                        else if (code <= 82) condition = 'Heavy Rain';
-                                        else condition = 'Stormy';
-                                        descEl.textContent = condition;
-                                    }
-
-                                    const locationEl = document.getElementById('weather-location');
-                                    if (locationEl) {
-                                        locationEl.textContent = `${userDistrict}, ${userState}`;
-                                    }
-
-                                    // Update weather icon if element exists
-                                    const iconEl = document.querySelector('.weather-icon-large');
-                                    if (iconEl) {
-                                        iconEl.textContent = weatherIcon;
-                                    }
-                                });
-                        }
-                    })
-                    .catch(error => {
-                        console.log('Weather fetch error:', error);
-                    });
-            }
+            // Set live update interval (every 15 minutes)
+            setInterval(refreshWeather, 15 * 60 * 1000);
         });
     </script>
     {% endblock %}

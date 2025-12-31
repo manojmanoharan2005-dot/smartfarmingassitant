@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, jsonify
 from utils.auth import login_required
-from utils.db import save_growing_activity, get_user_growing_activities, update_growing_activity
+from utils.db import save_growing_activity, get_user_growing_activities, update_growing_activity, save_expense
 from datetime import datetime, timedelta
 import json
 
@@ -993,3 +993,60 @@ def view_activity(activity_id):
         flash('Error loading activity details', 'error')
         return redirect(url_for('dashboard.dashboard'))
 
+
+@growing_bp.route('/api/expenses', methods=['POST'])
+@login_required
+def save_expense_api():
+    """API endpoint to save expense data"""
+    try:
+        data = request.json
+        if not data:
+            return jsonify({'success': False, 'message': 'No data provided'}), 400
+        
+        # Add user_id and timestamp
+        data['user_id'] = session.get('user_id')
+        data['created_at'] = datetime.now().isoformat()
+        
+        # Flatten expenses if they are in a sub-dictionary for the backend logic (report_routes.py expects certain keys)
+        # Based on report_routes.py, it expects: seed_cost, fertilizer_cost, pesticide_cost, irrigation_cost, labor_cost, machinery_cost, other_cost
+        if 'expenses' in data:
+            exp = data['expenses']
+            data['seed_cost'] = exp.get('seed', 0)
+            data['fertilizer_cost'] = exp.get('fertilizer', 0)
+            data['pesticide_cost'] = exp.get('pesticide', 0)
+            data['irrigation_cost'] = exp.get('irrigation', 0)
+            data['labor_cost'] = exp.get('labor', 0)
+            data['machinery_cost'] = exp.get('machinery', 0)
+            data['other_cost'] = exp.get('other', 0)
+            # Remove the nested object to avoid redundancy
+            # del data['expenses']
+            
+        if 'date' in data:
+            data['entry_date'] = data['date'] # backend expects entry_date
+        
+        # cropType -> crop_type
+        if 'cropType' in data:
+            data['crop_type'] = data['cropType']
+            
+        # Mapping frontend camelCase to backend snake_case for revenue calculation
+        if 'landArea' in data:
+            data['land_area'] = data['landArea']
+        if 'expectedYield' in data:
+            data['expected_yield'] = data['expectedYield']
+        if 'marketPrice' in data:
+            data['market_price'] = data['marketPrice']
+            
+        expense_id = save_expense(data)
+        
+        if expense_id:
+            return jsonify({
+                'success': True,
+                'message': 'Expense entry saved successfully!',
+                'expense_id': str(expense_id)
+            })
+        else:
+            return jsonify({'success': False, 'message': 'Failed to save expense'}), 500
+            
+    except Exception as e:
+        print(f"Error in save_expense_api: {e}")
+        return jsonify({'success': False, 'message': str(e)}), 500

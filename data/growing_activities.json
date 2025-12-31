@@ -485,7 +485,7 @@
       "start_date": "2025-12-31",
       "harvest_date": "2026-03-31",
       "duration_days": 90,
-      "current_stage": 1,
+      "current_stage": "Harvest Ready",
       "status": "active",
       "tasks": [
         {
@@ -527,16 +527,19 @@
       ],
       "task_dates": {
         "0": "2025-12-31",
-        "1": "2026-01-07",
-        "2": "2026-02-04"
+        "1": "2026-01-07"
       },
-      "completed_tasks": [
-        0
-      ],
+      "completed_tasks": {
+        "watering": false,
+        "fertilizer": false,
+        "pest": false,
+        "weeding": false
+      },
       "notes": "",
-      "created_at": "2025-12-31T09:01:43.949717",
-      "updated_at": "2025-12-31T09:01:43.949724",
-      "_id": "df76f514-63c7-4cf6-8f33-ebcb3fddcc14"
+      "created_at": "2025-12-31T12:06:52.231452",
+      "updated_at": "2025-12-31T12:20:47.063364",
+      "_id": "f5253b11-707a-4568-bb05-081ca95044c1",
+      "progress": 100
     }
   ]
 }
