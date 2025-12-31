@@ -6,301 +6,381 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-.form-card {
-    background: var(--card-bg);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
-}
+    /* Dynamic Category Styles */
+    .cat-header-organic {
+        background: linear-gradient(135deg, #16a34a, #15803d);
+    }
 
-.form-card-header {
-    background: linear-gradient(135deg, var(--accent-purple), #7c3aed);
-    color: white;
-    padding: 24px 30px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
+    .cat-header-complex {
+        background: linear-gradient(135deg, #ea580c, #c2410c);
+    }
 
-.form-card-header .icon {
-    width: 56px;
-    height: 56px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-}
+    .cat-header-nitro {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
 
-.form-card-header h2 {
-    font-size: 22px;
-    margin: 0 0 4px 0;
-}
+    .cat-header-default {
+        background: linear-gradient(135deg, #10b981, #059669);
+    }
 
-.form-card-header p {
-    font-size: 14px;
-    opacity: 0.9;
-    margin: 0;
-}
+    /* Dynamic Priority Badge Styles */
+    .badge-high {
+        background: #dcfce7;
+        color: #166534;
+    }
 
-.form-card-body {
-    padding: 30px;
-}
+    .badge-medium {
+        background: #fef3c7;
+        color: #92400e;
+    }
 
-.form-section {
-    margin-bottom: 30px;
-}
+    .badge-low {
+        background: #f1f5f9;
+        color: #475569;
+    }
 
-.form-section-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid rgba(139, 92, 246, 0.2);
-}
+    /* Dynamic Button Styles */
+    .btn-save-primary {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        border: 2px solid #10b981;
+    }
 
-.form-section-title i {
-    color: var(--accent-purple);
-}
+    .btn-save-secondary {
+        background: white;
+        color: #10b981;
+        border: 2px solid #10b981;
+    }
 
-.input-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
+    /* Card Border/Background Styles */
+    .card-border-high {
+        border: 2px solid #10b981;
+    }
 
-.form-card .input-group {
-    display: flex;
-    flex-direction: column;
-    position: static;
-}
+    .card-border-default {
+        border: 2px solid #e2e8f0;
+    }
 
-.form-card .input-group label {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
+    .card-bg-top {
+        background: linear-gradient(135deg, #ecfdf5, white);
+        border: 2px solid #10b981;
+    }
 
-.form-card .input-group label i {
-    position: static;
-    transform: none;
-    color: var(--accent-purple);
-}
+    .card-bg-second {
+        background: linear-gradient(135deg, #f0fdf4, white);
+        border: 2px solid #22c55e;
+    }
 
-.form-card .input-group input,
-.form-card .input-group select {
-    padding: 14px 16px;
-    border: 2px solid var(--border-color);
-    border-radius: var(--radius-md);
-    font-size: 15px;
-    transition: all 0.3s ease;
-    background: white;
-}
+    .card-bg-default {
+        background: linear-gradient(135deg, #f8fafc, white);
+        border: 2px solid #e2e8f0;
+    }
+</style>
+<style>
+    .form-card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+    }
 
-.form-card .input-group input:focus,
-.form-card .input-group select:focus {
-    outline: none;
-    border-color: var(--accent-purple);
-    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
-}
+    .form-card-header {
+        background: linear-gradient(135deg, var(--accent-purple), #7c3aed);
+        color: white;
+        padding: 24px 30px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
 
-.form-card .input-group small {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-top: 6px;
-}
+    .form-card-header .icon {
+        width: 56px;
+        height: 56px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+    }
 
-.submit-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 16px 32px;
-    background: linear-gradient(135deg, var(--accent-purple), #7c3aed);
-    color: white;
-    border: none;
-    border-radius: var(--radius-md);
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 20px;
-}
+    .form-card-header h2 {
+        font-size: 22px;
+        margin: 0 0 4px 0;
+    }
 
-.submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
-}
+    .form-card-header p {
+        font-size: 14px;
+        opacity: 0.9;
+        margin: 0;
+    }
 
-.result-card {
-    background: white;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
-    margin-top: 30px;
-}
+    .form-card-body {
+        padding: 30px;
+    }
 
-.result-header {
-    background: linear-gradient(135deg, var(--accent-green), #059669);
-    color: white;
-    padding: 24px 30px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
+    .form-section {
+        margin-bottom: 30px;
+    }
 
-.result-icon {
-    width: 70px;
-    height: 70px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-}
+    .form-section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid rgba(139, 92, 246, 0.2);
+    }
 
-.result-header h2 {
-    font-size: 28px;
-    margin: 0 0 4px 0;
-}
+    .form-section-title i {
+        color: var(--accent-purple);
+    }
 
-.result-header p {
-    font-size: 14px;
-    opacity: 0.9;
-    margin: 0;
-}
+    .input-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
 
-.result-body {
-    padding: 30px;
-}
+    .form-card .input-group {
+        display: flex;
+        flex-direction: column;
+        position: static;
+    }
 
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-}
+    .form-card .input-group label {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
 
-.info-card {
-    background: var(--body-bg);
-    border-radius: var(--radius-md);
-    padding: 20px;
-    text-align: center;
-}
+    .form-card .input-group label i {
+        position: static;
+        transform: none;
+        color: var(--accent-purple);
+    }
 
-.info-card .icon {
-    width: 50px;
-    height: 50px;
-    margin: 0 auto 12px;
-    background: linear-gradient(135deg, var(--accent-green), #059669);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 20px;
-}
+    .form-card .input-group input,
+    .form-card .input-group select {
+        padding: 14px 16px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-md);
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: white;
+    }
 
-.info-card.blue .icon { background: linear-gradient(135deg, var(--accent-blue), #2563eb); }
-.info-card.purple .icon { background: linear-gradient(135deg, var(--accent-purple), #7c3aed); }
-.info-card.orange .icon { background: linear-gradient(135deg, var(--accent-orange), #ea580c); }
+    .form-card .input-group input:focus,
+    .form-card .input-group select:focus {
+        outline: none;
+        border-color: var(--accent-purple);
+        box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+    }
 
-.info-card .value {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text-primary);
-}
+    .form-card .input-group small {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 6px;
+    }
 
-.info-card .label {
-    font-size: 13px;
-    color: var(--text-secondary);
-    margin-top: 4px;
-}
+    .submit-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 16px 32px;
+        background: linear-gradient(135deg, var(--accent-purple), #7c3aed);
+        color: white;
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+    }
 
-.description-box {
-    background: var(--body-bg);
-    border-radius: var(--radius-md);
-    padding: 24px;
-    margin-bottom: 24px;
-}
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+    }
 
-.description-box h4 {
-    font-size: 16px;
-    color: var(--text-primary);
-    margin: 0 0 12px 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+    .result-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        margin-top: 30px;
+    }
 
-.description-box h4 i {
-    color: var(--accent-green);
-}
+    .result-header {
+        background: linear-gradient(135deg, var(--accent-green), #059669);
+        color: white;
+        padding: 24px 30px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
 
-.description-box p {
-    color: var(--text-secondary);
-    line-height: 1.7;
-    margin: 0;
-}
+    .result-icon {
+        width: 70px;
+        height: 70px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+    }
 
-.action-buttons {
-    display: flex;
-    gap: 16px;
-    margin-top: 24px;
-}
+    .result-header h2 {
+        font-size: 28px;
+        margin: 0 0 4px 0;
+    }
 
-.action-btn {
-    flex: 1;
-    padding: 14px 24px;
-    border: none;
-    border-radius: var(--radius-md);
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    text-decoration: none;
-}
+    .result-header p {
+        font-size: 14px;
+        opacity: 0.9;
+        margin: 0;
+    }
 
-.action-btn.primary {
-    background: linear-gradient(135deg, var(--accent-green), #059669);
-    color: white;
-}
+    .result-body {
+        padding: 30px;
+    }
 
-.action-btn.primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-}
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
 
-.action-btn.secondary {
-    background: white;
-    color: var(--text-primary);
-    border: 2px solid var(--border-color);
-}
+    .info-card {
+        background: var(--body-bg);
+        border-radius: var(--radius-md);
+        padding: 20px;
+        text-align: center;
+    }
 
-.action-btn.secondary:hover {
-    border-color: var(--accent-green);
-    color: var(--accent-green);
-}
+    .info-card .icon {
+        width: 50px;
+        height: 50px;
+        margin: 0 auto 12px;
+        background: linear-gradient(135deg, var(--accent-green), #059669);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 20px;
+    }
+
+    .info-card.blue .icon {
+        background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+    }
+
+    .info-card.purple .icon {
+        background: linear-gradient(135deg, var(--accent-purple), #7c3aed);
+    }
+
+    .info-card.orange .icon {
+        background: linear-gradient(135deg, var(--accent-orange), #ea580c);
+    }
+
+    .info-card .value {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    .info-card .label {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-top: 4px;
+    }
+
+    .description-box {
+        background: var(--body-bg);
+        border-radius: var(--radius-md);
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .description-box h4 {
+        font-size: 16px;
+        color: var(--text-primary);
+        margin: 0 0 12px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .description-box h4 i {
+        color: var(--accent-green);
+    }
+
+    .description-box p {
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 16px;
+        margin-top: 24px;
+    }
+
+    .action-btn {
+        flex: 1;
+        padding: 14px 24px;
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .action-btn.primary {
+        background: linear-gradient(135deg, var(--accent-green), #059669);
+        color: white;
+    }
+
+    .action-btn.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .action-btn.secondary {
+        background: white;
+        color: var(--text-primary);
+        border: 2px solid var(--border-color);
+    }
+
+    .action-btn.secondary:hover {
+        border-color: var(--accent-green);
+        color: var(--accent-green);
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="dashboard-layout">
+    <!-- Sidebar -->
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
@@ -310,7 +390,7 @@
                 <div class="sidebar-subtitle">Agricultural Platform</div>
             </div>
         </div>
-        
+
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-section-title">Main Menu</div>
@@ -332,15 +412,18 @@
                     <span class="badge">Live</span>
                 </a>
             </div>
+
+
         </nav>
-        
+
         <div class="sidebar-user">
-            <div class="user-info">
-                <div class="user-avatar">{{ (user_name or 'F')[0] }}</div>
+            <div class="user-info" onclick="openProfileModal()" style="cursor: pointer;">
+                <div class="user-avatar">{{ user_name[0] if user_name else 'U' }}</div>
                 <div class="user-details">
-                    <h4>{{ user_name or 'Farmer' }}</h4>
+                    <h4>{{ user_name }}</h4>
                     <span>Farmer</span>
                 </div>
+                <i class="fas fa-chevron-right" style="margin-left: auto; opacity: 0.5; font-size: 12px;"></i>
             </div>
         </div>
     </div>
@@ -354,7 +437,8 @@
                     <i class="fas fa-flask"></i> AI-Powered Analysis
                 </div>
                 <h1 class="hero-title">Smart Fertilizer Recommendation</h1>
-                <p class="hero-subtitle">Get tailored fertilizer suggestions based on your crop type and soil test results using machine learning.</p>
+                <p class="hero-subtitle">Get tailored fertilizer suggestions based on your crop type and soil test
+                    results using machine learning.</p>
             </div>
         </div>
 
@@ -382,7 +466,8 @@
                 </div>
             </div>
             <div style="margin-left: auto;">
-                <a href="{{ url_for('auth.logout') }}" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                <a href="{{ url_for('auth.logout') }}"
+                    style="background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>
@@ -410,17 +495,20 @@
                             <div class="input-grid">
                                 <div class="input-group">
                                     <label><i class="fas fa-atom"></i> Nitrogen (N)</label>
-                                    <input type="number" name="nitrogen" placeholder="70" step="0.01" required value="{{ input_data.nitrogen if input_data else '' }}">
+                                    <input type="number" name="nitrogen" placeholder="70" step="0.01" required
+                                        value="{{ input_data.nitrogen if input_data else '' }}">
                                     <small>Range: 0-140 kg/ha (Avg: 70)</small>
                                 </div>
                                 <div class="input-group">
                                     <label><i class="fas fa-atom"></i> Phosphorus (P)</label>
-                                    <input type="number" name="phosphorous" placeholder="80" step="0.01" required value="{{ input_data.phosphorous if input_data else '' }}">
+                                    <input type="number" name="phosphorous" placeholder="80" step="0.01" required
+                                        value="{{ input_data.phosphorous if input_data else '' }}">
                                     <small>Range: 5-145 kg/ha (Avg: 80)</small>
                                 </div>
                                 <div class="input-group">
                                     <label><i class="fas fa-atom"></i> Potassium (K)</label>
-                                    <input type="number" name="potassium" placeholder="100" step="0.01" required value="{{ input_data.potassium if input_data else '' }}">
+                                    <input type="number" name="potassium" placeholder="100" step="0.01" required
+                                        value="{{ input_data.potassium if input_data else '' }}">
                                     <small>Range: 5-205 kg/ha (Avg: 100)</small>
                                 </div>
                             </div>
@@ -435,12 +523,14 @@
                             <div class="input-grid">
                                 <div class="input-group">
                                     <label><i class="fas fa-vial"></i> pH Level</label>
-                                    <input type="number" name="ph" placeholder="6.5" step="0.1" min="0" max="14" required value="{{ input_data.ph if input_data else '6.5' }}">
+                                    <input type="number" name="ph" placeholder="6.5" step="0.1" min="0" max="14"
+                                        required value="{{ input_data.ph if input_data else '6.5' }}">
                                     <small>Range: 3.5-9.9 (Avg: 6.5)</small>
                                 </div>
                                 <div class="input-group">
                                     <label><i class="fas fa-percent"></i> Carbon Content (%)</label>
-                                    <input type="number" name="carbon" placeholder="1.5" step="0.1" required value="{{ input_data.carbon if input_data else '1.5' }}">
+                                    <input type="number" name="carbon" placeholder="1.5" step="0.1" required
+                                        value="{{ input_data.carbon if input_data else '1.5' }}">
                                     <small>Range: 0.5-5.0% (Avg: 1.5%)</small>
                                 </div>
                                 <div class="input-group">
@@ -448,15 +538,16 @@
                                     <select name="soil" required>
                                         <option value="">Choose soil type</option>
                                         {% if available_soils %}
-                                            {% for soil in available_soils %}
-                                            <option value="{{ soil }}" {% if input_data and input_data.soil==soil %}selected{% endif %}>{{ soil }}</option>
-                                            {% endfor %}
+                                        {% for soil in available_soils %}
+                                        <option value="{{ soil }}" {% if input_data and input_data.soil==soil
+                                            %}selected{% endif %}>{{ soil }}</option>
+                                        {% endfor %}
                                         {% else %}
-                                            <option value="Loamy Soil">Loamy Soil</option>
-                                            <option value="Peaty Soil">Peaty Soil</option>
-                                            <option value="Acidic Soil">Acidic Soil</option>
-                                            <option value="Alkaline Soil">Alkaline Soil</option>
-                                            <option value="Neutral Soil">Neutral Soil</option>
+                                        <option value="Loamy Soil">Loamy Soil</option>
+                                        <option value="Peaty Soil">Peaty Soil</option>
+                                        <option value="Acidic Soil">Acidic Soil</option>
+                                        <option value="Alkaline Soil">Alkaline Soil</option>
+                                        <option value="Neutral Soil">Neutral Soil</option>
                                         {% endif %}
                                     </select>
                                     <small>Select your soil type</small>
@@ -475,94 +566,74 @@
                                     <label><i class="fas fa-leaf"></i> Crop Type</label>
                                     <select name="crop_type" required>
                                         <option value="">Choose a crop</option>
-                                        {% if available_crops %}
-                                            {% for crop in available_crops %}
-                                            <option value="{{ crop }}" {% if input_data and input_data.crop_type==crop %}selected{% endif %}>{{ crop|title }}</option>
-                                            {% endfor %}
-                                        {% else %}
-                                            <optgroup label="Cereals & Grains">
-                                                <option value="rice">Rice</option>
-                                                <option value="wheat">Wheat</option>
-                                                <option value="maize">Maize</option>
-                                                <option value="barley">Barley</option>
-                                                <option value="millets">Millets</option>
-                                                <option value="sorghum">Sorghum</option>
-                                            </optgroup>
-                                            <optgroup label="Pulses & Legumes">
-                                                <option value="chickpea">Chickpea (Chana)</option>
-                                                <option value="lentil">Lentil (Masoor)</option>
-                                                <option value="pigeonpea">Pigeon Pea (Arhar)</option>
-                                                <option value="greengram">Green Gram (Moong)</option>
-                                                <option value="blackgram">Black Gram (Urad)</option>
-                                                <option value="soybean">Soybean</option>
-                                                <option value="groundnut">Groundnut</option>
-                                            </optgroup>
-                                            <optgroup label="Vegetables">
-                                                <option value="potato">Potato</option>
-                                                <option value="tomato">Tomato</option>
-                                                <option value="onion">Onion</option>
-                                                <option value="cabbage">Cabbage</option>
-                                                <option value="cauliflower">Cauliflower</option>
-                                                <option value="brinjal">Brinjal (Eggplant)</option>
-                                                <option value="chilli">Chilli</option>
-                                                <option value="capsicum">Capsicum</option>
-                                                <option value="carrot">Carrot</option>
-                                                <option value="spinach">Spinach</option>
-                                                <option value="ladyfinger">Lady Finger (Okra)</option>
-                                                <option value="cucumber">Cucumber</option>
-                                                <option value="pumpkin">Pumpkin</option>
-                                                <option value="beans">Beans</option>
-                                                <option value="peas">Peas</option>
-                                            </optgroup>
-                                            <optgroup label="Fruits">
-                                                <option value="banana">Banana</option>
-                                                <option value="mango">Mango</option>
-                                                <option value="apple">Apple</option>
-                                                <option value="grapes">Grapes</option>
-                                                <option value="orange">Orange</option>
-                                                <option value="papaya">Papaya</option>
-                                                <option value="watermelon">Watermelon</option>
-                                                <option value="pomegranate">Pomegranate</option>
-                                                <option value="guava">Guava</option>
-                                                <option value="lemon">Lemon</option>
-                                            </optgroup>
-                                            <optgroup label="Cash Crops">
-                                                <option value="cotton">Cotton</option>
-                                                <option value="sugarcane">Sugarcane</option>
-                                                <option value="jute">Jute</option>
-                                                <option value="tobacco">Tobacco</option>
-                                                <option value="tea">Tea</option>
-                                                <option value="coffee">Coffee</option>
-                                            </optgroup>
-                                            <optgroup label="Spices">
-                                                <option value="turmeric">Turmeric</option>
-                                                <option value="ginger">Ginger</option>
-                                                <option value="garlic">Garlic</option>
-                                                <option value="coriander">Coriander</option>
-                                                <option value="cumin">Cumin</option>
-                                            </optgroup>
-                                            <optgroup label="Oilseeds">
-                                                <option value="mustard">Mustard</option>
-                                                <option value="sunflower">Sunflower</option>
-                                                <option value="sesame">Sesame</option>
-                                            </optgroup>
-                                        {% endif %}
+                                        <optgroup label="Fruits">
+                                            <option value="apple">Apple</option>
+                                            <option value="banana">Banana</option>
+                                            <option value="grapes">Grapes</option>
+                                            <option value="mango">Mango</option>
+                                            <option value="muskmelon">Muskmelon</option>
+                                            <option value="orange">Orange</option>
+                                            <option value="papaya">Papaya</option>
+                                            <option value="pomegranate">Pomegranate</option>
+                                            <option value="watermelon">Watermelon</option>
+                                            <option value="coconut">Coconut</option>
+                                        </optgroup>
+                                        <optgroup label="Pulses & Vegetables">
+                                            <option value="pigeonpeas">Pigeonpeas</option>
+                                            <option value="kidneybeans">Kidneybeans</option>
+                                            <option value="mothbeans">Mothbeans</option>
+                                            <option value="mungbean">Mungbean</option>
+                                            <option value="blackgram">Blackgram</option>
+                                            <option value="lentil">Lentil</option>
+                                            <option value="chickpea">Chickpea</option>
+                                        </optgroup>
+                                        <optgroup label="Grains & Cereals">
+                                            <option value="rice">Rice</option>
+                                            <option value="wheat">Wheat</option>
+                                            <option value="maize">Maize</option>
+                                        </optgroup>
+                                        <optgroup label="Commercial Crops">
+                                            <option value="cotton">Cotton</option>
+                                            <option value="jute">Jute</option>
+                                            <option value="coffee">Coffee</option>
+                                            <option value="tea">Tea</option>
+                                        </optgroup>
+                                        <option value="tobacco">Tobacco</option>
+                                        <option value="tea">Tea</option>
+                                        <option value="coffee">Coffee</option>
+                                        </optgroup>
+                                        <optgroup label="Spices">
+                                            <option value="turmeric">Turmeric</option>
+                                            <option value="ginger">Ginger</option>
+                                            <option value="garlic">Garlic</option>
+                                            <option value="coriander">Coriander</option>
+                                            <option value="cumin">Cumin</option>
+                                        </optgroup>
+                                        <optgroup label="Oilseeds">
+                                            <option value="mustard">Mustard</option>
+                                            <option value="sunflower">Sunflower</option>
+                                            <option value="sesame">Sesame</option>
+                                        </optgroup>
+
                                     </select>
                                     <small>Select your crop</small>
                                 </div>
                                 <div class="input-group">
                                     <label><i class="fas fa-thermometer-half"></i> Temperature (°C)</label>
-                                    <input type="number" name="temperature" placeholder="28" step="0.1" required value="{{ input_data.temperature if input_data else '' }}">
+                                    <input type="number" name="temperature" placeholder="28" step="0.1" required
+                                        value="{{ input_data.temperature if input_data else '' }}">
                                     <small>Current field temperature</small>
                                 </div>
                                 <div class="input-group">
                                     <label><i class="fas fa-tint"></i> Humidity (%)</label>
-                                    <input type="number" name="humidity" placeholder="65" step="0.1" min="0" max="100" required value="{{ input_data.humidity if input_data else '' }}">
+                                    <input type="number" name="humidity" placeholder="65" step="0.1" min="0" max="100"
+                                        required value="{{ input_data.humidity if input_data else '' }}">
                                     <small>Current humidity level</small>
                                 </div>
                                 <div class="input-group">
                                     <label><i class="fas fa-tint"></i> Moisture (%)</label>
-                                    <input type="number" name="moisture" placeholder="40" step="0.1" min="0" max="100" required value="{{ input_data.moisture if input_data else '' }}">
+                                    <input type="number" name="moisture" placeholder="40" step="0.1" min="0" max="100"
+                                        required value="{{ input_data.moisture if input_data else '' }}">
                                     <small>Soil moisture content</small>
                                 </div>
                             </div>
@@ -576,79 +647,194 @@
                 </div>
             </div>
 
-            <!-- Results Section -->
-            {% if recommendations %}
+            <!-- Categorized Results Section -->
+            {% if categorized_recommendations %}
+            {% for category, items in categorized_recommendations.items() %}
             <div class="results-section" style="margin-top: 30px;">
-                <div class="results-header" style="background: linear-gradient(135deg, #10b981, #059669); padding: 24px; border-radius: 16px 16px 0 0; color: white;">
-                    <h2 style="margin: 0; display: flex; align-items: center; gap: 12px;">
-                        <span style="font-size: 32px;">🧪</span>
-                        Fertilizer Recommendations
-                    </h2>
-                    <p style="margin: 8px 0 0 0; opacity: 0.9;">Top {{ recommendations|length }} recommendations for {{ input_data.crop_type|title if input_data else 'your crop' }}</p>
+                <div class="results-header {{ 'cat-header-organic' if category=='Organic & Soil Amendments' else 'cat-header-complex' if category=='Complex (NPK)' else 'cat-header-nitro' if category=='Nitrogenous' else 'cat-header-default' }}"
+                    style="padding: 16px 24px; border-radius: 16px 16px 0 0; color: white;">
+                    <h3 style="margin: 0; display: flex; align-items: center; gap: 12px; font-size: 20px;">
+                        {% if category == 'Organic & Soil Amendments' %}🌱
+                        {% elif category == 'Complex (NPK)' %}⚖️
+                        {% elif category == 'Nitrogenous' %}⚡
+                        {% elif category == 'Phosphatic' %}🦴
+                        {% elif category == 'Potassic' %}🍌
+                        {% else %}🧪{% endif %}
+                        {{ category }}
+                    </h3>
                 </div>
-                
-                <div class="recommendations-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 24px; background: white; border-radius: 0 0 16px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-                    {% for rec in recommendations %}
-                    <div class="recommendation-card" style="background: linear-gradient(135deg, {% if loop.index == 1 %}#ecfdf5{% elif loop.index == 2 %}#f0fdf4{% else %}#f8fafc{% endif %}, white); border-radius: 12px; padding: 20px; border: 2px solid {% if loop.index == 1 %}#10b981{% elif loop.index == 2 %}#22c55e{% else %}#e2e8f0{% endif %}; position: relative;">
-                        {% if loop.index == 1 %}
-                        <div style="position: absolute; top: -10px; right: 16px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 600;">
+
+                <div class="recommendations-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 24px; background: white; border-radius: 0 0 16px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    {% for rec in items %}
+                    <div class="recommendation-card {{ 'card-border-high' if rec.priority == 'High' else 'card-border-default' }}"
+                        style="background: linear-gradient(135deg, #f8fafc, white); border-radius: 12px; padding: 20px; position: relative;">
+                        {% if rec.priority == 'High' %}
+                        <div
+                            style="position: absolute; top: -10px; right: 16px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 600;">
                             ⭐ TOP PICK
                         </div>
                         {% endif %}
-                        
+
                         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
+                            <div
+                                style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
                                 🧪
                             </div>
                             <div>
                                 <h3 style="margin: 0; font-size: 16px; color: #1e293b;">{{ rec.name }}</h3>
-                                <span style="display: inline-block; background: {% if rec.priority == 'High' %}#dcfce7{% elif rec.priority == 'Medium' %}#fef3c7{% else %}#f1f5f9{% endif %}; color: {% if rec.priority == 'High' %}#166534{% elif rec.priority == 'Medium' %}#92400e{% else %}#475569{% endif %}; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;">
+                                <span
+                                    class="{{ 'badge-high' if rec.priority == 'High' else 'badge-medium' if rec.priority == 'Medium' else 'badge-low' }}"
+                                    style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;">
                                     {{ rec.priority }} Priority
                                 </span>
                             </div>
                         </div>
-                        
+
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                            <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e2e8f0;">
-                                <div style="font-size: 18px; font-weight: 700; color: #10b981;">{{ rec.confidence_percentage|round|int }}%</div>
+                            <div
+                                style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e2e8f0;">
+                                <div style="font-size: 18px; font-weight: 700; color: #10b981;">{{
+                                    rec.confidence_percentage|round|int }}%</div>
                                 <div style="font-size: 11px; color: #64748b;">Confidence</div>
                             </div>
-                            <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e2e8f0;">
+                            <div
+                                style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e2e8f0;">
                                 <div style="font-size: 14px; font-weight: 600; color: #3b82f6;">{{ rec.dosage }}</div>
                                 <div style="font-size: 11px; color: #64748b;">Dosage</div>
                             </div>
                         </div>
-                        
+
                         <div style="background: #f8fafc; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
                             <div style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 6px;">
                                 <i class="fas fa-info-circle"></i> How to Use:
                             </div>
                             <p style="margin: 0; font-size: 13px; color: #64748b; line-height: 1.5;">{{ rec.usage }}</p>
                         </div>
-                        
+
                         <div style="font-size: 12px; color: #64748b; font-style: italic;">
                             💡 {{ rec.note }}
                         </div>
-                        
-                        <form action="{{ url_for('fertilizer.save_fertilizer') }}" method="POST" style="margin-top: 16px;">
+
+                        <form action="{{ url_for('fertilizer.save_fertilizer') }}" method="POST"
+                            style="margin-top: 16px;">
                             <input type="hidden" name="fertilizer_name" value="{{ rec.name }}">
-                            <input type="hidden" name="crop_type" value="{{ input_data.crop_type if input_data else '' }}">
+                            <input type="hidden" name="crop_type"
+                                value="{{ input_data.crop_type if input_data else '' }}">
                             <input type="hidden" name="dosage" value="{{ rec.dosage }}">
                             <input type="hidden" name="usage" value="{{ rec.usage }}">
-                            <input type="hidden" name="soil_type" value="{{ input_data.soil_type if input_data else '' }}">
-                            <input type="hidden" name="nitrogen" value="{{ input_data.nitrogen if input_data else '' }}">
-                            <input type="hidden" name="phosphorus" value="{{ input_data.phosphorous if input_data else '' }}">
-                            <input type="hidden" name="potassium" value="{{ input_data.potassium if input_data else '' }}">
-                            <button type="submit" style="width: 100%; padding: 10px; background: {% if loop.index == 1 %}linear-gradient(135deg, #10b981, #059669){% else %}white{% endif %}; color: {% if loop.index == 1 %}white{% else %}#10b981{% endif %}; border: 2px solid #10b981; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease;">
+                            <input type="hidden" name="soil_type"
+                                value="{{ input_data.soil_type if input_data else '' }}">
+                            <input type="hidden" name="nitrogen"
+                                value="{{ input_data.nitrogen if input_data else '' }}">
+                            <input type="hidden" name="phosphorus"
+                                value="{{ input_data.phosphorous if input_data else '' }}">
+                            <input type="hidden" name="potassium"
+                                value="{{ input_data.potassium if input_data else '' }}">
+                            <button type="submit"
+                                class="{{ 'btn-save-primary' if loop.index == 1 else 'btn-save-secondary' }}"
+                                style="width: 100%; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease;">
                                 <i class="fas fa-bookmark"></i> Save This
                             </button>
                         </form>
                     </div>
                     {% endfor %}
                 </div>
-                
+            </div>
+            {% endfor %}
+
+            {% elif recommendations %}
+            <div class="results-section" style="margin-top: 30px;">
+                <div class="results-header cat-header-default"
+                    style="padding: 24px; border-radius: 16px 16px 0 0; color: white;">
+                    <h2 style="margin: 0; display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 32px;">🧪</span>
+                        Fertilizer Recommendations
+                    </h2>
+                    <p style="margin: 8px 0 0 0; opacity: 0.9;">Top {{ recommendations|length }} recommendations for {{
+                        input_data.crop_type|title if input_data else 'your crop' }}</p>
+                </div>
+
+                <div class="recommendations-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 24px; background: white; border-radius: 0 0 16px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    {% for rec in recommendations %}
+                    <div class="recommendation-card {{ 'card-bg-top' if loop.index == 1 else 'card-bg-second' if loop.index == 2 else 'card-bg-default' }}"
+                        style="border-radius: 12px; padding: 20px; position: relative;">
+                        {% if loop.index == 1 %}
+                        <div
+                            style="position: absolute; top: -10px; right: 16px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 600;">
+                            ⭐ TOP PICK
+                        </div>
+                        {% endif %}
+
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <div
+                                style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
+                                🧪
+                            </div>
+                            <div>
+                                <h3 style="margin: 0; font-size: 16px; color: #1e293b;">{{ rec.name }}</h3>
+                                <span
+                                    class="{{ 'badge-high' if rec.priority == 'High' else 'badge-medium' if rec.priority == 'Medium' else 'badge-low' }}"
+                                    style="display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;">
+                                    {{ rec.priority }} Priority
+                                </span>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                            <div
+                                style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e2e8f0;">
+                                <div style="font-size: 18px; font-weight: 700; color: #10b981;">{{
+                                    rec.confidence_percentage|round|int }}%</div>
+                                <div style="font-size: 11px; color: #64748b;">Confidence</div>
+                            </div>
+                            <div
+                                style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e2e8f0;">
+                                <div style="font-size: 14px; font-weight: 600; color: #3b82f6;">{{ rec.dosage }}</div>
+                                <div style="font-size: 11px; color: #64748b;">Dosage</div>
+                            </div>
+                        </div>
+
+                        <div style="background: #f8fafc; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                            <div style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 6px;">
+                                <i class="fas fa-info-circle"></i> How to Use:
+                            </div>
+                            <p style="margin: 0; font-size: 13px; color: #64748b; line-height: 1.5;">{{ rec.usage }}</p>
+                        </div>
+
+                        <div style="font-size: 12px; color: #64748b; font-style: italic;">
+                            💡 {{ rec.note }}
+                        </div>
+
+                        <form action="{{ url_for('fertilizer.save_fertilizer') }}" method="POST"
+                            style="margin-top: 16px;">
+                            <input type="hidden" name="fertilizer_name" value="{{ rec.name }}">
+                            <input type="hidden" name="crop_type"
+                                value="{{ input_data.crop_type if input_data else '' }}">
+                            <input type="hidden" name="dosage" value="{{ rec.dosage }}">
+                            <input type="hidden" name="usage" value="{{ rec.usage }}">
+                            <input type="hidden" name="soil_type"
+                                value="{{ input_data.soil_type if input_data else '' }}">
+                            <input type="hidden" name="nitrogen"
+                                value="{{ input_data.nitrogen if input_data else '' }}">
+                            <input type="hidden" name="phosphorus"
+                                value="{{ input_data.phosphorous if input_data else '' }}">
+                            <input type="hidden" name="potassium"
+                                value="{{ input_data.potassium if input_data else '' }}">
+                            <button type="submit"
+                                class="{{ 'btn-save-primary' if loop.index == 1 else 'btn-save-secondary' }}"
+                                style="width: 100%; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease;">
+                                <i class="fas fa-bookmark"></i> Save This
+                            </button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+
                 <div style="text-align: center; margin-top: 20px;">
-                    <a href="{{ url_for('fertilizer.fertilizer_recommend') }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: white; color: #475569; border: 2px solid #e2e8f0; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                    <a href="{{ url_for('fertilizer.fertilizer_recommend') }}"
+                        style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: white; color: #475569; border: 2px solid #e2e8f0; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
                         <i class="fas fa-redo"></i> New Analysis
                     </a>
                 </div>
@@ -659,7 +845,8 @@
                     <div class="result-icon">🧪</div>
                     <div>
                         <h2>{{ recommendation.name }}</h2>
-                        <p>Recommended fertilizer for {{ input_data.crop_type|title if input_data else 'your crop' }}</p>
+                        <p>Recommended fertilizer for {{ input_data.crop_type|title if input_data else 'your crop' }}
+                        </p>
                     </div>
                 </div>
                 <div class="result-body">
@@ -688,24 +875,33 @@
 
                     <div class="description-box">
                         <h4><i class="fas fa-info-circle"></i> About This Fertilizer</h4>
-                        <p>{{ recommendation.description or 'This fertilizer is recommended based on your soil nutrient levels and crop requirements. It will help optimize the growth and yield of your crop by providing the necessary nutrients in the right proportions.' }}</p>
+                        <p>{{ recommendation.description or 'This fertilizer is recommended based on your soil nutrient
+                            levels and crop requirements. It will help optimize the growth and yield of your crop by
+                            providing the necessary nutrients in the right proportions.' }}</p>
                     </div>
 
                     <div class="description-box">
                         <h4><i class="fas fa-hand-holding-seedling"></i> Application Instructions</h4>
-                        <p>{{ recommendation.application or 'Apply the recommended dosage during land preparation or as a basal dose. For best results, ensure proper soil moisture before application. Split application may be recommended for better nutrient uptake.' }}</p>
+                        <p>{{ recommendation.application or 'Apply the recommended dosage during land preparation or as
+                            a basal dose. For best results, ensure proper soil moisture before application. Split
+                            application may be recommended for better nutrient uptake.' }}</p>
                     </div>
 
                     <div class="action-buttons">
                         <form action="{{ url_for('fertilizer.save_fertilizer') }}" method="POST" style="flex: 1;">
                             <input type="hidden" name="fertilizer_name" value="{{ recommendation.name }}">
-                            <input type="hidden" name="crop_type" value="{{ input_data.crop_type if input_data else '' }}">
+                            <input type="hidden" name="crop_type"
+                                value="{{ input_data.crop_type if input_data else '' }}">
                             <input type="hidden" name="npk" value="{{ recommendation.npk }}">
                             <input type="hidden" name="dosage" value="{{ recommendation.dosage }}">
-                            <input type="hidden" name="soil_type" value="{{ input_data.soil_type if input_data else '' }}">
-                            <input type="hidden" name="nitrogen" value="{{ input_data.nitrogen if input_data else '' }}">
-                            <input type="hidden" name="phosphorus" value="{{ input_data.phosphorous if input_data else '' }}">
-                            <input type="hidden" name="potassium" value="{{ input_data.potassium if input_data else '' }}">
+                            <input type="hidden" name="soil_type"
+                                value="{{ input_data.soil_type if input_data else '' }}">
+                            <input type="hidden" name="nitrogen"
+                                value="{{ input_data.nitrogen if input_data else '' }}">
+                            <input type="hidden" name="phosphorus"
+                                value="{{ input_data.phosphorous if input_data else '' }}">
+                            <input type="hidden" name="potassium"
+                                value="{{ input_data.potassium if input_data else '' }}">
                             <button type="submit" class="action-btn primary" style="width: 100%;">
                                 <i class="fas fa-bookmark"></i> Save Recommendation
                             </button>

@@ -1,8 +1,13 @@
 import pandas as pd
+import os
 
 class FertilizerDetails:
-    def __init__(self, dataset_path='d:/p/smartfarming/datasets/fertilizer_recommendation_dataset.csv'):
+    def __init__(self, dataset_path=None):
         """Load fertilizer details from dataset"""
+        if dataset_path is None:
+            # Use absolute path relative to this script
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            dataset_path = os.path.join(base_dir, 'datasets', 'fertilizer_recommendation_dataset.csv')
         self.df = pd.read_csv(dataset_path)
         self.fertilizer_info = self._build_fertilizer_database()
     

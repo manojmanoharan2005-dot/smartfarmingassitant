@@ -16,7 +16,6 @@ from controllers.chat_routes import chat_bp
 from controllers.equipment_routes import equipment_bp
 from controllers.report_routes import report_bp
 from controllers.market_scheduler import init_scheduler
-# from controllers.community_routes import community_bp
 from utils.db import init_db
 
 app = Flask(__name__)

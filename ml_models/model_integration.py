@@ -12,8 +12,10 @@ class CropPredictor:
         try:
             # Try to load sklearn model first
             import joblib
-            model_path = os.path.join("ml_models", 'crop_recommendation_model.joblib')
-            scaler_path = os.path.join("ml_models", 'feature_scaler.joblib')
+            # Use absolute path relative to this script
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            model_path = os.path.join(base_dir, 'crop_recommendation_model.joblib')
+            scaler_path = os.path.join(base_dir, 'feature_scaler.joblib')
             
             if os.path.exists(model_path) and os.path.exists(scaler_path):
                 self.model = joblib.load(model_path)

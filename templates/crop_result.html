@@ -10,7 +10,7 @@
 {% block content %}
 <div class="dashboard-layout">
     <!-- Green Header Section -->
-    <div class="dashboard-header">        
+    <div class="dashboard-header">
         <div class="header-content">
             <div class="header-left">
                 <h1>AI-Powered Crop Recommendation</h1>
@@ -27,7 +27,67 @@
     <div class="main-content">
         <!-- Sidebar -->
         <div class="sidebar">
-            <!-- ...existing code... -->
+            <div class="sidebar-header">
+                <div class="sidebar-logo">🌾</div>
+                <div>
+                    <div class="sidebar-title">Smart Farming</div>
+                    <div class="sidebar-subtitle">Agricultural Platform</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a href="{{ url_for('dashboard.dashboard') }}" class="nav-link">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="{{ url_for('crop.crop_suggestion') }}" class="nav-link active">
+                        <i class="fas fa-seedling"></i>
+                        <span>Crop Suggestion</span>
+                    </a>
+                    <a href="{{ url_for('fertilizer.fertilizer_recommend') }}" class="nav-link">
+                        <i class="fas fa-flask"></i>
+                        <span>Fertilizer Advice</span>
+                    </a>
+                    <a href="{{ url_for('market.market_watch') }}" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Market Prices</span>
+                        <span class="badge">Live</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Tools</div>
+                    <a href="#" class="nav-link" onclick="openCalculatorModal(); return false;">
+                        <i class="fas fa-calculator"></i>
+                        <span>Expense Calculator</span>
+                    </a>
+                    <a href="#" class="nav-link" onclick="openWeatherModal(); return false;">
+                        <i class="fas fa-cloud-sun"></i>
+                        <span>Weather Forecast</span>
+                    </a>
+                    <a href="#" class="nav-link" onclick="openGovtSchemesModal(); return false;">
+                        <i class="fas fa-landmark"></i>
+                        <span>Govt. Schemes</span>
+                    </a>
+                    <a href="#" class="nav-link" onclick="openEquipmentModal(); return false;">
+                        <i class="fas fa-truck-pickup"></i>
+                        <span>Equipment Sharing</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-info" onclick="openProfileModal()" style="cursor: pointer;">
+                    <div class="user-avatar">{{ user_name[0] if user_name else 'U' }}</div>
+                    <div class="user-details">
+                        <h4>{{ user_name }}</h4>
+                        <span>Farmer</span>
+                    </div>
+                    <i class="fas fa-chevron-right" style="margin-left: auto; opacity: 0.5; font-size: 12px;"></i>
+                </div>
+            </div>
         </div>
 
         <!-- Content Panel -->
@@ -227,12 +287,12 @@
 </div>
 
 <script>
-function startGrowing(cropName, probability) {
-    window.location.href = '/crop/start/' + cropName + '/' + probability;
-}
+    function startGrowing(cropName, probability) {
+        window.location.href = '/crop/start/' + cropName + '/' + probability;
+    }
 
-function viewDetails(cropName) {
-    alert('Viewing detailed information for ' + cropName);
-}
+    function viewDetails(cropName) {
+        alert('Viewing detailed information for ' + cropName);
+    }
 </script>
 {% endblock %}

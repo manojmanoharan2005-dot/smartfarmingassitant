@@ -306,6 +306,7 @@
 {% block content %}
 <div class="dashboard-layout">
     <!-- Sidebar -->
+    <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-logo">🌾</div>
@@ -336,15 +337,18 @@
                     <span class="badge">Live</span>
                 </a>
             </div>
+
+
         </nav>
 
         <div class="sidebar-user">
-            <div class="user-info">
-                <div class="user-avatar">{{ (user_name or 'F')[0] }}</div>
+            <div class="user-info" onclick="openProfileModal()" style="cursor: pointer;">
+                <div class="user-avatar">{{ user_name[0] if user_name else 'U' }}</div>
                 <div class="user-details">
-                    <h4>{{ user_name or 'Farmer' }}</h4>
+                    <h4>{{ user_name }}</h4>
                     <span>Farmer</span>
                 </div>
+                <i class="fas fa-chevron-right" style="margin-left: auto; opacity: 0.5; font-size: 12px;"></i>
             </div>
         </div>
     </div>
@@ -630,8 +634,11 @@
     </div>
 </div>
 
+<script id="states-data" type="application/json">
+    {{ (states_districts or {}) | tojson | safe }}
+</script>
 <script>
-    const statesDistricts = {{ states_districts | tojson | safe }} || {};
+    const statesDistricts = JSON.parse(document.getElementById('states-data').textContent);
 
     // All 40 commodities for autocomplete
     const allCommodities = [

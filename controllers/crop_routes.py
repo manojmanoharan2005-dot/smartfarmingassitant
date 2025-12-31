@@ -6,6 +6,26 @@ from datetime import datetime
 
 crop_bp = Blueprint('crop', __name__)
 
+
+# Helper function for crop categorization
+def get_crop_category(crop_name):
+    crop_name = crop_name.lower().strip()
+    
+    categories = {
+        'Fruits': ['apple', 'banana', 'grapes', 'mango', 'muskmelon', 'orange', 'papaya', 'pomegranate', 'watermelon', 'coconut'],
+        'Pulses & Vegetables': ['pigeonpeas', 'kidneybeans', 'mothbeans', 'mungbean', 'blackgram', 'lentil', 'chickpea'], 
+        'Grains & Cereals': ['rice', 'wheat', 'maize'],
+        'Commercial Crops': ['cotton', 'jute', 'coffee', 'tea']
+    }
+    
+    # Check for direct match
+    for category, crops in categories.items():
+        if crop_name in crops:
+            return category
+            
+    # Default category
+    return 'Other Crops'
+
 @crop_bp.route('/crop/suggestion', methods=['GET', 'POST'])
 @login_required
 def crop_suggestion():
@@ -46,6 +66,7 @@ def crop_suggestion():
                 nitrogen, phosphorous, potassium, temperature, humidity, ph, rainfall
             )
             
+            crop_recommendations = []
             if prediction_result and prediction_result.get('top_recommendations'):
                 # Use real ML predictions
                 crop_recommendations = prediction_result['top_recommendations']
@@ -62,6 +83,25 @@ def crop_suggestion():
                 )
                 flash('⚠️ Using basic recommendations. Install ML packages for AI predictions.', 'warning')
             
+            # Categorize recommendations
+            categorized_recommendations = {}
+            for crop in crop_recommendations:
+                category = get_crop_category(crop['name'])
+                if category not in categorized_recommendations:
+                    categorized_recommendations[category] = []
+                categorized_recommendations[category].append(crop)
+            
+            # Sort categories to ensure consistent order (Fruits, Vegetables, Grains, etc.)
+            # Define preferred order
+            preferred_order = ['Grains & Cereals', 'Pulses & Vegetables', 'Fruits', 'Commercial Crops', 'Other Crops']
+            sorted_categorized = {k: categorized_recommendations[k] for k in preferred_order if k in categorized_recommendations}
+            # Add any remaining categories not in preferred order
+            for k, v in categorized_recommendations.items():
+                if k not in sorted_categorized:
+                    sorted_categorized[k] = v
+            
+            categorized_recommendations = sorted_categorized
+            
             # Store input data to preserve form values
             input_data = {
                 'nitrogen': nitrogen,
@@ -76,6 +116,7 @@ def crop_suggestion():
             # Return template with results
             return render_template('crop_suggestion.html',
                                  recommendations=crop_recommendations,
+                                 categorized_recommendations=categorized_recommendations,
                                  input_data=input_data,
                                  user_name=session.get('user_name', 'Farmer'),
                                  current_date=datetime.now().strftime('%B %d, %Y'))

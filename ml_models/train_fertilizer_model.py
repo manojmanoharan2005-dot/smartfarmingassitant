@@ -158,8 +158,10 @@ def save_model(model, label_encoders, target_encoder, scaler, output_dir):
 
 def main():
     # Configuration
-    dataset_path = 'd:/p/smartfarming/datasets/fertilizer_recommendation_dataset.csv'
-    model_output_dir = 'd:/p/smartfarming/models'
+    # Use absolute paths relative to this script
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    dataset_path = os.path.join(base_dir, 'datasets', 'fertilizer_recommendation_dataset.csv')
+    model_output_dir = os.path.join(base_dir, 'models')
     
     print("="*60)
     print("FERTILIZER RECOMMENDATION MODEL TRAINING")

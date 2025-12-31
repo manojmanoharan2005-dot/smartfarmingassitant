@@ -5,8 +5,12 @@ import os
 from get_fertilizer_details import get_fertilizer_details
 
 class FertilizerPredictor:
-    def __init__(self, model_dir='d:/p/smartfarming/models'):
+    def __init__(self, model_dir=None):
         """Initialize predictor with trained model"""
+        if model_dir is None:
+            # Dynamically determine the path to the 'models' directory
+            # Go up one level from 'ml_models' to project root, then into 'models'
+            model_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'models')
         self.model_dir = model_dir
         self.model = None
         self.label_encoders = None
@@ -60,16 +64,16 @@ class FertilizerPredictor:
             
             # Get prediction probabilities
             probabilities = self.model.predict_proba(input_data)[0]
-            top_5_idx = np.argsort(probabilities)[-5:][::-1]
-            top_5_fertilizers = self.target_encoder.inverse_transform(top_5_idx)
-            top_5_probs = probabilities[top_5_idx]
+            top_n_idx = np.argsort(probabilities)[-6:][::-1]
+            top_n_fertilizers = self.target_encoder.inverse_transform(top_n_idx)
+            top_n_probs = probabilities[top_n_idx]
             
             # Get detailed information
             fertilizer_details_db = get_fertilizer_details()
             
             # Format results with details
             recommendations = []
-            for i, (fert, prob) in enumerate(zip(top_5_fertilizers, top_5_probs)):
+            for i, (fert, prob) in enumerate(zip(top_n_fertilizers, top_n_probs)):
                 details = fertilizer_details_db.get_details(fert)
                 recommendations.append({
                     'fertilizer': fert,

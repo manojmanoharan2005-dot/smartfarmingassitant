@@ -6,305 +6,306 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-.form-card {
-    background: var(--card-bg);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
-}
+    .form-card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+    }
 
-.form-card-header {
-    background: linear-gradient(135deg, var(--accent-green), #059669);
-    color: white;
-    padding: 24px 30px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
+    .form-card-header {
+        background: linear-gradient(135deg, var(--accent-green), #059669);
+        color: white;
+        padding: 24px 30px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
 
-.form-card-header .icon {
-    width: 56px;
-    height: 56px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-}
+    .form-card-header .icon {
+        width: 56px;
+        height: 56px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+    }
 
-.form-card-header h2 {
-    font-size: 22px;
-    margin: 0 0 4px 0;
-}
+    .form-card-header h2 {
+        font-size: 22px;
+        margin: 0 0 4px 0;
+    }
 
-.form-card-header p {
-    font-size: 14px;
-    opacity: 0.9;
-    margin: 0;
-}
+    .form-card-header p {
+        font-size: 14px;
+        opacity: 0.9;
+        margin: 0;
+    }
 
-.form-card-body {
-    padding: 30px;
-}
+    .form-card-body {
+        padding: 30px;
+    }
 
-.form-section {
-    margin-bottom: 30px;
-}
+    .form-section {
+        margin-bottom: 30px;
+    }
 
-.form-section-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--accent-green-light);
-}
+    .form-section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--accent-green-light);
+    }
 
-.form-section-title i {
-    color: var(--accent-green);
-}
+    .form-section-title i {
+        color: var(--accent-green);
+    }
 
-.input-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
+    .input-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
 
-.form-card .input-group {
-    display: flex;
-    flex-direction: column;
-    position: static;
-}
+    .form-card .input-group {
+        display: flex;
+        flex-direction: column;
+        position: static;
+    }
 
-.form-card .input-group label {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
+    .form-card .input-group label {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
 
-.form-card .input-group label i {
-    position: static;
-    transform: none;
-    color: var(--accent-green);
-}
+    .form-card .input-group label i {
+        position: static;
+        transform: none;
+        color: var(--accent-green);
+    }
 
-.form-card .input-group input,
-.form-card .input-group select {
-    padding: 14px 16px;
-    border: 2px solid var(--border-color);
-    border-radius: var(--radius-md);
-    font-size: 15px;
-    transition: all 0.3s ease;
-    background: white;
-}
+    .form-card .input-group input,
+    .form-card .input-group select {
+        padding: 14px 16px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-md);
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: white;
+    }
 
-.form-card .input-group input:focus,
-.form-card .input-group select:focus {
-    outline: none;
-    border-color: var(--accent-green);
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
-}
+    .form-card .input-group input:focus,
+    .form-card .input-group select:focus {
+        outline: none;
+        border-color: var(--accent-green);
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+    }
 
-.form-card .input-group small {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-top: 6px;
-}
+    .form-card .input-group small {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 6px;
+    }
 
-.submit-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 16px 32px;
-    background: linear-gradient(135deg, var(--accent-green), #059669);
-    color: white;
-    border: none;
-    border-radius: var(--radius-md);
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 20px;
-}
+    .submit-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 16px 32px;
+        background: linear-gradient(135deg, var(--accent-green), #059669);
+        color: white;
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+    }
 
-.submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-}
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+    }
 
-.results-section {
-    margin-top: 30px;
-}
+    .results-section {
+        margin-top: 30px;
+    }
 
-.results-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-}
+    .results-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+    }
 
-.results-title {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--text-primary);
-}
+    .results-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
 
-.results-title i {
-    color: var(--accent-green);
-}
+    .results-title i {
+        color: var(--accent-green);
+    }
 
-.crop-results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
-}
+    .crop-results-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 20px;
+    }
 
-.crop-result-card {
-    background: white;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
+    .crop-result-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
 
-.crop-result-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--accent-green);
-}
+    .crop-result-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--accent-green);
+    }
 
-.crop-result-card.primary {
-    border-color: var(--accent-green);
-    background: linear-gradient(135deg, #f0fdf4 0%, white 100%);
-}
+    .crop-result-card.primary {
+        border-color: var(--accent-green);
+        background: linear-gradient(135deg, #f0fdf4 0%, white 100%);
+    }
 
-.crop-card-header {
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    border-bottom: 1px solid var(--border-color);
-}
+    .crop-card-header {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        border-bottom: 1px solid var(--border-color);
+    }
 
-.crop-icon {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, var(--accent-green), #059669);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-}
+    .crop-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--accent-green), #059669);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+    }
 
-.crop-card-header h3 {
-    font-size: 20px;
-    margin: 0 0 4px 0;
-    color: var(--text-primary);
-}
+    .crop-card-header h3 {
+        font-size: 20px;
+        margin: 0 0 4px 0;
+        color: var(--text-primary);
+    }
 
-.confidence-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 10px;
-    background: var(--accent-green);
-    color: white;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-}
+    .confidence-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        background: var(--accent-green);
+        color: white;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
 
-.crop-card-body {
-    padding: 20px;
-}
+    .crop-card-body {
+        padding: 20px;
+    }
 
-.crop-info-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-}
+    .crop-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
 
-.crop-info-item {
-    text-align: center;
-    padding: 12px;
-    background: var(--body-bg);
-    border-radius: var(--radius-sm);
-}
+    .crop-info-item {
+        text-align: center;
+        padding: 12px;
+        background: var(--body-bg);
+        border-radius: var(--radius-sm);
+    }
 
-.crop-info-item .value {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--accent-green);
-}
+    .crop-info-item .value {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--accent-green);
+    }
 
-.crop-info-item .label {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-top: 4px;
-}
+    .crop-info-item .label {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 4px;
+    }
 
-.crop-card-footer {
-    padding: 16px 20px;
-    background: var(--body-bg);
-    display: flex;
-    gap: 12px;
-}
+    .crop-card-footer {
+        padding: 16px 20px;
+        background: var(--body-bg);
+        display: flex;
+        gap: 12px;
+    }
 
-.crop-action-btn {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    text-decoration: none;
-}
+    .crop-action-btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: var(--radius-sm);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+    }
 
-.crop-action-btn.primary {
-    background: var(--accent-green);
-    color: white;
-}
+    .crop-action-btn.primary {
+        background: var(--accent-green);
+        color: white;
+    }
 
-.crop-action-btn.primary:hover {
-    background: #059669;
-}
+    .crop-action-btn.primary:hover {
+        background: #059669;
+    }
 
-.crop-action-btn.secondary {
-    background: white;
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-}
+    .crop-action-btn.secondary {
+        background: white;
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+    }
 
-.crop-action-btn.secondary:hover {
-    border-color: var(--accent-green);
-    color: var(--accent-green);
-}
+    .crop-action-btn.secondary:hover {
+        border-color: var(--accent-green);
+        color: var(--accent-green);
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="dashboard-layout">
+    <!-- Sidebar -->
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
@@ -314,7 +315,7 @@
                 <div class="sidebar-subtitle">Agricultural Platform</div>
             </div>
         </div>
-        
+
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-section-title">Main Menu</div>
@@ -336,15 +337,18 @@
                     <span class="badge">Live</span>
                 </a>
             </div>
+
+
         </nav>
-        
+
         <div class="sidebar-user">
-            <div class="user-info">
-                <div class="user-avatar">{{ (user_name or 'F')[0] }}</div>
+            <div class="user-info" onclick="openProfileModal()" style="cursor: pointer;">
+                <div class="user-avatar">{{ user_name[0] if user_name else 'U' }}</div>
                 <div class="user-details">
-                    <h4>{{ user_name or 'Farmer' }}</h4>
+                    <h4>{{ user_name }}</h4>
                     <span>Farmer</span>
                 </div>
+                <i class="fas fa-chevron-right" style="margin-left: auto; opacity: 0.5; font-size: 12px;"></i>
             </div>
         </div>
     </div>
@@ -358,7 +362,8 @@
                     <i class="fas fa-seedling"></i> AI-Powered Analysis
                 </div>
                 <h1 class="hero-title">Smart Crop Recommendation</h1>
-                <p class="hero-subtitle">Get scientific crop suggestions based on your soil nutrients and climate conditions using machine learning.</p>
+                <p class="hero-subtitle">Get scientific crop suggestions based on your soil nutrients and climate
+                    conditions using machine learning.</p>
             </div>
         </div>
 
@@ -386,7 +391,8 @@
                 </div>
             </div>
             <div style="margin-left: auto;">
-                <a href="{{ url_for('auth.logout') }}" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                <a href="{{ url_for('auth.logout') }}"
+                    style="background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>
@@ -414,17 +420,20 @@
                             <div class="input-grid">
                                 <div class="input-group">
                                     <label><i class="fas fa-atom"></i> Nitrogen (N)</label>
-                                    <input type="number" name="nitrogen" placeholder="80" step="0.01" required value="{{ input_data.nitrogen if input_data else '' }}">
+                                    <input type="number" name="nitrogen" placeholder="80" step="0.01" required
+                                        value="{{ input_data.nitrogen if input_data else '' }}">
                                     <small>Range: 0-140 mg/kg (Avg: 80)</small>
                                 </div>
                                 <div class="input-group">
                                     <label><i class="fas fa-atom"></i> Phosphorus (P)</label>
-                                    <input type="number" name="phosphorous" placeholder="60" step="0.01" required value="{{ input_data.phosphorous if input_data else '' }}">
+                                    <input type="number" name="phosphorous" placeholder="60" step="0.01" required
+                                        value="{{ input_data.phosphorous if input_data else '' }}">
                                     <small>Range: 5-145 mg/kg (Avg: 60)</small>
                                 </div>
                                 <div class="input-group">
                                     <label><i class="fas fa-atom"></i> Potassium (K)</label>
-                                    <input type="number" name="potassium" placeholder="40" step="0.01" required value="{{ input_data.potassium if input_data else '' }}">
+                                    <input type="number" name="potassium" placeholder="40" step="0.01" required
+                                        value="{{ input_data.potassium if input_data else '' }}">
                                     <small>Range: 5-205 mg/kg (Avg: 40)</small>
                                 </div>
                             </div>
@@ -439,22 +448,26 @@
                             <div class="input-grid">
                                 <div class="input-group">
                                     <label><i class="fas fa-thermometer-half"></i> Temperature (°C)</label>
-                                    <input type="number" name="temperature" placeholder="25" step="0.01" required value="{{ input_data.temperature if input_data else '' }}">
+                                    <input type="number" name="temperature" placeholder="25" step="0.01" required
+                                        value="{{ input_data.temperature if input_data else '' }}">
                                     <small>Range: 8-44°C (Avg: 26°C)</small>
                                 </div>
                                 <div class="input-group">
                                     <label><i class="fas fa-tint"></i> Humidity (%)</label>
-                                    <input type="number" name="humidity" placeholder="70" step="0.01" min="0" max="100" required value="{{ input_data.humidity if input_data else '' }}">
+                                    <input type="number" name="humidity" placeholder="70" step="0.01" min="0" max="100"
+                                        required value="{{ input_data.humidity if input_data else '' }}">
                                     <small>Range: 14-100% (Avg: 70%)</small>
                                 </div>
                                 <div class="input-group">
                                     <label><i class="fas fa-vial"></i> Soil pH Level</label>
-                                    <input type="number" name="ph" placeholder="6.5" step="0.01" min="0" max="14" required value="{{ input_data.ph if input_data else '' }}">
+                                    <input type="number" name="ph" placeholder="6.5" step="0.01" min="0" max="14"
+                                        required value="{{ input_data.ph if input_data else '' }}">
                                     <small>Range: 3.5-9.9 (Avg: 6.5)</small>
                                 </div>
                                 <div class="input-group">
                                     <label><i class="fas fa-cloud-rain"></i> Annual Rainfall (mm)</label>
-                                    <input type="number" name="rainfall" placeholder="100" step="0.01" required value="{{ input_data.rainfall if input_data else '' }}">
+                                    <input type="number" name="rainfall" placeholder="100" step="0.01" required
+                                        value="{{ input_data.rainfall if input_data else '' }}">
                                     <small>Range: 20-300mm (Avg: 100mm)</small>
                                 </div>
                             </div>
@@ -469,7 +482,72 @@
             </div>
 
             <!-- Results Section -->
-            {% if recommendations %}
+            {% if categorized_recommendations %}
+            {% for category, crops in categorized_recommendations.items() %}
+            <div class="results-section">
+                <div class="results-header">
+                    <div class="results-title">
+                        {% if category == 'Fruits' %}<i class="fas fa-apple-alt"></i>
+                        {% elif category == 'Vegetables' %}<i class="fas fa-carrot"></i>
+                        {% elif category == 'Grains & Cereals' %}<i class="fas fa-seedling"></i>
+                        {% else %}<i class="fas fa-leaf"></i>{% endif %}
+                        {{ category }}
+                    </div>
+                </div>
+                <div class="crop-results-grid">
+                    {% for crop in crops %}
+                    <div class="crop-result-card {{ 'primary' if crop.priority == 'High' else '' }}">
+                        <div class="crop-card-header">
+                            <div class="crop-icon">
+                                {% if crop.name|lower in ['rice', 'wheat', 'maize'] %}🌾
+                                {% elif crop.name|lower in ['apple', 'mango', 'banana', 'orange', 'grapes'] %}🍎
+                                {% elif crop.name|lower in ['coffee'] %}☕
+                                {% elif crop.name|lower in ['cotton'] %}🧶
+                                {% else %}🌱{% endif %}
+                            </div>
+                            <div>
+                                <h3>{{ crop.name|title }}</h3>
+                                <span class="confidence-badge">
+                                    <i class="fas fa-star"></i>
+                                    {{ crop.confidence_percentage|round|int }}% Match
+                                </span>
+                            </div>
+                        </div>
+                        <div class="crop-card-body">
+                            <div class="crop-info-grid">
+                                <div class="crop-info-item">
+                                    <div class="value">{{ crop.season or 'Kharif' }}</div>
+                                    <div class="label">Best Season</div>
+                                </div>
+                                <div class="crop-info-item">
+                                    <div class="value">{{ crop.duration or '90-120' }}</div>
+                                    <div class="label">Days to Harvest</div>
+                                </div>
+                                <div class="crop-info-item">
+                                    <div class="value">{{ crop.water or 'Medium' }}</div>
+                                    <div class="label">Water Need</div>
+                                </div>
+                                <div class="crop-info-item">
+                                    <div class="value">{{ crop.priority }}</div>
+                                    <div class="label">Priority</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="crop-card-footer">
+                            <a href="{{ url_for('growing.start_growing', crop_name=crop.name, probability=crop.probability) }}"
+                                class="crop-action-btn primary">
+                                <i class="fas fa-play"></i> Start Growing
+                            </a>
+                            <button class="crop-action-btn secondary" onclick="alert('Details coming soon!')">
+                                <i class="fas fa-info-circle"></i> Details
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            {% elif recommendations %}
             <div class="results-section">
                 <div class="results-header">
                     <div class="results-title">
@@ -517,7 +595,8 @@
                             </div>
                         </div>
                         <div class="crop-card-footer">
-                            <a href="{{ url_for('growing.start_growing', crop_name=crop.name) }}" class="crop-action-btn primary">
+                            <a href="{{ url_for('growing.start_growing', crop_name=crop.name, probability=crop.probability) }}"
+                                class="crop-action-btn primary">
                                 <i class="fas fa-play"></i> Start Growing
                             </a>
                             <button class="crop-action-btn secondary" onclick="alert('Details coming soon!')">

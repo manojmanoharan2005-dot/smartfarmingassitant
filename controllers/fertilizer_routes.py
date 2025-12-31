@@ -157,8 +157,29 @@ def generate_fertilizer_recommendations(crop_type, n, p, k, temperature, humidit
     # Sort by confidence score (highest first)
     recommendations.sort(key=lambda x: x['confidence_percentage'], reverse=True)
     
-    # Return top 5 recommendations
-    return recommendations[:5]
+    # Return top 6 recommendations
+    return recommendations[:6]
+
+
+# Helper function for fertilizer categorization
+def get_fertilizer_category(fetilizer_name):
+    fetilizer_name = fetilizer_name.lower().strip()
+    
+    categories = {
+        'Nitrogenous': ['urea', 'ammonium sulfate', 'calcium ammonium nitrate'],
+        'Phosphatic': ['dap', 'single super phosphate', 'triple super phosphate'],
+        'Potassic': ['mop', 'muriate of potash', 'sulfate of potash'],
+        'Complex (NPK)': ['npk', 'balanced npk fertilizer', '19-19-19', '20-20-0-13', '10-26-26'],
+        'Organic & Soil Amendments': ['compost', 'organic fertilizer', 'lime', 'gypsum', 'water retaining fertilizer']
+    }
+    
+    # Check for direct match or partial match
+    for category, fertilizers in categories.items():
+        if any(f in fetilizer_name for f in fertilizers):
+            return category
+            
+    # Default category
+    return 'Other Fertilizers'
 
 @fertilizer_bp.route('/recommend', methods=['GET', 'POST'])
 @login_required
@@ -194,6 +215,9 @@ def fertilizer_recommend():
         soil = request.form.get('soil', 'Loamy Soil')
         crop = request.form.get('crop_type', request.form.get('crop', 'rice'))
 
+        recommendations = []
+        is_ml_prediction = False
+
         # Use ML model if available
         if ml_predictor:
             result = ml_predictor.predict(
@@ -210,13 +234,13 @@ def fertilizer_recommend():
             )
             
             if result.get('success'):
+                is_ml_prediction = True
                 # Format recommendations for template
-                recommendations = result.get('top_recommendations', [])
+                raw_recommendations = result.get('top_recommendations', [])
                 
-                # Convert to old format for compatibility
-                formatted_recs = []
-                for rec in recommendations:
-                    formatted_recs.append({
+                # Convert to standardized format
+                for rec in raw_recommendations:
+                    recommendations.append({
                         'name': rec['fertilizer'],
                         'dosage': rec['dosage'],
                         'usage': rec['use'],
@@ -225,51 +249,56 @@ def fertilizer_recommend():
                         'priority': 'High' if rec['confidence'] >= 60 else 'Medium' if rec['confidence'] >= 30 else 'Low',
                         'probability': rec['confidence'] / 100.0
                     })
-                
-                input_data = {
-                    'crop_type': crop,
-                    'soil_type': soil,
-                    'nitrogen': nitrogen,
-                    'phosphorous': phosphorous,
-                    'potassium': potassium,
-                    'temperature': temperature,
-                    'humidity': moisture * 100,
-                    'soil_moisture': moisture * 100
-                }
-                
-                flash('🧪 AI-powered fertilizer recommendations generated successfully!', 'success')
-                return render_template('fertilizer_recommend.html',
-                                       recommendations=formatted_recs,
-                                       input_data=input_data,
-                                       user_name=session.get('user_name', 'Farmer'),
-                                       current_date=datetime.now().strftime('%B %d, %Y'),
-                                       available_soils=ml_predictor.get_available_soils() if ml_predictor else [],
-                                       available_crops=ml_predictor.get_available_crops() if ml_predictor else [])
             else:
                 flash(f'ML Model Error: {result.get("error")}', 'error')
-        else:
-            # Use rule-based system (works reliably)
+        
+        # Fallback to rule-based if ML failed or not available
+        if not recommendations:
+            # Use rules
             recommendations = generate_fertilizer_recommendations(
                 crop, nitrogen, phosphorous, potassium, temperature, moisture * 100, moisture * 100
             )
-            
-            input_data = {
-                'crop_type': crop,
-                'soil_type': soil,
-                'nitrogen': nitrogen,
-                'phosphorous': phosphorous,
-                'potassium': potassium,
-                'temperature': temperature,
-                'humidity': moisture * 100,
-                'soil_moisture': moisture * 100
-            }
 
-            flash('✅ Fertilizer recommendations generated successfully!', 'success')
-            return render_template('fertilizer_recommend.html',
-                                   recommendations=recommendations,
-                                   input_data=input_data,
-                                   user_name=session.get('user_name', 'Farmer'),
-                                   current_date=datetime.now().strftime('%B %d, %Y'))
+
+        # Categorize recommendations
+        categorized_recommendations = {}
+        for rec in recommendations:
+            category = get_fertilizer_category(rec['name'])
+            if category not in categorized_recommendations:
+                categorized_recommendations[category] = []
+            categorized_recommendations[category].append(rec)
+        
+        # Sort categories based on preferred order
+        preferred_order = ['Organic & Soil Amendments', 'Complex (NPK)', 'Nitrogenous', 'Phosphatic', 'Potassic', 'Other Fertilizers']
+        sorted_categorized = {k: categorized_recommendations[k] for k in preferred_order if k in categorized_recommendations}
+        # Add remaining
+        for k, v in categorized_recommendations.items():
+            if k not in sorted_categorized:
+                sorted_categorized[k] = v
+        categorized_recommendations = sorted_categorized
+        
+        input_data = {
+            'crop_type': crop,
+            'soil_type': soil,
+            'nitrogen': nitrogen,
+            'phosphorous': phosphorous,
+            'potassium': potassium,
+            'temperature': temperature,
+            'humidity': moisture * 100,
+            'soil_moisture': moisture * 100
+        }
+        
+        msg = '🧪 AI-powered fertilizer recommendations generated!' if is_ml_prediction else '✅ Fertilizer recommendations generated successfully!'
+        flash(msg, 'success')
+
+        return render_template('fertilizer_recommend.html',
+                               recommendations=recommendations,
+                               categorized_recommendations=categorized_recommendations,
+                               input_data=input_data,
+                               user_name=session.get('user_name', 'Farmer'),
+                               current_date=datetime.now().strftime('%B %d, %Y'),
+                               available_soils=ml_predictor.get_available_soils() if ml_predictor else [],
+                               available_crops=ml_predictor.get_available_crops() if ml_predictor else [])
 
     except ValueError as e:
         flash(f'❌ Please provide valid numeric inputs: {e}', 'error')

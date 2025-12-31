@@ -330,7 +330,9 @@ def main():
     crop_model = CropRecommendationModel()
     
     # Load dataset  
-    dataset_path = "datasets/Crop_recommendation.csv"
+    # Load dataset  
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    dataset_path = os.path.join(base_dir, "datasets", "Crop_recommendation.csv")
     if not crop_model.load_data(dataset_path):
         print("❌ Failed to load dataset. Please check the file path.")
         return
@@ -354,7 +356,8 @@ def main():
     crop_model.analyze_results(test_results)
     
     # Save model
-    crop_model.save_model()
+    model_dir = os.path.join(base_dir, "ml_models")
+    crop_model.save_model(model_dir=model_dir)
     
     # Example prediction
     print(f"\n🔮 EXAMPLE CROP PREDICTION:")
