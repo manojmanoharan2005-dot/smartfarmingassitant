@@ -231,15 +231,54 @@
             opacity: 0;
         }
     }
+
+    /* Dynamic Styles for reduced lint errors */
+    .commodity-icon.dynamic-bg {
+        background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+    }
+
+    .alert-card-dynamic {
+        background: var(--bg-color) !important;
+    }
+
+    .alert-text-dynamic {
+        color: var(--text-color) !important;
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+    // Mobile Sidebar Toggle
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+    }
+
+    // Handlers for Data Attributes (Cleaner HTML/Linting)
+    function handleCropView(btn) {
+        const d = btn.dataset;
+        openCropViewModal(d.id, d.crop, d.stage, parseFloat(d.progress), parseInt(d.day), d.started, d.notes);
+    }
+    function handleCropEdit(btn) {
+        const d = btn.dataset;
+        openCropEditModal(d.id, d.crop, d.stage, d.notes);
+    }
+    function handleFertilizerView(btn) {
+        const d = btn.dataset;
+        openFertilizerViewModal(d.id, d.fertilizer, d.crop, d.date, d.soil, d.n, d.p, d.k);
+    }
+</script>
 {% endblock %}
 
 {% block content %}
 <div class="dashboard-layout">
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-logo">🌾</div>
             <div>
@@ -305,6 +344,11 @@
 
     <!-- Main Content -->
     <div class="main-content">
+        <!-- Mobile Sidebar Toggle -->
+        <button class="mobile-sidebar-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+
         <!-- Hero Header -->
         <div class="hero-header">
             <div class="hero-content">
@@ -412,22 +456,39 @@
                                     {% for pred in price_predictions[:5] %}
                                     <div class="commodity-item">
                                         <div class="commodity-info">
-                                            <div class="commodity-icon"
-                                                style="background: linear-gradient(135deg, {% if pred.commodity == 'Potato' %}#f59e0b{% elif pred.commodity == 'Tomato' %}#ef4444{% elif pred.commodity == 'Onion' %}#a855f7{% elif pred.commodity == 'Carrot' %}#f97316{% elif pred.commodity == 'Cabbage' %}#22c55e{% else %}#3b82f6{% endif %}, {% if pred.commodity == 'Potato' %}#d97706{% elif pred.commodity == 'Tomato' %}#dc2626{% elif pred.commodity == 'Onion' %}#9333ea{% elif pred.commodity == 'Carrot' %}#ea580c{% elif pred.commodity == 'Cabbage' %}#16a34a{% else %}#2563eb{% endif %});">
-                                                {% if pred.commodity == 'Potato' %}🥔
-                                                {% elif pred.commodity == 'Tomato' %}🍅
-                                                {% elif pred.commodity == 'Onion' %}🧅
-                                                {% elif pred.commodity == 'Carrot' %}🥕
-                                                {% elif pred.commodity == 'Cabbage' %}🥬
-                                                {% elif pred.commodity == 'Banana' %}🍌
-                                                {% elif pred.commodity == 'Mango' %}🥭
-                                                {% else %}🌾{% endif %}
+                                            {% set icon_bg_start = '#3b82f6' %}
+                                            {% set icon_bg_end = '#2563eb' %}
+                                            {% set icon_symbol = '🌾' %}
+                                            {% if pred.commodity == 'Potato' %}
+                                            {% set icon_bg_start = '#f59e0b' %}{% set icon_bg_end = '#d97706' %}{% set
+                                            icon_symbol = '🥔' %}
+                                            {% elif pred.commodity == 'Tomato' %}
+                                            {% set icon_bg_start = '#ef4444' %}{% set icon_bg_end = '#dc2626' %}{% set
+                                            icon_symbol = '🍅' %}
+                                            {% elif pred.commodity == 'Onion' %}
+                                            {% set icon_bg_start = '#a855f7' %}{% set icon_bg_end = '#9333ea' %}{% set
+                                            icon_symbol = '🧅' %}
+                                            {% elif pred.commodity == 'Carrot' %}
+                                            {% set icon_bg_start = '#f97316' %}{% set icon_bg_end = '#ea580c' %}{% set
+                                            icon_symbol = '🥕' %}
+                                            {% elif pred.commodity == 'Cabbage' %}
+                                            {% set icon_bg_start = '#22c55e' %}{% set icon_bg_end = '#16a34a' %}{% set
+                                            icon_symbol = '🥬' %}
+                                            {% elif pred.commodity == 'Banana' %}
+                                            {% set icon_symbol = '🍌' %}
+                                            {% elif pred.commodity == 'Mango' %}
+                                            {% set icon_symbol = '🥭' %}
+                                            {% endif %}
+                                            <div class="commodity-icon dynamic-bg"
+                                                style="--bg-start: {{ icon_bg_start }}; --bg-end: {{ icon_bg_end }};">
+                                                {{ icon_symbol }}
                                             </div>
                                             <div>
                                                 <div class="commodity-name">{{ pred.commodity }}</div>
                                                 <div class="commodity-location">{{ pred.market or user.district }}</div>
                                                 <a href="javascript:void(0)" class="trend-link"
-                                                    onclick="viewTrend('{{ pred.commodity }}')">
+                                                    onclick="viewTrend(this.dataset.commodity)"
+                                                    data-commodity="{{ pred.commodity }}">
                                                     <i class="fas fa-chart-line"></i> View Trend
                                                 </a>
                                             </div>
@@ -465,7 +526,8 @@
                                                 <div class="commodity-name">{{ price.commodity }}</div>
                                                 <div class="commodity-location">{{ price.district }}</div>
                                                 <a href="javascript:void(0)" class="trend-link"
-                                                    onclick="viewTrend('{{ price.commodity }}')">
+                                                    onclick="viewTrend(this.dataset.commodity)"
+                                                    data-commodity="{{ price.commodity }}">
                                                     <i class="fas fa-chart-line"></i> View Trend
                                                 </a>
                                             </div>
@@ -596,11 +658,19 @@
                                     </div>
                                     <div class="crop-actions">
                                         <button class="crop-action-btn view-btn" title="View Details"
-                                            onclick="openCropViewModal('{{ activity.id }}', '{{ activity.crop }}', '{{ activity.current_stage }}', {{ activity.progress }}, {{ activity.current_day }}, '{{ activity.started }}', '{{ activity.notes|default('') }}')">
+                                            data-id="{{ activity.id }}" data-crop="{{ activity.crop }}"
+                                            data-stage="{{ activity.current_stage }}"
+                                            data-progress="{{ activity.progress }}"
+                                            data-day="{{ activity.current_day }}" data-started="{{ activity.started }}"
+                                            data-notes="{{ activity.notes|default('') }}"
+                                            onclick="handleCropView(this)">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                         <button class="crop-action-btn edit-btn" title="Edit Crop"
-                                            onclick="openCropEditModal('{{ activity.id }}', '{{ activity.crop }}', '{{ activity.current_stage }}', '{{ activity.notes|default('') }}')">
+                                            data-id="{{ activity.id }}" data-crop="{{ activity.crop }}"
+                                            data-stage="{{ activity.current_stage }}"
+                                            data-notes="{{ activity.notes|default('') }}"
+                                            onclick="handleCropEdit(this)">
                                             <i class="fas fa-edit"></i>
                                         </button>
                                         <button class="crop-action-btn delete-btn" title="Delete"
@@ -680,12 +750,15 @@
                                 <div
                                     style="margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 12px;">
                                     {% for alert in weather_data.alerts[:2] %}
-                                    <div
-                                        style="display: flex; align-items: center; gap: 10px; padding: 8px; background: {% if alert.type == 'warning' %}rgba(239, 68, 68, 0.1){% else %}rgba(16, 185, 129, 0.1){% endif %}; border-radius: 8px; margin-bottom: 8px;">
+                                    {% set alert_bg = 'rgba(239, 68, 68, 0.1)' if alert.type == 'warning' else 'rgba(16,
+                                    185, 129, 0.1)' %}
+                                    {% set alert_text_color = '#ef4444' if alert.type == 'warning' else '#10b981' %}
+                                    <div class="alert-card-dynamic"
+                                        style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 8px; margin-bottom: 8px; --bg-color: {{ alert_bg }};">
                                         <span style="font-size: 20px;">{{ alert.icon }}</span>
                                         <div>
-                                            <div
-                                                style="font-size: 12px; font-weight: 600; color: {% if alert.type == 'warning' %}#ef4444{% else %}#10b981{% endif %};">
+                                            <div class="alert-text-dynamic"
+                                                style="font-size: 12px; font-weight: 600; --text-color: {{ alert_text_color }};">
                                                 {{ alert.title }}</div>
                                             <div style="font-size: 11px; color: var(--text-secondary);">{{
                                                 alert.message[:60] }}...</div>
@@ -764,10 +837,16 @@
 
                                         <!-- Action Buttons -->
                                         <div style="display: flex; gap: 6px;">
-                                            <button
-                                                onclick="openFertilizerViewModal('{{ rec.id }}', '{{ rec.fertilizer }}', '{{ rec.crop }}', '{{ rec.date }}', '{{ rec.soil_type|default('') }}', '{{ rec.nitrogen|default('') }}', '{{ rec.phosphorus|default('') }}', '{{ rec.potassium|default('') }}')"
+                                            <button data-id="{{ rec.id }}" data-fertilizer="{{ rec.fertilizer }}"
+                                                data-crop="{{ rec.crop }}" data-date="{{ rec.date }}"
+                                                data-soil="{{ rec.soil_type|default('') }}"
+                                                data-n="{{ rec.nitrogen|default('') }}"
+                                                data-p="{{ rec.phosphorus|default('') }}"
+                                                data-k="{{ rec.potassium|default('') }}"
+                                                onclick="handleFertilizerView(this)"
                                                 style="flex: 1; padding: 8px; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 8px; color: white; font-weight: 600; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
                                                 <i class="fas fa-eye"></i> View
+                                            </button>
                                             </button>
                                             <button onclick="deleteFertilizer('{{ rec.id }}')"
                                                 style="padding: 8px 12px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; color: #ef4444; font-size: 12px; cursor: pointer;"
@@ -1773,7 +1852,7 @@
                         style="flex: 1; padding: 12px; background: white; border: 2px solid #e2e8f0; border-radius: 10px; font-weight: 600; color: #475569; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
                         <i class="fas fa-times"></i> Close
                     </button>
-                    <button onclick="window.location.href='{{ url_for('auth.logout') }}'"
+                    <button onclick="window.location.href=this.dataset.url;" data-url="{{ url_for('auth.logout') }}"
                         style="flex: 1; padding: 12px; background: linear-gradient(135deg, #ef4444, #dc2626); border: none; border-radius: 10px; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </button>

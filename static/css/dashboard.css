@@ -44,6 +44,12 @@ body {
     line-height: 1.6;
 }
 
+/* Base state for mobile elements (Hidden on Desktop) */
+.mobile-sidebar-toggle,
+.sidebar-overlay {
+    display: none;
+}
+
 /* ============================================
    SIDEBAR STYLES
    ============================================ */
@@ -1172,41 +1178,117 @@ body {
     .sidebar {
         transform: translateX(-100%);
         transition: transform 0.3s ease;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
     }
 
     .sidebar.active {
         transform: translateX(0);
     }
 
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none;
+        backdrop-filter: blur(4px);
+        animation: fadeIn 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    .mobile-sidebar-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        width: 45px;
+        height: 45px;
+        background: white;
+        color: var(--text-primary);
+        border: none;
+        border-radius: 12px;
+        /* Smooth corners */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 998;
+        /* Below sidebar (1000) but above content */
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-sidebar-toggle:hover {
+        transform: scale(1.05);
+        background: var(--body-bg);
+    }
+
+    .mobile-sidebar-toggle i {
+        font-size: 20px;
+        color: var(--accent-blue);
+    }
+
     .main-content {
         margin-left: 0;
+        padding-top: 60px;
+        /* Space for the toggle button */
     }
 
     .hero-header {
         padding: 30px 20px;
+        border-radius: 0 0 24px 24px;
+        /* Stylish bottom curve */
     }
 
     .hero-title {
-        font-size: 24px;
+        font-size: 26px;
+        /* Slightly adjusted for mobile */
+        line-height: 1.3;
     }
 
     .dashboard-content {
-        padding: 20px;
+        padding: 20px 16px;
+        /* Slightly reduced padding */
     }
 
     .stats-bar {
-        padding: 15px 20px;
+        padding: 20px;
+        background: var(--card-dark);
+        border-radius: 16px;
+        margin: 0 16px -20px;
+        /* Pull up to overlap/connect */
+        position: relative;
+        z-index: 10;
         flex-direction: column;
         align-items: stretch;
+        gap: 16px;
     }
 
     .stat-item {
-        justify-content: center;
+        justify-content: flex-start;
+        /* Align start on mobile */
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+    }
+
+    .stat-item .stat-info {
+        text-align: left;
+        /* Align text left */
     }
 
     .chatbot-window {
-        width: calc(100vw - 40px);
-        right: -15px;
+        width: 100%;
+        height: 100%;
+        bottom: 0;
+        right: 0;
+        border-radius: 0;
+        z-index: 10000;
     }
 }
 

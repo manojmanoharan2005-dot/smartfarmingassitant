@@ -305,9 +305,11 @@
 
 {% block content %}
 <div class="dashboard-layout">
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
     <!-- Sidebar -->
-    <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-logo">🌾</div>
             <div>
@@ -355,6 +357,11 @@
 
     <!-- Main Content -->
     <div class="main-content">
+        <!-- Mobile Sidebar Toggle -->
+        <button class="mobile-sidebar-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+
         <!-- Hero Header -->
         <div class="hero-header" style="background: linear-gradient(135deg, var(--accent-blue), #2563eb);">
             <div class="hero-content">
@@ -736,6 +743,14 @@
                 commoditySearch.value = '';
             }
         });
+    }
+
+    // Mobile Sidebar Toggle
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
     }
 </script>
 {% endblock %}
