@@ -477,5 +477,66 @@
       "_id": "3db897fc-452b-49e8-9a94-23a092cf8293"
     }
   ],
-  "694fda7586def4f38072ebf5": []
+  "694fda7586def4f38072ebf5": [
+    {
+      "user_id": "694fda7586def4f38072ebf5",
+      "crop_name": "muskmelon",
+      "crop_display_name": "Muskmelon",
+      "start_date": "2025-12-31",
+      "harvest_date": "2026-03-31",
+      "duration_days": 90,
+      "current_stage": 1,
+      "status": "active",
+      "tasks": [
+        {
+          "week": 1,
+          "task": "Prepare raised beds and sow seeds"
+        },
+        {
+          "week": 2,
+          "task": "Regular light irrigation"
+        },
+        {
+          "week": 3,
+          "task": "Thinning to 2 plants per hill"
+        },
+        {
+          "week": 5,
+          "task": "First fertilizer application"
+        },
+        {
+          "week": 7,
+          "task": "Training vines and mulching"
+        },
+        {
+          "week": 9,
+          "task": "Hand pollination if needed"
+        },
+        {
+          "week": 11,
+          "task": "Monitor for fruit fly and aphids"
+        },
+        {
+          "week": 12,
+          "task": "Check fruit maturity (slip test)"
+        },
+        {
+          "week": 13,
+          "task": "Harvest ripe melons"
+        }
+      ],
+      "task_dates": {
+        "0": "2025-12-31",
+        "1": "2026-01-07",
+        "2": "2026-02-04"
+      },
+      "completed_tasks": [
+        0
+      ],
+      "notes": "",
+      "created_at": "2025-12-31T09:01:43.949717",
+      "updated_at": "2025-12-31T09:01:43.949724",
+      "_id": "df76f514-63c7-4cf6-8f33-ebcb3fddcc14"
+    }
+  ]
 }
