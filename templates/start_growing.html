@@ -354,8 +354,8 @@
             </div>
             <div class="header-right">
                 <span class="header-date">📅 {{ current_date }}</span>
-                <button class="logout-button"
-                    onclick="window.location.href='{{ url_for('auth.logout') }}'">Logout</button>
+                <a href="{{ url_for('auth.logout') }}" class="logout-button"
+                    style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Logout</a>
             </div>
         </div>
     </div>
@@ -510,9 +510,18 @@
     </div>
 </div>
 
+<script id="crop-data" type="application/json">
+    {
+        "tasks": {{ crop.tasks| tojson | safe }},
+        "durationDays": {{ crop.duration_days }}
+    }
+</script>
 <script>
+    // Parse injected data
+    const cropData = JSON.parse(document.getElementById('crop-data').textContent);
+
     // Crop tasks data
-    const cropTasks = {{ crop.tasks| tojson }};
+    const cropTasks = cropData.tasks || [];
     let addedTasks = [];
 
     console.log('Crop tasks:', cropTasks);
@@ -654,7 +663,8 @@
     // Auto-calculate harvest date when start date changes
     const startDateInput = document.querySelector('input[name="start_date"]');
     const harvestDateInput = document.querySelector('input[name="harvest_date"]');
-    const durationDays = {{ crop.duration_days }};
+    // durationDays is already defined at the top; using cropData.durationDays
+    const durationDays = cropData.durationDays || 0;
 
     if (startDateInput && harvestDateInput) {
         startDateInput.addEventListener('change', function () {
